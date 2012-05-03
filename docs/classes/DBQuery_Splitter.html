@@ -1,0 +1,570 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>DBQuery » \DBQuery_Splitter</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">DBQuery</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/DBQuery.html"><i class="icon-folder-open"></i> DBQuery</a></li>
+<li><a href="../packages/Test.html"><i class="icon-folder-open"></i> Test</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">224</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">6</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#addParts" title="addParts :: Add parts to existing statement"><span class="description">Add parts to existing statement</span><pre>addParts()</pre></a></li>
+<li class="method public "><a href="#buildCountQuery" title="buildCountQuery :: Build query to count the number of rows"><span class="description">Build query to count the number of rows</span><pre>buildCountQuery()</pre></a></li>
+<li class="method public "><a href="#buildWhere" title="buildWhere :: Build a where expression."><span class="description">Build a where expression.</span><pre>buildWhere()</pre></a></li>
+<li class="method public "><a href="#countPlaceholders" title="countPlaceholders :: Count the number of placeholders in a statement."><span class="description">Count the number of placeholders in a statement.</span><pre>countPlaceholders()</pre></a></li>
+<li class="method public "><a href="#extractSubsets" title="extractSubsets :: Extract subqueries from sql query (on for SELECT queries) and replace them with #subX in the main query."><span class="description">Extract subqueries from sql query (on for SELECT queries) and replace them with #subX in the main query.</span><pre>extractSubsets()</pre></a></li>
+<li class="method public "><a href="#getQueryType" title="getQueryType :: Return the type of the query."><span class="description">Return the type of the query.</span><pre>getQueryType()</pre></a></li>
+<li class="method public "><a href="#holdsIdentifiers" title="holdsIdentifiers :: Returns true if part can hold identifiers."><span class="description">Returns true if part can hold identifiers.</span><pre>holdsIdentifiers()</pre></a></li>
+<li class="method public "><a href="#injectSubsets" title="injectSubsets :: Inject extracted subsets back into main sql query."><span class="description">Inject extracted subsets back into main sql query.</span><pre>injectSubsets()</pre></a></li>
+<li class="method public "><a href="#isIdentifier" title="isIdentifier :: Check if expression is a field/table name"><span class="description">Check if expression is a field/table name</span><pre>isIdentifier()</pre></a></li>
+<li class="method public "><a href="#join" title="join :: Join parts to create a query."><span class="description">Join parts to create a query.</span><pre>join()</pre></a></li>
+<li class="method public "><a href="#parse" title="parse :: Insert parameters into SQL query."><span class="description">Insert parameters into SQL query.</span><pre>parse()</pre></a></li>
+<li class="method public "><a href="#quote" title="quote :: Quote a value so it can be savely used in a query."><span class="description">Quote a value so it can be savely used in a query.</span><pre>quote()</pre></a></li>
+<li class="method public "><a href="#quoteIdentifier" title="quoteIdentifier :: Quotes a string so it can be used as a table or column name."><span class="description">Quotes a string so it can be used as a table or column name.</span><pre>quoteIdentifier()</pre></a></li>
+<li class="method public "><a href="#split" title="split :: Split a query."><span class="description">Split a query.</span><pre>split()</pre></a></li>
+<li class="method public "><a href="#splitColumns" title="splitColumns :: Return the columns of a (partual) query statement."><span class="description">Return the columns of a (partual) query statement.</span><pre>splitColumns()</pre></a></li>
+<li class="method public "><a href="#splitLimit" title="splitLimit :: Split limit in array(limit, offset)"><span class="description">Split limit in array(limit, offset)</span><pre>splitLimit()</pre></a></li>
+<li class="method public "><a href="#splitSet" title="splitSet :: Return the columns of a (partual) query statement."><span class="description">Return the columns of a (partual) query statement.</span><pre>splitSet()</pre></a></li>
+<li class="method public "><a href="#splitTables" title="splitTables :: Return the table names of a (partual) query statement."><span class="description">Return the table names of a (partual) query statement.</span><pre>splitTables()</pre></a></li>
+<li class="nav-header protected">» Protected</li>
+<li class="method protected "><a href="#splitDeleteQuery" title="splitDeleteQuery :: Split delete query."><span class="description">Split delete query.</span><pre>splitDeleteQuery()</pre></a></li>
+<li class="method protected "><a href="#splitInsertQuery" title="splitInsertQuery :: Split insert/replace query."><span class="description">Split insert/replace query.</span><pre>splitInsertQuery()</pre></a></li>
+<li class="method protected "><a href="#splitSelectQuery" title="splitSelectQuery :: Split select query."><span class="description">Split select query.</span><pre>splitSelectQuery()</pre></a></li>
+<li class="method protected "><a href="#splitSetQuery" title="splitSetQuery :: Split set query"><span class="description">Split set query</span><pre>splitSetQuery()</pre></a></li>
+<li class="method protected "><a href="#splitTruncateQuery" title="splitTruncateQuery :: Split delete query"><span class="description">Split delete query</span><pre>splitTruncateQuery()</pre></a></li>
+<li class="method protected "><a href="#splitUpdateQuery" title="splitUpdateQuery :: Split update query"><span class="description">Split update query</span><pre>splitUpdateQuery()</pre></a></li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#REGEX_IDENTIFIER" title="REGEX_IDENTIFIER :: "><span class="description">REGEX_IDENTIFIER</span><pre>REGEX_IDENTIFIER</pre></a></li>
+<li class="constant  "><a href="#REGEX_QUOTED" title="REGEX_QUOTED :: "><span class="description">REGEX_QUOTED</span><pre>REGEX_QUOTED</pre></a></li>
+<li class="constant  "><a href="#REGEX_VALUES" title="REGEX_VALUES :: "><span class="description">REGEX_VALUES</span><pre>REGEX_VALUES</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CDBQuery_Splitter" id="\DBQuery_Splitter"></a><div href="../classes/DBQuery_Splitter.html" class="element class">
+<p class="short_description">Break down a mysql query statement to different parts, which can be altered and joined again.</p>
+<div class="details">
+<p class="long_description"><p>Supported types: SELECT, INSERT, REPLACE, UPDATE, DELETE, TRUNCATE.</p>
+
+<p>SELECT ... UNION syntax is <em>not</em> supported.
+DELETE ... USING syntax is <em>not</em> supported.
+Invalid query statements might give unexpected results.</p>
+
+<p>All methods of this class are static.</p>
+
+<p>{ @internal
+  This class highly depends on complicated PCRE regular expressions. So if your not really really really good at reading/writing these, don't touch this class.
+  To prevent a regex getting in some crazy (or catastrophic) backtracking loop, use regexbuddy (http://www.regexbuddy.com) or some other step-by-step regex debugger.
+  The performance of each function is really important, since these functions will be called a lot in 1 page and should be concidered abstraction overhead. The focus is on performance not readability of the code.</p>
+
+<p>Expression REGEX_VALUES matches all quoted strings, all backquoted identifiers and all words and all non-word chars upto the next keyword.
+  It uses atomic groups to look for the next keyword after each quoted string and complete word, not after each char. Atomic groups are also neccesary to prevent catastrophic backtracking when the regex should fail.</p>
+
+<p>Expressions like '/\w+\s<em>(abc)?\s</em>\w+z/' should be prevented. If this regex would try to match "ef    ghi", the regex will first take all 3 spaces for the first \s*. When the regex fails it retries taking the
+    first 2 spaces for the first \s* and the 3rd space for the second \s*, etc, etc. This causes the matching to take more than 3 times as long as '/\w+\s<em>(abc\s</em>)?\w+z/' would.
+  This is the reason why trailing spaces are included with REGEX_VALUES and not automaticly trimmed.
+}}</p></p>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="..//packages/DBQuery.html">DBQuery</a></td>
+</tr>
+<tr>
+<th>todo</th>
+<td>It might be possible to use recursion instead of extracting subqueries, using \((SELECT\b)(?R)\). For query other that select, I should do (?:^\s++UPDATE ...|(?&lt;!^)\s++SELECT ...) to match SELECT and not UPDATE statement in recursion.</td>
+</tr>
+<tr>
+<th>todo</th>
+<td>Implement splitValues to get values of INSERT INTO ... VALUES ... statement</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="addParts" id="addParts"></a><div class="element clickable method public addParts" data-toggle="collapse" data-target=".addParts .collapse">
+<h2>Add parts to existing statement</h2>
+<pre>addParts(array | string $sql, array $add) : array | string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>arraystring</code><p>Parts (array) or statement (string)</p>
+</div>
+<div class="subelement argument">
+<h4>$add</h4>
+<code>array</code><p>Parts to add as array(key=>array(DBQuery::PREPEND=>array(), DBQuery::APPEND=>array(), ...)</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code><code>string</code>
+</div>
+</div></div>
+</div>
+<a name="buildCountQuery" id="buildCountQuery"></a><div class="element clickable method public buildCountQuery" data-toggle="collapse" data-target=".buildCountQuery .collapse">
+<h2>Build query to count the number of rows</h2>
+<pre>buildCountQuery(mixed $sql, bool $flags) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>mixed</code><p>Statement</p></div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>bool</code><p>Optional DBQuery::ALL_ROWS</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="buildWhere" id="buildWhere"></a><div class="element clickable method public buildWhere" data-toggle="collapse" data-target=".buildWhere .collapse">
+<h2>Build a where expression.</h2>
+<pre>buildWhere(mixed $column, mixed $value, int $flags) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$column</h4>
+<code>mixed</code><p>Expression, column name, column number, expression with placeholders or array(column=>value, ...)</p>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code><p>Value or array of values</p></div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>int</code><p>DBQuery::QUOTE_%</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="countPlaceholders" id="countPlaceholders"></a><div class="element clickable method public countPlaceholders" data-toggle="collapse" data-target=".countPlaceholders .collapse">
+<h2>Count the number of placeholders in a statement.</h2>
+<pre>countPlaceholders(string $statement) : int</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$statement</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a name="extractSubsets" id="extractSubsets"></a><div class="element clickable method public extractSubsets" data-toggle="collapse" data-target=".extractSubsets .collapse">
+<h2>Extract subqueries from sql query (on for SELECT queries) and replace them with #subX in the main query.</h2>
+<pre>extractSubsets(string $sql, array $sets) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>Returns array(main query, subquery1, [subquery2, ...])</p></p>
+<table class="table table-bordered"><tr>
+<th>todo</th>
+<td>Extract subsets should only go 1 level deep</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$sets</h4>
+<code>array</code><p>Do not use!</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="getQueryType" id="getQueryType"></a><div class="element clickable method public getQueryType" data-toggle="collapse" data-target=".getQueryType .collapse">
+<h2>Return the type of the query.</h2>
+<pre>getQueryType(string $sql) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query statement (or an array with parts)</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="holdsIdentifiers" id="holdsIdentifiers"></a><div class="element clickable method public holdsIdentifiers" data-toggle="collapse" data-target=".holdsIdentifiers .collapse">
+<h2>Returns true if part can hold identifiers.</h2>
+<pre>holdsIdentifiers(string $key) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$key</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>boolean</code></div>
+</div></div>
+</div>
+<a name="injectSubsets" id="injectSubsets"></a><div class="element clickable method public injectSubsets" data-toggle="collapse" data-target=".injectSubsets .collapse">
+<h2>Inject extracted subsets back into main sql query.</h2>
+<pre>injectSubsets(array $sets) : string | array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sets</h4>
+<code>array</code><p>array(main query, subquery, ...) or array(main parts, subparts, ...); may be passed by reference</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>array</code>
+</div>
+</div></div>
+</div>
+<a name="isIdentifier" id="isIdentifier"></a><div class="element clickable method public isIdentifier" data-toggle="collapse" data-target=".isIdentifier .collapse">
+<h2>Check if expression is a field/table name</h2>
+<pre>isIdentifier(string $name) : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>boolean</code></div>
+</div></div>
+</div>
+<a name="join" id="join"></a><div class="element clickable method public join" data-toggle="collapse" data-target=".join .collapse">
+<h2>Join parts to create a query.</h2>
+<pre>join(array $parts) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>The parts are joined in the order in which they appear in the array.</p>
+
+<p>CAUTION: The parts are joined blindly (no validation), so shit in shit out</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$parts</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="parse" id="parse"></a><div class="element clickable method public parse" data-toggle="collapse" data-target=".parse .collapse">
+<h2>Insert parameters into SQL query.</h2>
+<pre>parse(mixed $statement, array $params) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>Don't mix unnamed ('?') and named (':key') placeholders.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$statement</h4>
+<code>mixed</code><p>Query string or DBQuery::Statement object</p></div>
+<div class="subelement argument">
+<h4>$params</h4>
+<code>array</code><p>Parameters to parse into statement on placeholders</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a name="quote" id="quote"></a><div class="element clickable method public quote" data-toggle="collapse" data-target=".quote .collapse">
+<h2>Quote a value so it can be savely used in a query.</h2>
+<pre>quote(mixed $value, string $empty) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code>
+</div>
+<div class="subelement argument">
+<h4>$empty</h4>
+<code>string</code><p>Return $empty if $value is null</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="quoteIdentifier" id="quoteIdentifier"></a><div class="element clickable method public quoteIdentifier" data-toggle="collapse" data-target=".quoteIdentifier .collapse">
+<h2>Quotes a string so it can be used as a table or column name.</h2>
+<pre>quoteIdentifier(string $identifier, int $flags) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>Dots are seen as seperator and are kept out of quotes.</p>
+
+<p>Doesn't quote expressions without DBQuery::QUOTE_STRICT. This means it is not secure without this option.</p></p>
+<table class="table table-bordered"><tr>
+<th>todo</th>
+<td>Cleanup misquoted TRIM function</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$identifier</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>int</code><p>DBQuery::QUOTE_%</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a name="split" id="split"></a><div class="element clickable method public split" data-toggle="collapse" data-target=".split .collapse">
+<h2>Split a query.</h2>
+<pre>split(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>If a part is not set whitin the SQL query, the part is an empty string.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitColumns" id="splitColumns"></a><div class="element clickable method public splitColumns" data-toggle="collapse" data-target=".splitColumns .collapse">
+<h2>Return the columns of a (partual) query statement.</h2>
+<pre>splitColumns(string $sql, int $flags) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query or 'column, column, ...'</p>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>int</code><p>DBQuery::SPLIT_% option</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitLimit" id="splitLimit"></a><div class="element clickable method public splitLimit" data-toggle="collapse" data-target=".splitLimit .collapse">
+<h2>Split limit in array(limit, offset)</h2>
+<pre>splitLimit(string $sql, int $flags) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query or limit part</p></div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>int</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitSet" id="splitSet"></a><div class="element clickable method public splitSet" data-toggle="collapse" data-target=".splitSet .collapse">
+<h2>Return the columns of a (partual) query statement.</h2>
+<pre>splitSet(string $sql, int $flags) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query or 'column, column, ...'</p>
+</div>
+<div class="subelement argument">
+<h4>$flags</h4>
+<code>int</code><p>DBQuery::SPLIT_% option</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitTables" id="splitTables"></a><div class="element clickable method public splitTables" data-toggle="collapse" data-target=".splitTables .collapse">
+<h2>Return the table names of a (partual) query statement.</h2>
+<pre>splitTables(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL query or FROM part</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>array(alias/name => table)</div>
+</div></div>
+</div>
+<a name="splitDeleteQuery" id="splitDeleteQuery"></a><div class="element clickable method protected splitDeleteQuery" data-toggle="collapse" data-target=".splitDeleteQuery .collapse">
+<h2>Split delete query.</h2>
+<pre>splitDeleteQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL DELETE query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitInsertQuery" id="splitInsertQuery"></a><div class="element clickable method protected splitInsertQuery" data-toggle="collapse" data-target=".splitInsertQuery .collapse">
+<h2>Split insert/replace query.</h2>
+<pre>splitInsertQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL INSERT query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitSelectQuery" id="splitSelectQuery"></a><div class="element clickable method protected splitSelectQuery" data-toggle="collapse" data-target=".splitSelectQuery .collapse">
+<h2>Split select query.</h2>
+<pre>splitSelectQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"><p>NOTE: Splitting a query with a subquery is considerably slower.</p></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL SELECT query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitSetQuery" id="splitSetQuery"></a><div class="element clickable method protected splitSetQuery" data-toggle="collapse" data-target=".splitSetQuery .collapse">
+<h2>Split set query</h2>
+<pre>splitSetQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL SET query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitTruncateQuery" id="splitTruncateQuery"></a><div class="element clickable method protected splitTruncateQuery" data-toggle="collapse" data-target=".splitTruncateQuery .collapse">
+<h2>Split delete query</h2>
+<pre>splitTruncateQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL DELETE query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="splitUpdateQuery" id="splitUpdateQuery"></a><div class="element clickable method protected splitUpdateQuery" data-toggle="collapse" data-target=".splitUpdateQuery .collapse">
+<h2>Split update query</h2>
+<pre>splitUpdateQuery(string $sql) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>SQL UPDATE query statement</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a name="REGEX_IDENTIFIER" id="REGEX_IDENTIFIER"> </a><div class="element clickable constant  REGEX_IDENTIFIER" data-toggle="collapse" data-target=".REGEX_IDENTIFIER .collapse">
+<h2>REGEX_IDENTIFIER</h2>
+<pre>REGEX_IDENTIFIER </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="REGEX_QUOTED" id="REGEX_QUOTED"> </a><div class="element clickable constant  REGEX_QUOTED" data-toggle="collapse" data-target=".REGEX_QUOTED .collapse">
+<h2>REGEX_QUOTED</h2>
+<pre>REGEX_QUOTED </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="REGEX_VALUES" id="REGEX_VALUES"> </a><div class="element clickable constant  REGEX_VALUES" data-toggle="collapse" data-target=".REGEX_VALUES .collapse">
+<h2>REGEX_VALUES</h2>
+<pre>REGEX_VALUES </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a2</a> and<br>
+            generated on 2012-05-03T17:31:12+02:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<?php
+
+/**
+ * Query builder for MySQL query statements.
+ * All editing statements support fluent interfaces.
+ * 
+ * @package DBQuery
+ */
+class DBQuery
+{
+	/** Prepend to part */
+	const PREPEND = 1;
+	/** Append to part */
+	const APPEND = 2;
+	/** Replace part */
+	const REPLACE = 4;
+	
+	/** Don't quote identifiers at all */
+	const QUOTE_NONE = 0x100;
+	/** Quote identifiers inside expressions */
+	const QUOTE_LOOSE = 0x200;
+	/** Quote string as field/table name */
+	const QUOTE_STRICT = 0x400;
+	/**
+     * Any of the quote options
+     * @ignore
+     */
+	const _QUOTE_OPTIONS = 0x700;
+	
+	/** Quote value as value when adding a column in a '[UPDATE|INSERT] SET ...' query */
+	const SET_VALUE = 0x800;
+	/** Quote value as expression when adding a column in a '[UPDATE|INSERT] SET ...' query */
+	const SET_EXPRESSION = 0x1000;
+	
+	/** Unquote values */
+	const UNQUOTE = 0x2000;
+	/** Cast values */
+	const CAST = 0x4000;
+	
+    /** Count all rows ignoring limit */
+    const ALL_ROWS = 1;
+    
+	/** Sort ascending */
+	const ASC = 0x10;
+	/** Sort descending */
+	const DESC = 0x20;
+    
+	/**
+	 * Query statement
+	 * @var string
+	 */
+	protected $statement;
+
+    /**
+	 * The type of the query
+	 * @var string
+	 */
+	protected $queryType;
+
+	/**
+	 * The parts of the split base statement extracted in sets
+	 * @var array
+	 */
+	protected $baseParts;
+	
+	
+	/**
+	 * The parts to replace the ones of the base statement.
+	 * @var array
+	 */
+	protected $partsReplace;
+
+	/**
+	 * The parts to add to base statement.
+	 * @var array
+	 */
+	protected $partsAdd;
+
+	/**
+	 * Extracted subqueries
+	 * @var DBQuery[]
+	 */
+	protected $subqueries;
+	
+	
+	/**
+	 * The build statements
+	 * @var string
+	 */
+	protected $cachedStatement;
+
+	/**
+	 * The build parts
+	 * @var array
+	 */
+	protected $cachedParts;
+	
+	/**
+	 * Extracted table names
+	 * @var array
+	 */
+	protected $cachedTablenames;
+
+	
+	/**
+	 * Class constructor
+	 *
+	 * @param string $statement  Query statement
+	 */
+	public function __construct($statement)
+	{
+		$this->statement = $statement;
+	}
+	
+    
+    //------------- Splitting -------------
+    
+	/**
+     * Return the type of the query
+     *
+     * @param int $subset
+     * @return string
+     */
+	public function getType()
+	{
+		if (!isset($this->queryType)) $this->queryType = DBQuery_Splitter::getQueryType($this->statement);
+		return $this->queryType;
+	}
+
+	/**
+     * Return the statement without any added or replaced parts.
+     *
+     * @return DBQuery  $this
+     */
+   	public function getBaseStatement()
+   	{
+   		return new static($this->statement, $this);
+   	}
+
+	/**
+	 * Cast statement object to string.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		if (empty($this->partsAdd) && empty($this->partsReplace)) return $this->statement;
+		
+		if (!isset($this->cachedStatement)) $this->cachedStatement = DBQuery_Splitter::join($this->getParts());
+		return $this->cachedStatement;
+	}
+
+	/**
+	 * Get a subquery (from base statement).
+	 * 
+	 * @param int $subset  Number of subquery (start with 1)
+	 * @return DBQuery
+	 */
+	public function getSubquery($subset=1)
+	{
+		if (!isset($this->subqueries)) { 
+			$statements = DBQuery_Splitter::extractSubsets($this->statement);
+			$this->baseParts = DBQuery_Splitter::split($statements[0]);
+			unset($statements[0]);
+			
+			foreach ($statements as $i=>$statement) $this->subqueries[$i] = new static($statement, $this);
+		}
+			
+		if (!isset($this->subqueries[$subset])) throw new Exception("Unable to get subquery #$subset: Query only has " . count($this->subqueries) . (count($this->subqueries) == 1 ? " subquery." : " subqueries."));
+		return $this->subqueries[$subset];
+	}
+	
+    /**
+     * Split the base statement
+     * 
+     * @return array
+     */
+    protected function getBaseParts()
+    {
+        if (!isset($this->baseParts)) $this->baseParts = DBQuery_Splitter::split($this->statement);
+        return $this->baseParts;
+    }
+    
+	/**
+	 * Apply the added and replacement parts to the parts of the base query.
+	 * 
+	 * @return array
+	 */
+	public function getParts()
+	{
+		if (!isset($this->cachedParts)) {
+			$parts =  $this->getBaseParts();
+			if (empty($this->partsAdd) && empty($this->partsReplace)) return $parts;
+            
+			if (!empty($this->partsReplace)) $parts = array_merge($parts, $this->partsReplace);
+			if (!empty($this->partsAdd)) $parts = DBQuery_Splitter::addParts($parts, $this->partsAdd);
+			if (key($parts) == 'select' && empty($parts['columns'])) $parts['columns'] = '*';
+            
+			if (isset($parts['on duplicate key update']) && $parts['on duplicate key update'] === true) {
+                $columns = DBQuery_Splitter::splitColumns($parts);
+                foreach ($columns as &$column) {
+                    $column = "$column = VALUES($column)";
+                }
+                $parts['on duplicate key update'] = join(', ', $columns);
+            }
+            
+			$this->cachedParts =& $parts;
+		}		
+		
+		return empty($this->subqueries) ? $this->cachedParts : DBQuery_Splitter::injectSubsets(array($this->cachedParts) + $this->subqueries);
+	}
+
+	/**
+     * Return a specific part of the statement.
+     *
+	 * @param mixed $key  The key identifying the part
+     * @return string
+     */
+	protected function getPart($key)
+	{
+		$parts = $this->getParts();
+		return isset($parts[$key]) ? $parts[$key] : null;
+	}
+	
+	/**
+	 * Get the tables used in this statement.
+	 *
+	 * @param int $flags  DBQuery::SPLIT_% options
+	 * @return DB_Table
+	 */
+	public function getTables($flags=0)
+	{
+		return DBQuery_Splitter::splitTables($this->getParts(), $flags);
+	}
+	
+	/**
+	 * Get the columns used in the statement.
+	 * 
+	 * @param int $flags  DBQuery::SPLIT_% and DBQuery::UNQUOTE options
+	 * @return array
+	 */
+	public function getColumns($flags=0)
+	{
+		return DBQuery_Splitter::splitColumns($this->getParts(), $flags);
+	}
+
+	/**
+	 * Get the values used in the statement.
+	 * Only for INSERT INTO ... VALUES ... query.
+	 * 
+	 * @param int $flags  Optional DBQuery::UNQUOTE
+	 * @return array
+	 */
+	public function getValues($flags=0)
+	{
+		return DBQuery_Splitter::splitValues($this->getParts(), $flags);
+	}
+
+	
+    //------------- Building -------------
+
+   	
+	/**
+	 * Clear cached statement.
+	 * This doesn't clear cached columns and values.
+	 */
+	protected function clearCachedStatement()
+	{
+		$this->cachedStatement = null;
+		$this->cachedParts = null;
+		$this->countStatement = null;
+	}
+    
+	/**
+	 * Add/set an expression to any part of the query.
+	 * 
+	 * @param mixed  $part       The key identifying the part
+	 * @param string $expression
+	 * @param int    $flags      DBQuery::APPEND (default), DBQuery::PREPEND or DBQuery::REPLACE + DBQuery::QUOTE_%
+	 */
+	protected function setPart($part, $expression, $flags=DBQuery::APPEND)
+	{
+		$part = strtolower($part);
+        
+        if (!array_key_exists($part, $this->getBaseParts())) throw new Exception("A " . $this->getType() . " query doesn't have a $part part");
+        
+		$this->clearCachedStatement();
+		
+        if ($flags & (self::APPEND | self::PREPEND | self::REPLACE) == 0) $flags |= self::REPLACE;
+                
+		if ($flags & self::REPLACE) {
+            $this->partsReplace[$part] = $expression;
+        } else {
+            $this->partsAdd[$part][$flags & self::PREPEND ? self::PREPEND : self::APPEND][] = $expression;
+        }
+	}
+    
+	/**
+	 * Add a join statement to the from part.
+     * 
+     * { @example
+     *   $query = new DBQuery("SELECT");
+     *   $query->from("foo");
+     *   $query->from("bar", "INNER JOIN ON foo.id = bar.foo_id");
+     * }}
+	 *
+	 * @param string $table  tablename
+	 * @param string $join   JOIN ON that.field = this.field
+	 * @param int    $flags  DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+	public function from($table, $join=null, $flags=0)
+   	{
+   		switch ($this->getType()) {
+   			case 'INSERT':	$part = 'into'; break;
+   			case 'UPDATE':	$part = 'table'; break;
+   			default:		$part = 'from';
+   		}
+   		
+        list($join, $on) = preg_split('/\s+ON\s+/i', $join) + array(null, null);
+        if ($join == '') $join = ',';
+        
+        $on = DBQuery_Splitter::quoteIdentifier($on, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_LOOSE);
+   		
+   		if ($flags & self::PREPEND && ~$flags & self::REPLACE) {
+   			$this->setPart($part, DBQuery_Splitter::quoteIdentifier($table, $flags) . ($join ? ' ' . $join : ''), $flags);
+   			if (!empty($on)) $this->setPart($part, "ON $on", self::APPEND);
+   		} else {
+			$this->setPart($part, ($join ? $join . ' ' : '') . DBQuery_Splitter::quoteIdentifier($table, $flags) . (!empty($on) ? " ON $on" : ""), $flags);
+   		}
+
+		return $this;
+   	}
+    
+	/**
+	 * Alias of DBQuery::from().
+     * 
+	 * @param string $table    tablename
+	 * @param string $join     JOIN ON that.field = this.field
+	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+    public function table($table, $join=null, $flags=0)
+    {
+        return $this->from($table, $join, $flags);
+    }
+	
+	/**
+	 * Alias of DBQuery::from().
+     * 
+	 * @param string $table    tablename
+	 * @param string $join     JOIN ON that.field = this.field
+	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+    public function into($table, $join=null, $flags=0)
+    {
+        return $this->from($table, $join, $flags);
+    }
+	
+    
+    /**
+   	 * Add column(s) to query statement.
+   	 * 
+   	 * Flags:
+   	 *  Position:   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default)
+   	 *  Quote expr: DBQuery::QUOTE_%
+	 *
+	 * @param mixed $column  Column name or array(column, ...)
+	 * @param int   $flags   Options as bitset
+	 * @return DBQuery  $this
+   	 */
+   	public function column($column, $flags=0)
+   	{
+   		if (is_array($column)) {
+            foreach ($column as &$col) {
+                $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+            }
+   			
+   			$column = join(', ', $column);
+   		} else {
+            $column = DBQuery_Splitter::quoteIdentifier($column, $flags);
+        }
+   		
+		$this->setPart('columns', $column, $flags);
+        
+		return $this;
+   	}
+
+    /**
+   	 * Alias of DBQuery::column().
+	 *
+	 * @param mixed $column  Column name or array(column, ...)
+	 * @param int   $flags   Options as bitset
+	 * @return DBQuery  $this
+   	 */
+   	public function columns($column, $flags=0)
+   	{
+        return $this->column($column, $flags);
+    }
+    
+   	/**
+   	 * Add an expression to the SET part of an INSERT SET ... or UPDATE SET query
+   	 * 
+   	 * Flags:
+   	 *  Position:   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default)
+   	 *  Set:        DBQuery::SET_EXPRESSION or DBQuery::SET_VALUE (default)
+   	 *  Quote expr: DBQuery::QUOTE_%
+	 *
+     * @param string|array $column  Column name or array(column => value, ...)
+	 * @param mixed        $value   Value or expression (omit if $column is an array)
+	 * @param int          $flags   Options as bitset
+	 * @return DBQuery  $this
+   	 */
+    public function set($column, $value=null, $flags=0)
+    {
+   		$empty = $this->getType() == 'INSERT' ? 'DEFAULT' : 'NULL';
+   		
+   		if (is_array($column)) {
+            if ($flags & self::SET_EXPRESSION) {
+                foreach ($column as $key=>&$val) {
+                    $kv = strpos($key, '=') !== false;
+                    $val = DBQuery_Splitter::quoteIdentifier($key, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags));
+                }
+   			} else {
+                foreach ($column as $key=>&$val) {
+                    $kv = strpos($key, '=') !== false;
+                    $val = DBQuery_Splitter::quoteIdentifier($key, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::quote($val));
+                }
+   			}
+   			
+   			$column = join(', ', $column);
+   		} else {
+            $kv = strpos($column, '=') !== false;
+            $column = DBQuery_Splitter::quoteIdentifier($column, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT)
+              . ($kv ? '' : ' = ' . ($flags & self::SET_EXPRESSION ? DBQuery_Splitter::quoteIdentifier($value, $flags) : DBQuery_Splitter::quote($value, $empty)));
+        }
+   		
+		$this->setPart('set', $column, $flags);
+        
+		return $this;
+    }
+    
+   	/**
+   	 * Add a row of values to an "INSERT ... VALUES (...)" query statement.
+   	 * 
+	 * @param mixed $values   Statement (string) or array of values or array with rows
+	 * @param int   $flags    Options as bitset
+	 * @return DBQuery  $this
+   	 */
+   	public function values($values, $flags=0)
+   	{
+        if (is_array($values) && is_array(reset($values))) {
+            if ($flags & self::REPLACE) $this->setPart('values', $values, $flags);
+            
+            foreach ($values as &$row) {
+                $this->values($row);
+            }
+        }
+        
+   		if (is_array($values)) {
+   			foreach ($values as &$value) $value = DBQuery_Splitter::quote($value, 'DEFAULT');
+   			$values = join(', ', $values);
+   		}
+   		
+   		$this->setPart('values', $values, $flags);
+        
+		return $this;
+   	}
+   	   	
+	/**
+	 * Add criteria as WHERE expression to query statement.
+     * 
+     * @example $query->where('foo', 10);                                      // WHERE `foo` = 10 
+     * @example $query->where('foo > ?', 10);                                  // WHERE `foo` > 10
+     * @example $query->where('foo IS NULL');                                  // WHERE `foo` IS NULL
+     * @example $query->where('foo', array(10, 20));                           // WHERE `foo` IN (10, 20)
+     * @example $query->where('foo BETWEEN ? AND ?', array(10, 20));           // WHERE `foo` BETWEEN 10 AND 20
+     * @example $query->where('bar LIKE %?%', "blue");                         // WHERE `bar` LIKE "%blue%"
+     * @example $query->where('foo = ? AND bar LIKE %?%', array(10, "blue"));  // WHERE `foo` = 10 AND `bar` LIKE "%blue%"
+     * @example $query->where(array('foo'=>10, 'bar'=>"blue"));                // WHERE `foo` = 10 AND `bar` = "blue"
+     * 
+	 * @param mixed $column  Expression, column name, column number, expression with placeholders or array(column=>value, ...)
+	 * @param mixed $value   Value or array of values
+	 * @param int   $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @return DBQuery  $this
+	 */
+	public function where($column, $value=null, $flags=0)
+	{
+        $where = DBQuery_Splitter::buildWhere($column, $value, $flags);
+		if (isset($where)) $this->setPart('where', $where, $flags);
+		
+		return $this;
+	}
+	
+	/**
+	 * Add criteria as HAVING expression to query statement.
+     * @see DBQuery::where()
+	 * 
+	 * @param mixed $column  Expression, column name, column number, expression with placeholders or array(column=>value, ...)
+	 * @param mixed $value   Value or array of values
+	 * @param int   $flag    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @return DBQuery  $this
+	 */
+	public final function having($column, $value=null, $flags=0)
+	{
+        $where = DBQuery_Splitter::buildWhere($column, $value, $flags);
+		if (isset($where)) $this->setPart('having', $where, $flags);
+		
+		return $this;
+	}
+	
+	/**
+	 * Add GROUP BY expression to query statement.
+	 *
+	 * @param string|array $column  GROUP BY expression (string) or array with columns
+	 * @param int          $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @return DBQuery  $this
+	 */
+	public function groupBy($column, $flags=0)
+	{
+		if (is_scalar($column)) {
+			$column = DBQuery_Splitter::quoteIdentifier($column, $flags);
+		} else {
+			foreach ($column as &$col) $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+			$column = join(', ', $column);
+		}
+		
+ 		$this->setPart('group by', $column, $flags);
+        
+		return $this;
+	}
+
+	/**
+	 * Add ORDER BY expression to query statement.
+	 *
+	 * @param mixed $column  ORDER BY expression (string) or array with columns
+	 * @param int   $flags   DBQuery::ASC or DBQuery::DESC + DBQuery::REPLACE, DBQuery::PREPEND (default) or DBQuery::APPEND + DBQuery::QUOTE_%.
+	 * @return DBQuery  $this
+	 */
+	public function orderBy($column, $flags=0)
+	{
+        if (!is_array($column)) $column = array($column);
+        
+        foreach ($column as &$col) {
+            $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+            
+            if ($flags & self::DESC) $col .= ' DESC';
+              elseif ($flags & self::ASC) $col .= ' ASC';
+        }
+        $column = join(', ', $column);
+				
+ 		if (!($flags & self::APPEND)) $flags |= self::PREPEND;
+		$this->setPart('order by', $column, $flags);
+        
+		return $this;
+	}
+
+    /**
+     * Add ON DUPLICATE KEY UPDATE to an INSERT query.
+     * 
+     * @param mixed $column      Column name or array('column' => expression, ...), if omitted col=VALUES(col) is added for each column
+     * @param mixed $expression  Expression or value  
+     * @param int   $flags       DBQuery::SET_VALUE or DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::QUOTE_%
+     * @return DBQuery  $this
+     */
+    public function onDuplicateKeyUpdate($column=true, $expression=null, $flags=0)
+    {
+   		if (is_array($column)) {
+            if ($flags & self::SET_EXPRESSION) {
+                foreach ($column as $key=>&$val) {
+                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
+                }
+   			} else {
+                foreach ($column as $key=>&$val) {
+                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::quote($val);
+                }
+   			}
+   		} elseif ($column !== true) {
+            $column = DBQuery_Splitter::quoteIdentifier($column, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' .
+              ($flags & self::SET_EXPRESSION ? DBQuery_Splitter::mapIdentifiers($value, $flags) : DBQuery_Splitter::quote($value, 'DEFAULT'));
+        }
+        
+        $this->setPart('on duplicate key update', $column, $flags);
+        
+        return $this;
+    }
+
+
+    /**
+	 * Set the limit for the number of rows returned when excecuted.
+	 *
+	 * @param int|string $rowcount  Number of rows of full limit statement
+	 * @param int        $offset    Start at row
+	 * @return DBQuery  $this
+	 */
+	public function limit($rowcount, $offset=null)
+	{
+		$this->setPart('limit', $rowcount . (isset($offset) ? " OFFSET $offset" : ""), self::REPLACE);
+		return $this;
+	}
+
+	/**
+	 * Set the limit by specifying the page.
+	 *
+	 * @param int $page      Page numer, starts with page 1
+	 * @param int $rowcount  Number of rows per page
+	 * @return DBQuery  $this
+	 */
+	public function page($page, $rowcount)
+	{
+		return $this->limit($rowcount, $rowcount * ($page-1));
+	}
+    
+    
+	/**
+	 * Magic method to build a query from scratch.
+	 * 
+     * @param string $type
+     * @param array  $args
+	 * @return DBQuery
+	 */
+    public static function __callStatic($type, $args)
+    {
+        if (DBQuery_Splitter::getQueryType($type) == null) throw new Exception("Unknown query type '$type'.");
+
+        list($expression, $flags) = $args + array(null, 0);
+        
+        if (is_array($expression)) {
+            if ($flags & DBQuery::_QUOTE_OPTIONS) {
+                foreach ($expression as &$field) {
+                    $field = DBQuery_Splitter::quoteIdentifier($field, $flags);
+                }
+                
+                $expression = join(', ', $expression);
+            }
+        } else {
+            if ($flags & DBQuery::_QUOTE_OPTIONS) $expression = DBQuery_Splitter::quoteIdentifier($expression, $flags);
+        }
+        
+        return new self($type . (isset($expression) ? " $expression" : ''));
+    }
+
+	/**
+	 * Magic method to get or set any part of the query.
+	 * 
+     * @param string $part
+     * @param array  $args
+	 * @return DBQuery  $this
+	 */
+    public function __call($part, $args)
+    {
+        // Get part
+        if (substr($part, 0, 3) == 'get') {
+            return $this->getPart(substr($part, 3));
+        }
+        
+        // Set part
+        $part = preg_replace('/([a-z])([A-Z])/', '$1 $2', $part);
+        list($expression, $flags) = $args + array(null, 0);
+
+        if (DBQuery_Splitter::holdsIdentifiers($part)) $expression = DBQuery_Splitter::quoteIdentifier($expression, $flags);
+        
+        $this->setPart($name, $expression, $flags);
+        
+		return $this;
+    }    
+	
+	
+   	//------------- Convert query ------------------------
+    
+   	/**
+     * Get a query to count the number of rows that the resultset would contain.
+     * 
+     * @param int $flags  DBQuery::ALL_ROWS
+     * @return DBQuery
+     */
+   	public function count($flags=0)
+   	{
+        DB::conn()->query($query->asUpdate());
+        
+        $statement = DBQuery_Splitter::buildCountQuery($this->getParts(), $flags);
+        return new self($statement);
+   	}
+}

@@ -1,0 +1,617 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>DBQuery » \DBQueryTest</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">DBQuery</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/DBQuery.html"><i class="icon-folder-open"></i> DBQuery</a></li>
+<li><a href="../packages/Test.html"><i class="icon-folder-open"></i> Test</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">224</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">6</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#cleanQuery" title="cleanQuery :: Helper function to remove spaces from a query."><span class="description">Helper function to remove spaces from a query.</span><pre>cleanQuery()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddColumn" title="testDeleteStatement_AddColumn :: "><span class="description">testDeleteStatement_AddColumn()
+        </span><pre>testDeleteStatement_AddColumn()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddTable" title="testDeleteStatement_AddTable :: "><span class="description">testDeleteStatement_AddTable()
+        </span><pre>testDeleteStatement_AddTable()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddTable_Prepend" title="testDeleteStatement_AddTable_Prepend :: "><span class="description">testDeleteStatement_AddTable_Prepend()
+        </span><pre>testDeleteStatement_AddTable_Prepend()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddTable_Replace" title="testDeleteStatement_AddTable_Replace :: "><span class="description">testDeleteStatement_AddTable_Replace()
+        </span><pre>testDeleteStatement_AddTable_Replace()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddTable_StraightJoin" title="testDeleteStatement_AddTable_StraightJoin :: "><span class="description">testDeleteStatement_AddTable_StraightJoin()
+        </span><pre>testDeleteStatement_AddTable_StraightJoin()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_AddTable_String" title="testDeleteStatement_AddTable_String :: "><span class="description">testDeleteStatement_AddTable_String()
+        </span><pre>testDeleteStatement_AddTable_String()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_Limit" title="testDeleteStatement_Limit :: "><span class="description">testDeleteStatement_Limit()
+        </span><pre>testDeleteStatement_Limit()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_Where" title="testDeleteStatement_Where :: "><span class="description">testDeleteStatement_Where()
+        </span><pre>testDeleteStatement_Where()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_WhereCriteria" title="testDeleteStatement_WhereCriteria :: "><span class="description">testDeleteStatement_WhereCriteria()
+        </span><pre>testDeleteStatement_WhereCriteria()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_Where_Prepend" title="testDeleteStatement_Where_Prepend :: "><span class="description">testDeleteStatement_Where_Prepend()
+        </span><pre>testDeleteStatement_Where_Prepend()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_Where_Replace" title="testDeleteStatement_Where_Replace :: "><span class="description">testDeleteStatement_Where_Replace()
+        </span><pre>testDeleteStatement_Where_Replace()</pre></a></li>
+<li class="method public "><a href="#testDeleteStatement_Where_Simple" title="testDeleteStatement_Where_Simple :: "><span class="description">testDeleteStatement_Where_Simple()
+        </span><pre>testDeleteStatement_Where_Simple()</pre></a></li>
+<li class="method public "><a href="#testInsertStatement_AddSet" title="testInsertStatement_AddSet :: "><span class="description">testInsertStatement_AddSet()
+        </span><pre>testInsertStatement_AddSet()</pre></a></li>
+<li class="method public "><a href="#testInsertStatement_AddValues_Array" title="testInsertStatement_AddValues_Array :: "><span class="description">testInsertStatement_AddValues_Array()
+        </span><pre>testInsertStatement_AddValues_Array()</pre></a></li>
+<li class="method public "><a href="#testInsertStatement_AddValues_String" title="testInsertStatement_AddValues_String :: "><span class="description">testInsertStatement_AddValues_String()
+        </span><pre>testInsertStatement_AddValues_String()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddColumn" title="testSelectStatement_AddColumn :: "><span class="description">testSelectStatement_AddColumn()
+        </span><pre>testSelectStatement_AddColumn()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddColumn_Prepend" title="testSelectStatement_AddColumn_Prepend :: "><span class="description">testSelectStatement_AddColumn_Prepend()
+        </span><pre>testSelectStatement_AddColumn_Prepend()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddColumn_Replace" title="testSelectStatement_AddColumn_Replace :: "><span class="description">testSelectStatement_AddColumn_Replace()
+        </span><pre>testSelectStatement_AddColumn_Replace()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable" title="testSelectStatement_AddTable :: "><span class="description">testSelectStatement_AddTable()
+        </span><pre>testSelectStatement_AddTable()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable_AsString" title="testSelectStatement_AddTable_AsString :: "><span class="description">testSelectStatement_AddTable_AsString()
+        </span><pre>testSelectStatement_AddTable_AsString()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable_LeftJoin" title="testSelectStatement_AddTable_LeftJoin :: "><span class="description">testSelectStatement_AddTable_LeftJoin()
+        </span><pre>testSelectStatement_AddTable_LeftJoin()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable_Prepend" title="testSelectStatement_AddTable_Prepend :: "><span class="description">testSelectStatement_AddTable_Prepend()
+        </span><pre>testSelectStatement_AddTable_Prepend()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable_Replace" title="testSelectStatement_AddTable_Replace :: "><span class="description">testSelectStatement_AddTable_Replace()
+        </span><pre>testSelectStatement_AddTable_Replace()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_AddTable_StraightJoin" title="testSelectStatement_AddTable_StraightJoin :: "><span class="description">testSelectStatement_AddTable_StraightJoin()
+        </span><pre>testSelectStatement_AddTable_StraightJoin()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_GroupBy" title="testSelectStatement_GroupBy :: "><span class="description">testSelectStatement_GroupBy()
+        </span><pre>testSelectStatement_GroupBy()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_GroupBy_Simple" title="testSelectStatement_GroupBy_Simple :: "><span class="description">testSelectStatement_GroupBy_Simple()
+        </span><pre>testSelectStatement_GroupBy_Simple()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Having" title="testSelectStatement_Having :: "><span class="description">testSelectStatement_Having()
+        </span><pre>testSelectStatement_Having()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Limit" title="testSelectStatement_Limit :: "><span class="description">testSelectStatement_Limit()
+        </span><pre>testSelectStatement_Limit()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Limit_Replace" title="testSelectStatement_Limit_Replace :: "><span class="description">testSelectStatement_Limit_Replace()
+        </span><pre>testSelectStatement_Limit_Replace()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Limit_String" title="testSelectStatement_Limit_String :: "><span class="description">testSelectStatement_Limit_String()
+        </span><pre>testSelectStatement_Limit_String()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_OrderBy" title="testSelectStatement_OrderBy :: "><span class="description">testSelectStatement_OrderBy()
+        </span><pre>testSelectStatement_OrderBy()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_OrderBy_Append" title="testSelectStatement_OrderBy_Append :: "><span class="description">testSelectStatement_OrderBy_Append()
+        </span><pre>testSelectStatement_OrderBy_Append()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_OrderBy_Simple" title="testSelectStatement_OrderBy_Simple :: "><span class="description">testSelectStatement_OrderBy_Simple()
+        </span><pre>testSelectStatement_OrderBy_Simple()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Where" title="testSelectStatement_Where :: "><span class="description">testSelectStatement_Where()
+        </span><pre>testSelectStatement_Where()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_Between" title="testSelectStatement_WhereCriteria_Between :: "><span class="description">testSelectStatement_WhereCriteria_Between()
+        </span><pre>testSelectStatement_WhereCriteria_Between()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_Equals" title="testSelectStatement_WhereCriteria_Equals :: "><span class="description">testSelectStatement_WhereCriteria_Equals()
+        </span><pre>testSelectStatement_WhereCriteria_Equals()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_GreatEq" title="testSelectStatement_WhereCriteria_GreatEq :: "><span class="description">testSelectStatement_WhereCriteria_GreatEq()
+        </span><pre>testSelectStatement_WhereCriteria_GreatEq()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_In" title="testSelectStatement_WhereCriteria_In :: "><span class="description">testSelectStatement_WhereCriteria_In()
+        </span><pre>testSelectStatement_WhereCriteria_In()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_LikeWildcard" title="testSelectStatement_WhereCriteria_LikeWildcard :: "><span class="description">testSelectStatement_WhereCriteria_LikeWildcard()
+        </span><pre>testSelectStatement_WhereCriteria_LikeWildcard()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_WhereCriteria_Or" title="testSelectStatement_WhereCriteria_Or :: "><span class="description">testSelectStatement_WhereCriteria_Or()
+        </span><pre>testSelectStatement_WhereCriteria_Or()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Where_Prepend" title="testSelectStatement_Where_Prepend :: "><span class="description">testSelectStatement_Where_Prepend()
+        </span><pre>testSelectStatement_Where_Prepend()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Where_Replace" title="testSelectStatement_Where_Replace :: "><span class="description">testSelectStatement_Where_Replace()
+        </span><pre>testSelectStatement_Where_Replace()</pre></a></li>
+<li class="method public "><a href="#testSelectStatement_Where_Simple" title="testSelectStatement_Where_Simple :: "><span class="description">testSelectStatement_Where_Simple()
+        </span><pre>testSelectStatement_Where_Simple()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddSet" title="testUpdateStatement_AddSet :: "><span class="description">testUpdateStatement_AddSet()
+        </span><pre>testUpdateStatement_AddSet()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddSet_Replace" title="testUpdateStatement_AddSet_Replace :: "><span class="description">testUpdateStatement_AddSet_Replace()
+        </span><pre>testUpdateStatement_AddSet_Replace()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddSet_Simple" title="testUpdateStatement_AddSet_Simple :: "><span class="description">testUpdateStatement_AddSet_Simple()
+        </span><pre>testUpdateStatement_AddSet_Simple()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddTable" title="testUpdateStatement_AddTable :: "><span class="description">testUpdateStatement_AddTable()
+        </span><pre>testUpdateStatement_AddTable()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddTable_Prepend" title="testUpdateStatement_AddTable_Prepend :: "><span class="description">testUpdateStatement_AddTable_Prepend()
+        </span><pre>testUpdateStatement_AddTable_Prepend()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddTable_Replace" title="testUpdateStatement_AddTable_Replace :: "><span class="description">testUpdateStatement_AddTable_Replace()
+        </span><pre>testUpdateStatement_AddTable_Replace()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddTable_StraightJoin" title="testUpdateStatement_AddTable_StraightJoin :: "><span class="description">testUpdateStatement_AddTable_StraightJoin()
+        </span><pre>testUpdateStatement_AddTable_StraightJoin()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_AddTable_String" title="testUpdateStatement_AddTable_String :: "><span class="description">testUpdateStatement_AddTable_String()
+        </span><pre>testUpdateStatement_AddTable_String()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_Limit" title="testUpdateStatement_Limit :: "><span class="description">testUpdateStatement_Limit()
+        </span><pre>testUpdateStatement_Limit()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_Where" title="testUpdateStatement_Where :: "><span class="description">testUpdateStatement_Where()
+        </span><pre>testUpdateStatement_Where()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_WhereCriteria" title="testUpdateStatement_WhereCriteria :: "><span class="description">testUpdateStatement_WhereCriteria()
+        </span><pre>testUpdateStatement_WhereCriteria()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_Where_Prepend" title="testUpdateStatement_Where_Prepend :: "><span class="description">testUpdateStatement_Where_Prepend()
+        </span><pre>testUpdateStatement_Where_Prepend()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_Where_Replace" title="testUpdateStatement_Where_Replace :: "><span class="description">testUpdateStatement_Where_Replace()
+        </span><pre>testUpdateStatement_Where_Replace()</pre></a></li>
+<li class="method public "><a href="#testUpdateStatement_Where_Simple" title="testUpdateStatement_Where_Simple :: "><span class="description">testUpdateStatement_Where_Simple()
+        </span><pre>testUpdateStatement_Where_Simple()</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CDBQueryTest" id="\DBQueryTest"></a><div href="../classes/DBQueryTest.html" class="element class">
+<p class="short_description">Test for modifing DBQuery objects.</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="..//packages/Test.DBQuery.html">Test</a></td>
+</tr>
+<tr>
+<th>subpackage</th>
+<td>DBQuery</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="cleanQuery" id="cleanQuery"></a><div class="element clickable method public cleanQuery" data-toggle="collapse" data-target=".cleanQuery .collapse">
+<h2>Helper function to remove spaces from a query.</h2>
+<pre>cleanQuery($sql) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<a name="testDeleteStatement_AddColumn" id="testDeleteStatement_AddColumn"></a><div class="element clickable method public testDeleteStatement_AddColumn" data-toggle="collapse" data-target=".testDeleteStatement_AddColumn .collapse">
+<h2>testDeleteStatement_AddColumn()
+        </h2>
+<pre>testDeleteStatement_AddColumn() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_AddTable" id="testDeleteStatement_AddTable"></a><div class="element clickable method public testDeleteStatement_AddTable" data-toggle="collapse" data-target=".testDeleteStatement_AddTable .collapse">
+<h2>testDeleteStatement_AddTable()
+        </h2>
+<pre>testDeleteStatement_AddTable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_AddTable_Prepend" id="testDeleteStatement_AddTable_Prepend"></a><div class="element clickable method public testDeleteStatement_AddTable_Prepend" data-toggle="collapse" data-target=".testDeleteStatement_AddTable_Prepend .collapse">
+<h2>testDeleteStatement_AddTable_Prepend()
+        </h2>
+<pre>testDeleteStatement_AddTable_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_AddTable_Replace" id="testDeleteStatement_AddTable_Replace"></a><div class="element clickable method public testDeleteStatement_AddTable_Replace" data-toggle="collapse" data-target=".testDeleteStatement_AddTable_Replace .collapse">
+<h2>testDeleteStatement_AddTable_Replace()
+        </h2>
+<pre>testDeleteStatement_AddTable_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_AddTable_StraightJoin" id="testDeleteStatement_AddTable_StraightJoin"></a><div class="element clickable method public testDeleteStatement_AddTable_StraightJoin" data-toggle="collapse" data-target=".testDeleteStatement_AddTable_StraightJoin .collapse">
+<h2>testDeleteStatement_AddTable_StraightJoin()
+        </h2>
+<pre>testDeleteStatement_AddTable_StraightJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_AddTable_String" id="testDeleteStatement_AddTable_String"></a><div class="element clickable method public testDeleteStatement_AddTable_String" data-toggle="collapse" data-target=".testDeleteStatement_AddTable_String .collapse">
+<h2>testDeleteStatement_AddTable_String()
+        </h2>
+<pre>testDeleteStatement_AddTable_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_Limit" id="testDeleteStatement_Limit"></a><div class="element clickable method public testDeleteStatement_Limit" data-toggle="collapse" data-target=".testDeleteStatement_Limit .collapse">
+<h2>testDeleteStatement_Limit()
+        </h2>
+<pre>testDeleteStatement_Limit() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_Where" id="testDeleteStatement_Where"></a><div class="element clickable method public testDeleteStatement_Where" data-toggle="collapse" data-target=".testDeleteStatement_Where .collapse">
+<h2>testDeleteStatement_Where()
+        </h2>
+<pre>testDeleteStatement_Where() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_WhereCriteria" id="testDeleteStatement_WhereCriteria"></a><div class="element clickable method public testDeleteStatement_WhereCriteria" data-toggle="collapse" data-target=".testDeleteStatement_WhereCriteria .collapse">
+<h2>testDeleteStatement_WhereCriteria()
+        </h2>
+<pre>testDeleteStatement_WhereCriteria() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_Where_Prepend" id="testDeleteStatement_Where_Prepend"></a><div class="element clickable method public testDeleteStatement_Where_Prepend" data-toggle="collapse" data-target=".testDeleteStatement_Where_Prepend .collapse">
+<h2>testDeleteStatement_Where_Prepend()
+        </h2>
+<pre>testDeleteStatement_Where_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_Where_Replace" id="testDeleteStatement_Where_Replace"></a><div class="element clickable method public testDeleteStatement_Where_Replace" data-toggle="collapse" data-target=".testDeleteStatement_Where_Replace .collapse">
+<h2>testDeleteStatement_Where_Replace()
+        </h2>
+<pre>testDeleteStatement_Where_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testDeleteStatement_Where_Simple" id="testDeleteStatement_Where_Simple"></a><div class="element clickable method public testDeleteStatement_Where_Simple" data-toggle="collapse" data-target=".testDeleteStatement_Where_Simple .collapse">
+<h2>testDeleteStatement_Where_Simple()
+        </h2>
+<pre>testDeleteStatement_Where_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testInsertStatement_AddSet" id="testInsertStatement_AddSet"></a><div class="element clickable method public testInsertStatement_AddSet" data-toggle="collapse" data-target=".testInsertStatement_AddSet .collapse">
+<h2>testInsertStatement_AddSet()
+        </h2>
+<pre>testInsertStatement_AddSet() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testInsertStatement_AddValues_Array" id="testInsertStatement_AddValues_Array"></a><div class="element clickable method public testInsertStatement_AddValues_Array" data-toggle="collapse" data-target=".testInsertStatement_AddValues_Array .collapse">
+<h2>testInsertStatement_AddValues_Array()
+        </h2>
+<pre>testInsertStatement_AddValues_Array() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testInsertStatement_AddValues_String" id="testInsertStatement_AddValues_String"></a><div class="element clickable method public testInsertStatement_AddValues_String" data-toggle="collapse" data-target=".testInsertStatement_AddValues_String .collapse">
+<h2>testInsertStatement_AddValues_String()
+        </h2>
+<pre>testInsertStatement_AddValues_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddColumn" id="testSelectStatement_AddColumn"></a><div class="element clickable method public testSelectStatement_AddColumn" data-toggle="collapse" data-target=".testSelectStatement_AddColumn .collapse">
+<h2>testSelectStatement_AddColumn()
+        </h2>
+<pre>testSelectStatement_AddColumn() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddColumn_Prepend" id="testSelectStatement_AddColumn_Prepend"></a><div class="element clickable method public testSelectStatement_AddColumn_Prepend" data-toggle="collapse" data-target=".testSelectStatement_AddColumn_Prepend .collapse">
+<h2>testSelectStatement_AddColumn_Prepend()
+        </h2>
+<pre>testSelectStatement_AddColumn_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddColumn_Replace" id="testSelectStatement_AddColumn_Replace"></a><div class="element clickable method public testSelectStatement_AddColumn_Replace" data-toggle="collapse" data-target=".testSelectStatement_AddColumn_Replace .collapse">
+<h2>testSelectStatement_AddColumn_Replace()
+        </h2>
+<pre>testSelectStatement_AddColumn_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable" id="testSelectStatement_AddTable"></a><div class="element clickable method public testSelectStatement_AddTable" data-toggle="collapse" data-target=".testSelectStatement_AddTable .collapse">
+<h2>testSelectStatement_AddTable()
+        </h2>
+<pre>testSelectStatement_AddTable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable_AsString" id="testSelectStatement_AddTable_AsString"></a><div class="element clickable method public testSelectStatement_AddTable_AsString" data-toggle="collapse" data-target=".testSelectStatement_AddTable_AsString .collapse">
+<h2>testSelectStatement_AddTable_AsString()
+        </h2>
+<pre>testSelectStatement_AddTable_AsString() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable_LeftJoin" id="testSelectStatement_AddTable_LeftJoin"></a><div class="element clickable method public testSelectStatement_AddTable_LeftJoin" data-toggle="collapse" data-target=".testSelectStatement_AddTable_LeftJoin .collapse">
+<h2>testSelectStatement_AddTable_LeftJoin()
+        </h2>
+<pre>testSelectStatement_AddTable_LeftJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable_Prepend" id="testSelectStatement_AddTable_Prepend"></a><div class="element clickable method public testSelectStatement_AddTable_Prepend" data-toggle="collapse" data-target=".testSelectStatement_AddTable_Prepend .collapse">
+<h2>testSelectStatement_AddTable_Prepend()
+        </h2>
+<pre>testSelectStatement_AddTable_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable_Replace" id="testSelectStatement_AddTable_Replace"></a><div class="element clickable method public testSelectStatement_AddTable_Replace" data-toggle="collapse" data-target=".testSelectStatement_AddTable_Replace .collapse">
+<h2>testSelectStatement_AddTable_Replace()
+        </h2>
+<pre>testSelectStatement_AddTable_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_AddTable_StraightJoin" id="testSelectStatement_AddTable_StraightJoin"></a><div class="element clickable method public testSelectStatement_AddTable_StraightJoin" data-toggle="collapse" data-target=".testSelectStatement_AddTable_StraightJoin .collapse">
+<h2>testSelectStatement_AddTable_StraightJoin()
+        </h2>
+<pre>testSelectStatement_AddTable_StraightJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_GroupBy" id="testSelectStatement_GroupBy"></a><div class="element clickable method public testSelectStatement_GroupBy" data-toggle="collapse" data-target=".testSelectStatement_GroupBy .collapse">
+<h2>testSelectStatement_GroupBy()
+        </h2>
+<pre>testSelectStatement_GroupBy() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_GroupBy_Simple" id="testSelectStatement_GroupBy_Simple"></a><div class="element clickable method public testSelectStatement_GroupBy_Simple" data-toggle="collapse" data-target=".testSelectStatement_GroupBy_Simple .collapse">
+<h2>testSelectStatement_GroupBy_Simple()
+        </h2>
+<pre>testSelectStatement_GroupBy_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Having" id="testSelectStatement_Having"></a><div class="element clickable method public testSelectStatement_Having" data-toggle="collapse" data-target=".testSelectStatement_Having .collapse">
+<h2>testSelectStatement_Having()
+        </h2>
+<pre>testSelectStatement_Having() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Limit" id="testSelectStatement_Limit"></a><div class="element clickable method public testSelectStatement_Limit" data-toggle="collapse" data-target=".testSelectStatement_Limit .collapse">
+<h2>testSelectStatement_Limit()
+        </h2>
+<pre>testSelectStatement_Limit() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Limit_Replace" id="testSelectStatement_Limit_Replace"></a><div class="element clickable method public testSelectStatement_Limit_Replace" data-toggle="collapse" data-target=".testSelectStatement_Limit_Replace .collapse">
+<h2>testSelectStatement_Limit_Replace()
+        </h2>
+<pre>testSelectStatement_Limit_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Limit_String" id="testSelectStatement_Limit_String"></a><div class="element clickable method public testSelectStatement_Limit_String" data-toggle="collapse" data-target=".testSelectStatement_Limit_String .collapse">
+<h2>testSelectStatement_Limit_String()
+        </h2>
+<pre>testSelectStatement_Limit_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_OrderBy" id="testSelectStatement_OrderBy"></a><div class="element clickable method public testSelectStatement_OrderBy" data-toggle="collapse" data-target=".testSelectStatement_OrderBy .collapse">
+<h2>testSelectStatement_OrderBy()
+        </h2>
+<pre>testSelectStatement_OrderBy() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_OrderBy_Append" id="testSelectStatement_OrderBy_Append"></a><div class="element clickable method public testSelectStatement_OrderBy_Append" data-toggle="collapse" data-target=".testSelectStatement_OrderBy_Append .collapse">
+<h2>testSelectStatement_OrderBy_Append()
+        </h2>
+<pre>testSelectStatement_OrderBy_Append() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_OrderBy_Simple" id="testSelectStatement_OrderBy_Simple"></a><div class="element clickable method public testSelectStatement_OrderBy_Simple" data-toggle="collapse" data-target=".testSelectStatement_OrderBy_Simple .collapse">
+<h2>testSelectStatement_OrderBy_Simple()
+        </h2>
+<pre>testSelectStatement_OrderBy_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Where" id="testSelectStatement_Where"></a><div class="element clickable method public testSelectStatement_Where" data-toggle="collapse" data-target=".testSelectStatement_Where .collapse">
+<h2>testSelectStatement_Where()
+        </h2>
+<pre>testSelectStatement_Where() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_Between" id="testSelectStatement_WhereCriteria_Between"></a><div class="element clickable method public testSelectStatement_WhereCriteria_Between" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_Between .collapse">
+<h2>testSelectStatement_WhereCriteria_Between()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_Between() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_Equals" id="testSelectStatement_WhereCriteria_Equals"></a><div class="element clickable method public testSelectStatement_WhereCriteria_Equals" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_Equals .collapse">
+<h2>testSelectStatement_WhereCriteria_Equals()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_Equals() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_GreatEq" id="testSelectStatement_WhereCriteria_GreatEq"></a><div class="element clickable method public testSelectStatement_WhereCriteria_GreatEq" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_GreatEq .collapse">
+<h2>testSelectStatement_WhereCriteria_GreatEq()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_GreatEq() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_In" id="testSelectStatement_WhereCriteria_In"></a><div class="element clickable method public testSelectStatement_WhereCriteria_In" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_In .collapse">
+<h2>testSelectStatement_WhereCriteria_In()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_In() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_LikeWildcard" id="testSelectStatement_WhereCriteria_LikeWildcard"></a><div class="element clickable method public testSelectStatement_WhereCriteria_LikeWildcard" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_LikeWildcard .collapse">
+<h2>testSelectStatement_WhereCriteria_LikeWildcard()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_LikeWildcard() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_WhereCriteria_Or" id="testSelectStatement_WhereCriteria_Or"></a><div class="element clickable method public testSelectStatement_WhereCriteria_Or" data-toggle="collapse" data-target=".testSelectStatement_WhereCriteria_Or .collapse">
+<h2>testSelectStatement_WhereCriteria_Or()
+        </h2>
+<pre>testSelectStatement_WhereCriteria_Or() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Where_Prepend" id="testSelectStatement_Where_Prepend"></a><div class="element clickable method public testSelectStatement_Where_Prepend" data-toggle="collapse" data-target=".testSelectStatement_Where_Prepend .collapse">
+<h2>testSelectStatement_Where_Prepend()
+        </h2>
+<pre>testSelectStatement_Where_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Where_Replace" id="testSelectStatement_Where_Replace"></a><div class="element clickable method public testSelectStatement_Where_Replace" data-toggle="collapse" data-target=".testSelectStatement_Where_Replace .collapse">
+<h2>testSelectStatement_Where_Replace()
+        </h2>
+<pre>testSelectStatement_Where_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSelectStatement_Where_Simple" id="testSelectStatement_Where_Simple"></a><div class="element clickable method public testSelectStatement_Where_Simple" data-toggle="collapse" data-target=".testSelectStatement_Where_Simple .collapse">
+<h2>testSelectStatement_Where_Simple()
+        </h2>
+<pre>testSelectStatement_Where_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddSet" id="testUpdateStatement_AddSet"></a><div class="element clickable method public testUpdateStatement_AddSet" data-toggle="collapse" data-target=".testUpdateStatement_AddSet .collapse">
+<h2>testUpdateStatement_AddSet()
+        </h2>
+<pre>testUpdateStatement_AddSet() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddSet_Replace" id="testUpdateStatement_AddSet_Replace"></a><div class="element clickable method public testUpdateStatement_AddSet_Replace" data-toggle="collapse" data-target=".testUpdateStatement_AddSet_Replace .collapse">
+<h2>testUpdateStatement_AddSet_Replace()
+        </h2>
+<pre>testUpdateStatement_AddSet_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddSet_Simple" id="testUpdateStatement_AddSet_Simple"></a><div class="element clickable method public testUpdateStatement_AddSet_Simple" data-toggle="collapse" data-target=".testUpdateStatement_AddSet_Simple .collapse">
+<h2>testUpdateStatement_AddSet_Simple()
+        </h2>
+<pre>testUpdateStatement_AddSet_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddTable" id="testUpdateStatement_AddTable"></a><div class="element clickable method public testUpdateStatement_AddTable" data-toggle="collapse" data-target=".testUpdateStatement_AddTable .collapse">
+<h2>testUpdateStatement_AddTable()
+        </h2>
+<pre>testUpdateStatement_AddTable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddTable_Prepend" id="testUpdateStatement_AddTable_Prepend"></a><div class="element clickable method public testUpdateStatement_AddTable_Prepend" data-toggle="collapse" data-target=".testUpdateStatement_AddTable_Prepend .collapse">
+<h2>testUpdateStatement_AddTable_Prepend()
+        </h2>
+<pre>testUpdateStatement_AddTable_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddTable_Replace" id="testUpdateStatement_AddTable_Replace"></a><div class="element clickable method public testUpdateStatement_AddTable_Replace" data-toggle="collapse" data-target=".testUpdateStatement_AddTable_Replace .collapse">
+<h2>testUpdateStatement_AddTable_Replace()
+        </h2>
+<pre>testUpdateStatement_AddTable_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddTable_StraightJoin" id="testUpdateStatement_AddTable_StraightJoin"></a><div class="element clickable method public testUpdateStatement_AddTable_StraightJoin" data-toggle="collapse" data-target=".testUpdateStatement_AddTable_StraightJoin .collapse">
+<h2>testUpdateStatement_AddTable_StraightJoin()
+        </h2>
+<pre>testUpdateStatement_AddTable_StraightJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_AddTable_String" id="testUpdateStatement_AddTable_String"></a><div class="element clickable method public testUpdateStatement_AddTable_String" data-toggle="collapse" data-target=".testUpdateStatement_AddTable_String .collapse">
+<h2>testUpdateStatement_AddTable_String()
+        </h2>
+<pre>testUpdateStatement_AddTable_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_Limit" id="testUpdateStatement_Limit"></a><div class="element clickable method public testUpdateStatement_Limit" data-toggle="collapse" data-target=".testUpdateStatement_Limit .collapse">
+<h2>testUpdateStatement_Limit()
+        </h2>
+<pre>testUpdateStatement_Limit() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_Where" id="testUpdateStatement_Where"></a><div class="element clickable method public testUpdateStatement_Where" data-toggle="collapse" data-target=".testUpdateStatement_Where .collapse">
+<h2>testUpdateStatement_Where()
+        </h2>
+<pre>testUpdateStatement_Where() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_WhereCriteria" id="testUpdateStatement_WhereCriteria"></a><div class="element clickable method public testUpdateStatement_WhereCriteria" data-toggle="collapse" data-target=".testUpdateStatement_WhereCriteria .collapse">
+<h2>testUpdateStatement_WhereCriteria()
+        </h2>
+<pre>testUpdateStatement_WhereCriteria() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_Where_Prepend" id="testUpdateStatement_Where_Prepend"></a><div class="element clickable method public testUpdateStatement_Where_Prepend" data-toggle="collapse" data-target=".testUpdateStatement_Where_Prepend .collapse">
+<h2>testUpdateStatement_Where_Prepend()
+        </h2>
+<pre>testUpdateStatement_Where_Prepend() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_Where_Replace" id="testUpdateStatement_Where_Replace"></a><div class="element clickable method public testUpdateStatement_Where_Replace" data-toggle="collapse" data-target=".testUpdateStatement_Where_Replace .collapse">
+<h2>testUpdateStatement_Where_Replace()
+        </h2>
+<pre>testUpdateStatement_Where_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testUpdateStatement_Where_Simple" id="testUpdateStatement_Where_Simple"></a><div class="element clickable method public testUpdateStatement_Where_Simple" data-toggle="collapse" data-target=".testUpdateStatement_Where_Simple .collapse">
+<h2>testUpdateStatement_Where_Simple()
+        </h2>
+<pre>testUpdateStatement_Where_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a2</a> and<br>
+            generated on 2012-05-03T17:31:12+02:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1544 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>DBQuery » \DBQuery_SplitterTest</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">DBQuery</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/DBQuery.html"><i class="icon-folder-open"></i> DBQuery</a></li>
+<li><a href="../packages/Test.html"><i class="icon-folder-open"></i> Test</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">224</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">6</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#cleanQuery" title="cleanQuery :: Helper function to remove spaces from a query."><span class="description">Helper function to remove spaces from a query.</span><pre>cleanQuery()</pre></a></li>
+<li class="method public "><a href="#testAddParts_Append" title="testAddParts_Append :: "><span class="description">testAddParts_Append()
+        </span><pre>testAddParts_Append()</pre></a></li>
+<li class="method public "><a href="#testAddParts_Full" title="testAddParts_Full :: "><span class="description">testAddParts_Full()
+        </span><pre>testAddParts_Full()</pre></a></li>
+<li class="method public "><a href="#testAddParts_Insert" title="testAddParts_Insert :: "><span class="description">testAddParts_Insert()
+        </span><pre>testAddParts_Insert()</pre></a></li>
+<li class="method public "><a href="#testAddParts_Simple" title="testAddParts_Simple :: "><span class="description">testAddParts_Simple()
+        </span><pre>testAddParts_Simple()</pre></a></li>
+<li class="method public "><a href="#testAddParts_Split" title="testAddParts_Split :: "><span class="description">testAddParts_Split()
+        </span><pre>testAddParts_Split()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Delete" title="testBuildCountQuery_Delete :: "><span class="description">testBuildCountQuery_Delete()
+        </span><pre>testBuildCountQuery_Delete()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_DeleteJoin" title="testBuildCountQuery_DeleteJoin :: "><span class="description">testBuildCountQuery_DeleteJoin()
+        </span><pre>testBuildCountQuery_DeleteJoin()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Distinct" title="testBuildCountQuery_Distinct :: "><span class="description">testBuildCountQuery_Distinct()
+        </span><pre>testBuildCountQuery_Distinct()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_GroupBy" title="testBuildCountQuery_GroupBy :: "><span class="description">testBuildCountQuery_GroupBy()
+        </span><pre>testBuildCountQuery_GroupBy()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Having" title="testBuildCountQuery_Having :: "><span class="description">testBuildCountQuery_Having()
+        </span><pre>testBuildCountQuery_Having()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Select" title="testBuildCountQuery_Select :: "><span class="description">testBuildCountQuery_Select()
+        </span><pre>testBuildCountQuery_Select()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Select_AllRows" title="testBuildCountQuery_Select_AllRows :: "><span class="description">testBuildCountQuery_Select_AllRows()
+        </span><pre>testBuildCountQuery_Select_AllRows()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Select_Offset" title="testBuildCountQuery_Select_Offset :: "><span class="description">testBuildCountQuery_Select_Offset()
+        </span><pre>testBuildCountQuery_Select_Offset()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Simple" title="testBuildCountQuery_Simple :: "><span class="description">testBuildCountQuery_Simple()
+        </span><pre>testBuildCountQuery_Simple()</pre></a></li>
+<li class="method public "><a href="#testBuildCountQuery_Update" title="testBuildCountQuery_Update :: "><span class="description">testBuildCountQuery_Update()
+        </span><pre>testBuildCountQuery_Update()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_Array" title="testBuildWhere_Array :: "><span class="description">testBuildWhere_Array()
+        </span><pre>testBuildWhere_Array()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_Between" title="testBuildWhere_Between :: "><span class="description">testBuildWhere_Between()
+        </span><pre>testBuildWhere_Between()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_In" title="testBuildWhere_In :: "><span class="description">testBuildWhere_In()
+        </span><pre>testBuildWhere_In()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_IsNull" title="testBuildWhere_IsNull :: "><span class="description">testBuildWhere_IsNull()
+        </span><pre>testBuildWhere_IsNull()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_Like" title="testBuildWhere_Like :: "><span class="description">testBuildWhere_Like()
+        </span><pre>testBuildWhere_Like()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_MoreThan" title="testBuildWhere_MoreThan :: "><span class="description">testBuildWhere_MoreThan()
+        </span><pre>testBuildWhere_MoreThan()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_Simple" title="testBuildWhere_Simple :: "><span class="description">testBuildWhere_Simple()
+        </span><pre>testBuildWhere_Simple()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_TwoParams" title="testBuildWhere_TwoParams :: "><span class="description">testBuildWhere_TwoParams()
+        </span><pre>testBuildWhere_TwoParams()</pre></a></li>
+<li class="method public "><a href="#testBuildWhere_TwoParamsArray" title="testBuildWhere_TwoParamsArray :: "><span class="description">testBuildWhere_TwoParamsArray()
+        </span><pre>testBuildWhere_TwoParamsArray()</pre></a></li>
+<li class="method public "><a href="#testCountPlaceholders" title="testCountPlaceholders :: "><span class="description">testCountPlaceholders()
+        </span><pre>testCountPlaceholders()</pre></a></li>
+<li class="method public "><a href="#testCountPlaceholders_Confuse" title="testCountPlaceholders_Confuse :: "><span class="description">testCountPlaceholders_Confuse()
+        </span><pre>testCountPlaceholders_Confuse()</pre></a></li>
+<li class="method public "><a href="#testExtractSubsets_Insert" title="testExtractSubsets_Insert :: "><span class="description">testExtractSubsets_Insert()
+        </span><pre>testExtractSubsets_Insert()</pre></a></li>
+<li class="method public "><a href="#testExtractSubsets_InsertSubqueryInWhere" title="testExtractSubsets_InsertSubqueryInWhere :: "><span class="description">testExtractSubsets_InsertSubqueryInWhere()
+        </span><pre>testExtractSubsets_InsertSubqueryInWhere()</pre></a></li>
+<li class="method public "><a href="#testExtractSubsets_Select" title="testExtractSubsets_Select :: "><span class="description">testExtractSubsets_Select()
+        </span><pre>testExtractSubsets_Select()</pre></a></li>
+<li class="method public "><a href="#testExtractSubsets_SelectSubqueryInJoin" title="testExtractSubsets_SelectSubqueryInJoin :: "><span class="description">testExtractSubsets_SelectSubqueryInJoin()
+        </span><pre>testExtractSubsets_SelectSubqueryInJoin()</pre></a></li>
+<li class="method public "><a href="#testExtractSubsets_SelectSubqueryInWhere" title="testExtractSubsets_SelectSubqueryInWhere :: "><span class="description">testExtractSubsets_SelectSubqueryInWhere()
+        </span><pre>testExtractSubsets_SelectSubqueryInWhere()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_AlterTable" title="testGetQueryType_AlterTable :: "><span class="description">testGetQueryType_AlterTable()
+        </span><pre>testGetQueryType_AlterTable()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_AlterUnknown" title="testGetQueryType_AlterUnknown :: "><span class="description">testGetQueryType_AlterUnknown()
+        </span><pre>testGetQueryType_AlterUnknown()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_AlterView_Spaces" title="testGetQueryType_AlterView_Spaces :: "><span class="description">testGetQueryType_AlterView_Spaces()
+        </span><pre>testGetQueryType_AlterView_Spaces()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Begin" title="testGetQueryType_Begin :: "><span class="description">testGetQueryType_Begin()
+        </span><pre>testGetQueryType_Begin()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Comment" title="testGetQueryType_Comment :: "><span class="description">testGetQueryType_Comment()
+        </span><pre>testGetQueryType_Comment()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Delete" title="testGetQueryType_Delete :: "><span class="description">testGetQueryType_Delete()
+        </span><pre>testGetQueryType_Delete()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Insert" title="testGetQueryType_Insert :: "><span class="description">testGetQueryType_Insert()
+        </span><pre>testGetQueryType_Insert()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_LoadDataInfile" title="testGetQueryType_LoadDataInfile :: "><span class="description">testGetQueryType_LoadDataInfile()
+        </span><pre>testGetQueryType_LoadDataInfile()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Replace" title="testGetQueryType_Replace :: "><span class="description">testGetQueryType_Replace()
+        </span><pre>testGetQueryType_Replace()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Select" title="testGetQueryType_Select :: "><span class="description">testGetQueryType_Select()
+        </span><pre>testGetQueryType_Select()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Select_LowerCase" title="testGetQueryType_Select_LowerCase :: "><span class="description">testGetQueryType_Select_LowerCase()
+        </span><pre>testGetQueryType_Select_LowerCase()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Select_Spaces" title="testGetQueryType_Select_Spaces :: "><span class="description">testGetQueryType_Select_Spaces()
+        </span><pre>testGetQueryType_Select_Spaces()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Select_Word" title="testGetQueryType_Select_Word :: "><span class="description">testGetQueryType_Select_Word()
+        </span><pre>testGetQueryType_Select_Word()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Set" title="testGetQueryType_Set :: "><span class="description">testGetQueryType_Set()
+        </span><pre>testGetQueryType_Set()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Truncate" title="testGetQueryType_Truncate :: "><span class="description">testGetQueryType_Truncate()
+        </span><pre>testGetQueryType_Truncate()</pre></a></li>
+<li class="method public "><a href="#testGetQueryType_Unknown" title="testGetQueryType_Unknown :: "><span class="description">testGetQueryType_Unknown()
+        </span><pre>testGetQueryType_Unknown()</pre></a></li>
+<li class="method public "><a href="#testHoldsIdentifiers_From" title="testHoldsIdentifiers_From :: "><span class="description">testHoldsIdentifiers_From()
+        </span><pre>testHoldsIdentifiers_From()</pre></a></li>
+<li class="method public "><a href="#testHoldsIdentifiers_Select" title="testHoldsIdentifiers_Select :: "><span class="description">testHoldsIdentifiers_Select()
+        </span><pre>testHoldsIdentifiers_Select()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_Quoted" title="testIsIdentifier_Quoted :: "><span class="description">testIsIdentifier_Quoted()
+        </span><pre>testIsIdentifier_Quoted()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_Simple" title="testIsIdentifier_Simple :: "><span class="description">testIsIdentifier_Simple()
+        </span><pre>testIsIdentifier_Simple()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_Strange" title="testIsIdentifier_Strange :: "><span class="description">testIsIdentifier_Strange()
+        </span><pre>testIsIdentifier_Strange()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_Strange_Quoted" title="testIsIdentifier_Strange_Quoted :: "><span class="description">testIsIdentifier_Strange_Quoted()
+        </span><pre>testIsIdentifier_Strange_Quoted()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_TableColumn" title="testIsIdentifier_TableColumn :: "><span class="description">testIsIdentifier_TableColumn()
+        </span><pre>testIsIdentifier_TableColumn()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_TableColumn_Quoted" title="testIsIdentifier_TableColumn_Quoted :: "><span class="description">testIsIdentifier_TableColumn_Quoted()
+        </span><pre>testIsIdentifier_TableColumn_Quoted()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_WithoutAlias_AsAlias" title="testIsIdentifier_WithoutAlias_AsAlias :: "><span class="description">testIsIdentifier_WithoutAlias_AsAlias()
+        </span><pre>testIsIdentifier_WithoutAlias_AsAlias()</pre></a></li>
+<li class="method public "><a href="#testIsIdentifier_WithoutAlias_SpaceAlias" title="testIsIdentifier_WithoutAlias_SpaceAlias :: "><span class="description">testIsIdentifier_WithoutAlias_SpaceAlias()
+        </span><pre>testIsIdentifier_WithoutAlias_SpaceAlias()</pre></a></li>
+<li class="method public "><a href="#testJoinInsertSelectSimple" title="testJoinInsertSelectSimple :: "><span class="description">testJoinInsertSelectSimple()
+        </span><pre>testJoinInsertSelectSimple()</pre></a></li>
+<li class="method public "><a href="#testJoinInsertSelectSubquery" title="testJoinInsertSelectSubquery :: "><span class="description">testJoinInsertSelectSubquery()
+        </span><pre>testJoinInsertSelectSubquery()</pre></a></li>
+<li class="method public "><a href="#testJoinInsertValuesColumns" title="testJoinInsertValuesColumns :: "><span class="description">testJoinInsertValuesColumns()
+        </span><pre>testJoinInsertValuesColumns()</pre></a></li>
+<li class="method public "><a href="#testJoinInsertValuesMultiple" title="testJoinInsertValuesMultiple :: "><span class="description">testJoinInsertValuesMultiple()
+        </span><pre>testJoinInsertValuesMultiple()</pre></a></li>
+<li class="method public "><a href="#testJoinInsertValuesSimple" title="testJoinInsertValuesSimple :: "><span class="description">testJoinInsertValuesSimple()
+        </span><pre>testJoinInsertValuesSimple()</pre></a></li>
+<li class="method public "><a href="#testJoinReplaceValuesSimple" title="testJoinReplaceValuesSimple :: "><span class="description">testJoinReplaceValuesSimple()
+        </span><pre>testJoinReplaceValuesSimple()</pre></a></li>
+<li class="method public "><a href="#testJoinSelect_Advanced" title="testJoinSelect_Advanced :: "><span class="description">testJoinSelect_Advanced()
+        </span><pre>testJoinSelect_Advanced()</pre></a></li>
+<li class="method public "><a href="#testJoinSelect_Simple" title="testJoinSelect_Simple :: "><span class="description">testJoinSelect_Simple()
+        </span><pre>testJoinSelect_Simple()</pre></a></li>
+<li class="method public "><a href="#testJoinSelect_Subquery" title="testJoinSelect_Subquery :: "><span class="description">testJoinSelect_Subquery()
+        </span><pre>testJoinSelect_Subquery()</pre></a></li>
+<li class="method public "><a href="#testJoin_DeleteAdvanced" title="testJoin_DeleteAdvanced :: "><span class="description">testJoin_DeleteAdvanced()
+        </span><pre>testJoin_DeleteAdvanced()</pre></a></li>
+<li class="method public "><a href="#testJoin_DeleteSimple" title="testJoin_DeleteSimple :: "><span class="description">testJoin_DeleteSimple()
+        </span><pre>testJoin_DeleteSimple()</pre></a></li>
+<li class="method public "><a href="#testJoin_Set" title="testJoin_Set :: "><span class="description">testJoin_Set()
+        </span><pre>testJoin_Set()</pre></a></li>
+<li class="method public "><a href="#testJoin_Truncate" title="testJoin_Truncate :: "><span class="description">testJoin_Truncate()
+        </span><pre>testJoin_Truncate()</pre></a></li>
+<li class="method public "><a href="#testJoin_UpdateAdvanced" title="testJoin_UpdateAdvanced :: "><span class="description">testJoin_UpdateAdvanced()
+        </span><pre>testJoin_UpdateAdvanced()</pre></a></li>
+<li class="method public "><a href="#testJoin_UpdateSimple" title="testJoin_UpdateSimple :: "><span class="description">testJoin_UpdateSimple()
+        </span><pre>testJoin_UpdateSimple()</pre></a></li>
+<li class="method public "><a href="#testParse_Array" title="testParse_Array :: "><span class="description">testParse_Array()
+        </span><pre>testParse_Array()</pre></a></li>
+<li class="method public "><a href="#testParse_Boolean" title="testParse_Boolean :: "><span class="description">testParse_Boolean()
+        </span><pre>testParse_Boolean()</pre></a></li>
+<li class="method public "><a href="#testParse_Float" title="testParse_Float :: "><span class="description">testParse_Float()
+        </span><pre>testParse_Float()</pre></a></li>
+<li class="method public "><a href="#testParse_Integer" title="testParse_Integer :: "><span class="description">testParse_Integer()
+        </span><pre>testParse_Integer()</pre></a></li>
+<li class="method public "><a href="#testParse_Like" title="testParse_Like :: "><span class="description">testParse_Like()
+        </span><pre>testParse_Like()</pre></a></li>
+<li class="method public "><a href="#testParse_Like_Named" title="testParse_Like_Named :: "><span class="description">testParse_Like_Named()
+        </span><pre>testParse_Like_Named()</pre></a></li>
+<li class="method public "><a href="#testParse_Named" title="testParse_Named :: "><span class="description">testParse_Named()
+        </span><pre>testParse_Named()</pre></a></li>
+<li class="method public "><a href="#testParse_Null" title="testParse_Null :: "><span class="description">testParse_Null()
+        </span><pre>testParse_Null()</pre></a></li>
+<li class="method public "><a href="#testParse_String" title="testParse_String :: "><span class="description">testParse_String()
+        </span><pre>testParse_String()</pre></a></li>
+<li class="method public "><a href="#testParse_String_Confuse" title="testParse_String_Confuse :: "><span class="description">testParse_String_Confuse()
+        </span><pre>testParse_String_Confuse()</pre></a></li>
+<li class="method public "><a href="#testParse_String_Multiline" title="testParse_String_Multiline :: "><span class="description">testParse_String_Multiline()
+        </span><pre>testParse_String_Multiline()</pre></a></li>
+<li class="method public "><a href="#testParse_String_Quote" title="testParse_String_Quote :: "><span class="description">testParse_String_Quote()
+        </span><pre>testParse_String_Quote()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Cast" title="testQuoteIdentifier_Cast :: "><span class="description">testQuoteIdentifier_Cast()
+        </span><pre>testQuoteIdentifier_Cast()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Cast_Confuse" title="testQuoteIdentifier_Cast_Confuse :: "><span class="description">testQuoteIdentifier_Cast_Confuse()
+        </span><pre>testQuoteIdentifier_Cast_Confuse()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Expression" title="testQuoteIdentifier_Expression :: "><span class="description">testQuoteIdentifier_Expression()
+        </span><pre>testQuoteIdentifier_Expression()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Function" title="testQuoteIdentifier_Function :: "><span class="description">testQuoteIdentifier_Function()
+        </span><pre>testQuoteIdentifier_Function()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_None" title="testQuoteIdentifier_None :: "><span class="description">testQuoteIdentifier_None()
+        </span><pre>testQuoteIdentifier_None()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Quoted" title="testQuoteIdentifier_Quoted :: "><span class="description">testQuoteIdentifier_Quoted()
+        </span><pre>testQuoteIdentifier_Quoted()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Simple" title="testQuoteIdentifier_Simple :: "><span class="description">testQuoteIdentifier_Simple()
+        </span><pre>testQuoteIdentifier_Simple()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Strict" title="testQuoteIdentifier_Strict :: "><span class="description">testQuoteIdentifier_Strict()
+        </span><pre>testQuoteIdentifier_Strict()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Strict_Fail" title="testQuoteIdentifier_Strict_Fail :: "><span class="description">testQuoteIdentifier_Strict_Fail()
+        </span><pre>testQuoteIdentifier_Strict_Fail()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_Strict_TableColumn" title="testQuoteIdentifier_Strict_TableColumn :: "><span class="description">testQuoteIdentifier_Strict_TableColumn()
+        </span><pre>testQuoteIdentifier_Strict_TableColumn()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_TableColumn" title="testQuoteIdentifier_TableColumn :: "><span class="description">testQuoteIdentifier_TableColumn()
+        </span><pre>testQuoteIdentifier_TableColumn()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_TableColumn_Quoted" title="testQuoteIdentifier_TableColumn_Quoted :: "><span class="description">testQuoteIdentifier_TableColumn_Quoted()
+        </span><pre>testQuoteIdentifier_TableColumn_Quoted()</pre></a></li>
+<li class="method public "><a href="#testQuoteIdentifier_WithAlias" title="testQuoteIdentifier_WithAlias :: "><span class="description">testQuoteIdentifier_WithAlias()
+        </span><pre>testQuoteIdentifier_WithAlias()</pre></a></li>
+<li class="method public "><a href="#testQuote_Array" title="testQuote_Array :: "><span class="description">testQuote_Array()
+        </span><pre>testQuote_Array()</pre></a></li>
+<li class="method public "><a href="#testQuote_False" title="testQuote_False :: "><span class="description">testQuote_False()
+        </span><pre>testQuote_False()</pre></a></li>
+<li class="method public "><a href="#testQuote_Float" title="testQuote_Float :: "><span class="description">testQuote_Float()
+        </span><pre>testQuote_Float()</pre></a></li>
+<li class="method public "><a href="#testQuote_Int" title="testQuote_Int :: "><span class="description">testQuote_Int()
+        </span><pre>testQuote_Int()</pre></a></li>
+<li class="method public "><a href="#testQuote_Null" title="testQuote_Null :: "><span class="description">testQuote_Null()
+        </span><pre>testQuote_Null()</pre></a></li>
+<li class="method public "><a href="#testQuote_NullDefault" title="testQuote_NullDefault :: "><span class="description">testQuote_NullDefault()
+        </span><pre>testQuote_NullDefault()</pre></a></li>
+<li class="method public "><a href="#testQuote_String" title="testQuote_String :: "><span class="description">testQuote_String()
+        </span><pre>testQuote_String()</pre></a></li>
+<li class="method public "><a href="#testQuote_StringMultiline" title="testQuote_StringMultiline :: "><span class="description">testQuote_StringMultiline()
+        </span><pre>testQuote_StringMultiline()</pre></a></li>
+<li class="method public "><a href="#testQuote_StringQuotes" title="testQuote_StringQuotes :: "><span class="description">testQuote_StringQuotes()
+        </span><pre>testQuote_StringQuotes()</pre></a></li>
+<li class="method public "><a href="#testQuote_True" title="testQuote_True :: "><span class="description">testQuote_True()
+        </span><pre>testQuote_True()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_Advanced" title="testSplitColumns_Advanced :: "><span class="description">testSplitColumns_Advanced()
+        </span><pre>testSplitColumns_Advanced()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_Delete" title="testSplitColumns_Delete :: "><span class="description">testSplitColumns_Delete()
+        </span><pre>testSplitColumns_Delete()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_InsertSelect" title="testSplitColumns_InsertSelect :: "><span class="description">testSplitColumns_InsertSelect()
+        </span><pre>testSplitColumns_InsertSelect()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_InsertValues" title="testSplitColumns_InsertValues :: "><span class="description">testSplitColumns_InsertValues()
+        </span><pre>testSplitColumns_InsertValues()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_Select" title="testSplitColumns_Select :: "><span class="description">testSplitColumns_Select()
+        </span><pre>testSplitColumns_Select()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_SelectRealLifeExample" title="testSplitColumns_SelectRealLifeExample :: "><span class="description">testSplitColumns_SelectRealLifeExample()
+        </span><pre>testSplitColumns_SelectRealLifeExample()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_SelectSubFrom" title="testSplitColumns_SelectSubFrom :: "><span class="description">testSplitColumns_SelectSubFrom()
+        </span><pre>testSplitColumns_SelectSubFrom()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_SelectSubquery" title="testSplitColumns_SelectSubquery :: "><span class="description">testSplitColumns_SelectSubquery()
+        </span><pre>testSplitColumns_SelectSubquery()</pre></a></li>
+<li class="method public "><a href="#testSplitColumns_Simple" title="testSplitColumns_Simple :: "><span class="description">testSplitColumns_Simple()
+        </span><pre>testSplitColumns_Simple()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit" title="testSplitLimit :: "><span class="description">testSplitLimit()
+        </span><pre>testSplitLimit()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_Comma" title="testSplitLimit_Comma :: "><span class="description">testSplitLimit_Comma()
+        </span><pre>testSplitLimit_Comma()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_Fail" title="testSplitLimit_Fail :: "><span class="description">testSplitLimit_Fail()
+        </span><pre>testSplitLimit_Fail()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_Offset" title="testSplitLimit_Offset :: "><span class="description">testSplitLimit_Offset()
+        </span><pre>testSplitLimit_Offset()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_Select" title="testSplitLimit_Select :: "><span class="description">testSplitLimit_Select()
+        </span><pre>testSplitLimit_Select()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_SelectNoLimit" title="testSplitLimit_SelectNoLimit :: "><span class="description">testSplitLimit_SelectNoLimit()
+        </span><pre>testSplitLimit_SelectNoLimit()</pre></a></li>
+<li class="method public "><a href="#testSplitLimit_Truncate" title="testSplitLimit_Truncate :: "><span class="description">testSplitLimit_Truncate()
+        </span><pre>testSplitLimit_Truncate()</pre></a></li>
+<li class="method public "><a href="#testSplitSet" title="testSplitSet :: "><span class="description">testSplitSet()
+        </span><pre>testSplitSet()</pre></a></li>
+<li class="method public "><a href="#testSplitSet_Insert" title="testSplitSet_Insert :: "><span class="description">testSplitSet_Insert()
+        </span><pre>testSplitSet_Insert()</pre></a></li>
+<li class="method public "><a href="#testSplitSet_Update" title="testSplitSet_Update :: "><span class="description">testSplitSet_Update()
+        </span><pre>testSplitSet_Update()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Alias" title="testSplitTables_Alias :: "><span class="description">testSplitTables_Alias()
+        </span><pre>testSplitTables_Alias()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Delete" title="testSplitTables_Delete :: "><span class="description">testSplitTables_Delete()
+        </span><pre>testSplitTables_Delete()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_InsertSelect" title="testSplitTables_InsertSelect :: "><span class="description">testSplitTables_InsertSelect()
+        </span><pre>testSplitTables_InsertSelect()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_InsertSet" title="testSplitTables_InsertSet :: "><span class="description">testSplitTables_InsertSet()
+        </span><pre>testSplitTables_InsertSet()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_InsertValues" title="testSplitTables_InsertValues :: "><span class="description">testSplitTables_InsertValues()
+        </span><pre>testSplitTables_InsertValues()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Join" title="testSplitTables_Join :: "><span class="description">testSplitTables_Join()
+        </span><pre>testSplitTables_Join()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Select" title="testSplitTables_Select :: "><span class="description">testSplitTables_Select()
+        </span><pre>testSplitTables_Select()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Simple" title="testSplitTables_Simple :: "><span class="description">testSplitTables_Simple()
+        </span><pre>testSplitTables_Simple()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Subjoin" title="testSplitTables_Subjoin :: "><span class="description">testSplitTables_Subjoin()
+        </span><pre>testSplitTables_Subjoin()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Subquery" title="testSplitTables_Subquery :: "><span class="description">testSplitTables_Subquery()
+        </span><pre>testSplitTables_Subquery()</pre></a></li>
+<li class="method public "><a href="#testSplitTables_Update" title="testSplitTables_Update :: "><span class="description">testSplitTables_Update()
+        </span><pre>testSplitTables_Update()</pre></a></li>
+<li class="method public "><a href="#testSplit_DeleteAdvanced" title="testSplit_DeleteAdvanced :: "><span class="description">testSplit_DeleteAdvanced()
+        </span><pre>testSplit_DeleteAdvanced()</pre></a></li>
+<li class="method public "><a href="#testSplit_DeleteSimple" title="testSplit_DeleteSimple :: "><span class="description">testSplit_DeleteSimple()
+        </span><pre>testSplit_DeleteSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_DeleteSubquery" title="testSplit_DeleteSubquery :: "><span class="description">testSplit_DeleteSubquery()
+        </span><pre>testSplit_DeleteSubquery()</pre></a></li>
+<li class="method public "><a href="#testSplit_Fail" title="testSplit_Fail :: "><span class="description">testSplit_Fail()
+        </span><pre>testSplit_Fail()</pre></a></li>
+<li class="method public "><a href="#testSplit_Insert" title="testSplit_Insert :: "><span class="description">testSplit_Insert()
+        </span><pre>testSplit_Insert()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertSelectSimple" title="testSplit_InsertSelectSimple :: "><span class="description">testSplit_InsertSelectSimple()
+        </span><pre>testSplit_InsertSelectSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertSelectSubquery" title="testSplit_InsertSelectSubquery :: "><span class="description">testSplit_InsertSelectSubquery()
+        </span><pre>testSplit_InsertSelectSubquery()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertSetSimple" title="testSplit_InsertSetSimple :: "><span class="description">testSplit_InsertSetSimple()
+        </span><pre>testSplit_InsertSetSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertValuesColumns" title="testSplit_InsertValuesColumns :: "><span class="description">testSplit_InsertValuesColumns()
+        </span><pre>testSplit_InsertValuesColumns()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertValuesMultiple" title="testSplit_InsertValuesMultiple :: "><span class="description">testSplit_InsertValuesMultiple()
+        </span><pre>testSplit_InsertValuesMultiple()</pre></a></li>
+<li class="method public "><a href="#testSplit_InsertValuesSimple" title="testSplit_InsertValuesSimple :: "><span class="description">testSplit_InsertValuesSimple()
+        </span><pre>testSplit_InsertValuesSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_ReplaceValuesSimple" title="testSplit_ReplaceValuesSimple :: "><span class="description">testSplit_ReplaceValuesSimple()
+        </span><pre>testSplit_ReplaceValuesSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select" title="testSplit_Select :: "><span class="description">testSplit_Select()
+        </span><pre>testSplit_Select()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select_Advanced" title="testSplit_Select_Advanced :: "><span class="description">testSplit_Select_Advanced()
+        </span><pre>testSplit_Select_Advanced()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select_Semicolon" title="testSplit_Select_Semicolon :: "><span class="description">testSplit_Select_Semicolon()
+        </span><pre>testSplit_Select_Semicolon()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select_Simple" title="testSplit_Select_Simple :: "><span class="description">testSplit_Select_Simple()
+        </span><pre>testSplit_Select_Simple()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select_Subquery" title="testSplit_Select_Subquery :: "><span class="description">testSplit_Select_Subquery()
+        </span><pre>testSplit_Select_Subquery()</pre></a></li>
+<li class="method public "><a href="#testSplit_Select_SubqueryMadness" title="testSplit_Select_SubqueryMadness :: "><span class="description">testSplit_Select_SubqueryMadness()
+        </span><pre>testSplit_Select_SubqueryMadness()</pre></a></li>
+<li class="method public "><a href="#testSplit_Set" title="testSplit_Set :: "><span class="description">testSplit_Set()
+        </span><pre>testSplit_Set()</pre></a></li>
+<li class="method public "><a href="#testSplit_Truncate" title="testSplit_Truncate :: "><span class="description">testSplit_Truncate()
+        </span><pre>testSplit_Truncate()</pre></a></li>
+<li class="method public "><a href="#testSplit_UpdateAdvanced" title="testSplit_UpdateAdvanced :: "><span class="description">testSplit_UpdateAdvanced()
+        </span><pre>testSplit_UpdateAdvanced()</pre></a></li>
+<li class="method public "><a href="#testSplit_UpdateSimple" title="testSplit_UpdateSimple :: "><span class="description">testSplit_UpdateSimple()
+        </span><pre>testSplit_UpdateSimple()</pre></a></li>
+<li class="method public "><a href="#testSplit_UpdateSubquery" title="testSplit_UpdateSubquery :: "><span class="description">testSplit_UpdateSubquery()
+        </span><pre>testSplit_UpdateSubquery()</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CDBQuery_SplitterTest" id="\DBQuery_SplitterTest"></a><div href="../classes/DBQuery_SplitterTest.html" class="element class">
+<p class="short_description">Test for DBQuery_Splitter.</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="..//packages/Test.DBQuery.html">Test</a></td>
+</tr>
+<tr>
+<th>subpackage</th>
+<td>DBQuery</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="cleanQuery" id="cleanQuery"></a><div class="element clickable method public cleanQuery" data-toggle="collapse" data-target=".cleanQuery .collapse">
+<h2>Helper function to remove spaces from a query.</h2>
+<pre>cleanQuery($sql) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<a name="testAddParts_Append" id="testAddParts_Append"></a><div class="element clickable method public testAddParts_Append" data-toggle="collapse" data-target=".testAddParts_Append .collapse">
+<h2>testAddParts_Append()
+        </h2>
+<pre>testAddParts_Append() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testAddParts_Full" id="testAddParts_Full"></a><div class="element clickable method public testAddParts_Full" data-toggle="collapse" data-target=".testAddParts_Full .collapse">
+<h2>testAddParts_Full()
+        </h2>
+<pre>testAddParts_Full() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testAddParts_Insert" id="testAddParts_Insert"></a><div class="element clickable method public testAddParts_Insert" data-toggle="collapse" data-target=".testAddParts_Insert .collapse">
+<h2>testAddParts_Insert()
+        </h2>
+<pre>testAddParts_Insert() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testAddParts_Simple" id="testAddParts_Simple"></a><div class="element clickable method public testAddParts_Simple" data-toggle="collapse" data-target=".testAddParts_Simple .collapse">
+<h2>testAddParts_Simple()
+        </h2>
+<pre>testAddParts_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testAddParts_Split" id="testAddParts_Split"></a><div class="element clickable method public testAddParts_Split" data-toggle="collapse" data-target=".testAddParts_Split .collapse">
+<h2>testAddParts_Split()
+        </h2>
+<pre>testAddParts_Split() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Delete" id="testBuildCountQuery_Delete"></a><div class="element clickable method public testBuildCountQuery_Delete" data-toggle="collapse" data-target=".testBuildCountQuery_Delete .collapse">
+<h2>testBuildCountQuery_Delete()
+        </h2>
+<pre>testBuildCountQuery_Delete() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_DeleteJoin" id="testBuildCountQuery_DeleteJoin"></a><div class="element clickable method public testBuildCountQuery_DeleteJoin" data-toggle="collapse" data-target=".testBuildCountQuery_DeleteJoin .collapse">
+<h2>testBuildCountQuery_DeleteJoin()
+        </h2>
+<pre>testBuildCountQuery_DeleteJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Distinct" id="testBuildCountQuery_Distinct"></a><div class="element clickable method public testBuildCountQuery_Distinct" data-toggle="collapse" data-target=".testBuildCountQuery_Distinct .collapse">
+<h2>testBuildCountQuery_Distinct()
+        </h2>
+<pre>testBuildCountQuery_Distinct() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_GroupBy" id="testBuildCountQuery_GroupBy"></a><div class="element clickable method public testBuildCountQuery_GroupBy" data-toggle="collapse" data-target=".testBuildCountQuery_GroupBy .collapse">
+<h2>testBuildCountQuery_GroupBy()
+        </h2>
+<pre>testBuildCountQuery_GroupBy() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Having" id="testBuildCountQuery_Having"></a><div class="element clickable method public testBuildCountQuery_Having" data-toggle="collapse" data-target=".testBuildCountQuery_Having .collapse">
+<h2>testBuildCountQuery_Having()
+        </h2>
+<pre>testBuildCountQuery_Having() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Select" id="testBuildCountQuery_Select"></a><div class="element clickable method public testBuildCountQuery_Select" data-toggle="collapse" data-target=".testBuildCountQuery_Select .collapse">
+<h2>testBuildCountQuery_Select()
+        </h2>
+<pre>testBuildCountQuery_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Select_AllRows" id="testBuildCountQuery_Select_AllRows"></a><div class="element clickable method public testBuildCountQuery_Select_AllRows" data-toggle="collapse" data-target=".testBuildCountQuery_Select_AllRows .collapse">
+<h2>testBuildCountQuery_Select_AllRows()
+        </h2>
+<pre>testBuildCountQuery_Select_AllRows() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Select_Offset" id="testBuildCountQuery_Select_Offset"></a><div class="element clickable method public testBuildCountQuery_Select_Offset" data-toggle="collapse" data-target=".testBuildCountQuery_Select_Offset .collapse">
+<h2>testBuildCountQuery_Select_Offset()
+        </h2>
+<pre>testBuildCountQuery_Select_Offset() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Simple" id="testBuildCountQuery_Simple"></a><div class="element clickable method public testBuildCountQuery_Simple" data-toggle="collapse" data-target=".testBuildCountQuery_Simple .collapse">
+<h2>testBuildCountQuery_Simple()
+        </h2>
+<pre>testBuildCountQuery_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildCountQuery_Update" id="testBuildCountQuery_Update"></a><div class="element clickable method public testBuildCountQuery_Update" data-toggle="collapse" data-target=".testBuildCountQuery_Update .collapse">
+<h2>testBuildCountQuery_Update()
+        </h2>
+<pre>testBuildCountQuery_Update() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_Array" id="testBuildWhere_Array"></a><div class="element clickable method public testBuildWhere_Array" data-toggle="collapse" data-target=".testBuildWhere_Array .collapse">
+<h2>testBuildWhere_Array()
+        </h2>
+<pre>testBuildWhere_Array() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_Between" id="testBuildWhere_Between"></a><div class="element clickable method public testBuildWhere_Between" data-toggle="collapse" data-target=".testBuildWhere_Between .collapse">
+<h2>testBuildWhere_Between()
+        </h2>
+<pre>testBuildWhere_Between() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_In" id="testBuildWhere_In"></a><div class="element clickable method public testBuildWhere_In" data-toggle="collapse" data-target=".testBuildWhere_In .collapse">
+<h2>testBuildWhere_In()
+        </h2>
+<pre>testBuildWhere_In() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_IsNull" id="testBuildWhere_IsNull"></a><div class="element clickable method public testBuildWhere_IsNull" data-toggle="collapse" data-target=".testBuildWhere_IsNull .collapse">
+<h2>testBuildWhere_IsNull()
+        </h2>
+<pre>testBuildWhere_IsNull() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_Like" id="testBuildWhere_Like"></a><div class="element clickable method public testBuildWhere_Like" data-toggle="collapse" data-target=".testBuildWhere_Like .collapse">
+<h2>testBuildWhere_Like()
+        </h2>
+<pre>testBuildWhere_Like() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_MoreThan" id="testBuildWhere_MoreThan"></a><div class="element clickable method public testBuildWhere_MoreThan" data-toggle="collapse" data-target=".testBuildWhere_MoreThan .collapse">
+<h2>testBuildWhere_MoreThan()
+        </h2>
+<pre>testBuildWhere_MoreThan() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_Simple" id="testBuildWhere_Simple"></a><div class="element clickable method public testBuildWhere_Simple" data-toggle="collapse" data-target=".testBuildWhere_Simple .collapse">
+<h2>testBuildWhere_Simple()
+        </h2>
+<pre>testBuildWhere_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_TwoParams" id="testBuildWhere_TwoParams"></a><div class="element clickable method public testBuildWhere_TwoParams" data-toggle="collapse" data-target=".testBuildWhere_TwoParams .collapse">
+<h2>testBuildWhere_TwoParams()
+        </h2>
+<pre>testBuildWhere_TwoParams() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testBuildWhere_TwoParamsArray" id="testBuildWhere_TwoParamsArray"></a><div class="element clickable method public testBuildWhere_TwoParamsArray" data-toggle="collapse" data-target=".testBuildWhere_TwoParamsArray .collapse">
+<h2>testBuildWhere_TwoParamsArray()
+        </h2>
+<pre>testBuildWhere_TwoParamsArray() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testCountPlaceholders" id="testCountPlaceholders"></a><div class="element clickable method public testCountPlaceholders" data-toggle="collapse" data-target=".testCountPlaceholders .collapse">
+<h2>testCountPlaceholders()
+        </h2>
+<pre>testCountPlaceholders() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testCountPlaceholders_Confuse" id="testCountPlaceholders_Confuse"></a><div class="element clickable method public testCountPlaceholders_Confuse" data-toggle="collapse" data-target=".testCountPlaceholders_Confuse .collapse">
+<h2>testCountPlaceholders_Confuse()
+        </h2>
+<pre>testCountPlaceholders_Confuse() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testExtractSubsets_Insert" id="testExtractSubsets_Insert"></a><div class="element clickable method public testExtractSubsets_Insert" data-toggle="collapse" data-target=".testExtractSubsets_Insert .collapse">
+<h2>testExtractSubsets_Insert()
+        </h2>
+<pre>testExtractSubsets_Insert() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testExtractSubsets_InsertSubqueryInWhere" id="testExtractSubsets_InsertSubqueryInWhere"></a><div class="element clickable method public testExtractSubsets_InsertSubqueryInWhere" data-toggle="collapse" data-target=".testExtractSubsets_InsertSubqueryInWhere .collapse">
+<h2>testExtractSubsets_InsertSubqueryInWhere()
+        </h2>
+<pre>testExtractSubsets_InsertSubqueryInWhere() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testExtractSubsets_Select" id="testExtractSubsets_Select"></a><div class="element clickable method public testExtractSubsets_Select" data-toggle="collapse" data-target=".testExtractSubsets_Select .collapse">
+<h2>testExtractSubsets_Select()
+        </h2>
+<pre>testExtractSubsets_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testExtractSubsets_SelectSubqueryInJoin" id="testExtractSubsets_SelectSubqueryInJoin"></a><div class="element clickable method public testExtractSubsets_SelectSubqueryInJoin" data-toggle="collapse" data-target=".testExtractSubsets_SelectSubqueryInJoin .collapse">
+<h2>testExtractSubsets_SelectSubqueryInJoin()
+        </h2>
+<pre>testExtractSubsets_SelectSubqueryInJoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testExtractSubsets_SelectSubqueryInWhere" id="testExtractSubsets_SelectSubqueryInWhere"></a><div class="element clickable method public testExtractSubsets_SelectSubqueryInWhere" data-toggle="collapse" data-target=".testExtractSubsets_SelectSubqueryInWhere .collapse">
+<h2>testExtractSubsets_SelectSubqueryInWhere()
+        </h2>
+<pre>testExtractSubsets_SelectSubqueryInWhere() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_AlterTable" id="testGetQueryType_AlterTable"></a><div class="element clickable method public testGetQueryType_AlterTable" data-toggle="collapse" data-target=".testGetQueryType_AlterTable .collapse">
+<h2>testGetQueryType_AlterTable()
+        </h2>
+<pre>testGetQueryType_AlterTable() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_AlterUnknown" id="testGetQueryType_AlterUnknown"></a><div class="element clickable method public testGetQueryType_AlterUnknown" data-toggle="collapse" data-target=".testGetQueryType_AlterUnknown .collapse">
+<h2>testGetQueryType_AlterUnknown()
+        </h2>
+<pre>testGetQueryType_AlterUnknown() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_AlterView_Spaces" id="testGetQueryType_AlterView_Spaces"></a><div class="element clickable method public testGetQueryType_AlterView_Spaces" data-toggle="collapse" data-target=".testGetQueryType_AlterView_Spaces .collapse">
+<h2>testGetQueryType_AlterView_Spaces()
+        </h2>
+<pre>testGetQueryType_AlterView_Spaces() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Begin" id="testGetQueryType_Begin"></a><div class="element clickable method public testGetQueryType_Begin" data-toggle="collapse" data-target=".testGetQueryType_Begin .collapse">
+<h2>testGetQueryType_Begin()
+        </h2>
+<pre>testGetQueryType_Begin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Comment" id="testGetQueryType_Comment"></a><div class="element clickable method public testGetQueryType_Comment" data-toggle="collapse" data-target=".testGetQueryType_Comment .collapse">
+<h2>testGetQueryType_Comment()
+        </h2>
+<pre>testGetQueryType_Comment() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Delete" id="testGetQueryType_Delete"></a><div class="element clickable method public testGetQueryType_Delete" data-toggle="collapse" data-target=".testGetQueryType_Delete .collapse">
+<h2>testGetQueryType_Delete()
+        </h2>
+<pre>testGetQueryType_Delete() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Insert" id="testGetQueryType_Insert"></a><div class="element clickable method public testGetQueryType_Insert" data-toggle="collapse" data-target=".testGetQueryType_Insert .collapse">
+<h2>testGetQueryType_Insert()
+        </h2>
+<pre>testGetQueryType_Insert() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_LoadDataInfile" id="testGetQueryType_LoadDataInfile"></a><div class="element clickable method public testGetQueryType_LoadDataInfile" data-toggle="collapse" data-target=".testGetQueryType_LoadDataInfile .collapse">
+<h2>testGetQueryType_LoadDataInfile()
+        </h2>
+<pre>testGetQueryType_LoadDataInfile() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Replace" id="testGetQueryType_Replace"></a><div class="element clickable method public testGetQueryType_Replace" data-toggle="collapse" data-target=".testGetQueryType_Replace .collapse">
+<h2>testGetQueryType_Replace()
+        </h2>
+<pre>testGetQueryType_Replace() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Select" id="testGetQueryType_Select"></a><div class="element clickable method public testGetQueryType_Select" data-toggle="collapse" data-target=".testGetQueryType_Select .collapse">
+<h2>testGetQueryType_Select()
+        </h2>
+<pre>testGetQueryType_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Select_LowerCase" id="testGetQueryType_Select_LowerCase"></a><div class="element clickable method public testGetQueryType_Select_LowerCase" data-toggle="collapse" data-target=".testGetQueryType_Select_LowerCase .collapse">
+<h2>testGetQueryType_Select_LowerCase()
+        </h2>
+<pre>testGetQueryType_Select_LowerCase() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Select_Spaces" id="testGetQueryType_Select_Spaces"></a><div class="element clickable method public testGetQueryType_Select_Spaces" data-toggle="collapse" data-target=".testGetQueryType_Select_Spaces .collapse">
+<h2>testGetQueryType_Select_Spaces()
+        </h2>
+<pre>testGetQueryType_Select_Spaces() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Select_Word" id="testGetQueryType_Select_Word"></a><div class="element clickable method public testGetQueryType_Select_Word" data-toggle="collapse" data-target=".testGetQueryType_Select_Word .collapse">
+<h2>testGetQueryType_Select_Word()
+        </h2>
+<pre>testGetQueryType_Select_Word() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Set" id="testGetQueryType_Set"></a><div class="element clickable method public testGetQueryType_Set" data-toggle="collapse" data-target=".testGetQueryType_Set .collapse">
+<h2>testGetQueryType_Set()
+        </h2>
+<pre>testGetQueryType_Set() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Truncate" id="testGetQueryType_Truncate"></a><div class="element clickable method public testGetQueryType_Truncate" data-toggle="collapse" data-target=".testGetQueryType_Truncate .collapse">
+<h2>testGetQueryType_Truncate()
+        </h2>
+<pre>testGetQueryType_Truncate() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testGetQueryType_Unknown" id="testGetQueryType_Unknown"></a><div class="element clickable method public testGetQueryType_Unknown" data-toggle="collapse" data-target=".testGetQueryType_Unknown .collapse">
+<h2>testGetQueryType_Unknown()
+        </h2>
+<pre>testGetQueryType_Unknown() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testHoldsIdentifiers_From" id="testHoldsIdentifiers_From"></a><div class="element clickable method public testHoldsIdentifiers_From" data-toggle="collapse" data-target=".testHoldsIdentifiers_From .collapse">
+<h2>testHoldsIdentifiers_From()
+        </h2>
+<pre>testHoldsIdentifiers_From() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testHoldsIdentifiers_Select" id="testHoldsIdentifiers_Select"></a><div class="element clickable method public testHoldsIdentifiers_Select" data-toggle="collapse" data-target=".testHoldsIdentifiers_Select .collapse">
+<h2>testHoldsIdentifiers_Select()
+        </h2>
+<pre>testHoldsIdentifiers_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_Quoted" id="testIsIdentifier_Quoted"></a><div class="element clickable method public testIsIdentifier_Quoted" data-toggle="collapse" data-target=".testIsIdentifier_Quoted .collapse">
+<h2>testIsIdentifier_Quoted()
+        </h2>
+<pre>testIsIdentifier_Quoted() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_Simple" id="testIsIdentifier_Simple"></a><div class="element clickable method public testIsIdentifier_Simple" data-toggle="collapse" data-target=".testIsIdentifier_Simple .collapse">
+<h2>testIsIdentifier_Simple()
+        </h2>
+<pre>testIsIdentifier_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_Strange" id="testIsIdentifier_Strange"></a><div class="element clickable method public testIsIdentifier_Strange" data-toggle="collapse" data-target=".testIsIdentifier_Strange .collapse">
+<h2>testIsIdentifier_Strange()
+        </h2>
+<pre>testIsIdentifier_Strange() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_Strange_Quoted" id="testIsIdentifier_Strange_Quoted"></a><div class="element clickable method public testIsIdentifier_Strange_Quoted" data-toggle="collapse" data-target=".testIsIdentifier_Strange_Quoted .collapse">
+<h2>testIsIdentifier_Strange_Quoted()
+        </h2>
+<pre>testIsIdentifier_Strange_Quoted() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_TableColumn" id="testIsIdentifier_TableColumn"></a><div class="element clickable method public testIsIdentifier_TableColumn" data-toggle="collapse" data-target=".testIsIdentifier_TableColumn .collapse">
+<h2>testIsIdentifier_TableColumn()
+        </h2>
+<pre>testIsIdentifier_TableColumn() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_TableColumn_Quoted" id="testIsIdentifier_TableColumn_Quoted"></a><div class="element clickable method public testIsIdentifier_TableColumn_Quoted" data-toggle="collapse" data-target=".testIsIdentifier_TableColumn_Quoted .collapse">
+<h2>testIsIdentifier_TableColumn_Quoted()
+        </h2>
+<pre>testIsIdentifier_TableColumn_Quoted() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_WithoutAlias_AsAlias" id="testIsIdentifier_WithoutAlias_AsAlias"></a><div class="element clickable method public testIsIdentifier_WithoutAlias_AsAlias" data-toggle="collapse" data-target=".testIsIdentifier_WithoutAlias_AsAlias .collapse">
+<h2>testIsIdentifier_WithoutAlias_AsAlias()
+        </h2>
+<pre>testIsIdentifier_WithoutAlias_AsAlias() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testIsIdentifier_WithoutAlias_SpaceAlias" id="testIsIdentifier_WithoutAlias_SpaceAlias"></a><div class="element clickable method public testIsIdentifier_WithoutAlias_SpaceAlias" data-toggle="collapse" data-target=".testIsIdentifier_WithoutAlias_SpaceAlias .collapse">
+<h2>testIsIdentifier_WithoutAlias_SpaceAlias()
+        </h2>
+<pre>testIsIdentifier_WithoutAlias_SpaceAlias() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinInsertSelectSimple" id="testJoinInsertSelectSimple"></a><div class="element clickable method public testJoinInsertSelectSimple" data-toggle="collapse" data-target=".testJoinInsertSelectSimple .collapse">
+<h2>testJoinInsertSelectSimple()
+        </h2>
+<pre>testJoinInsertSelectSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinInsertSelectSubquery" id="testJoinInsertSelectSubquery"></a><div class="element clickable method public testJoinInsertSelectSubquery" data-toggle="collapse" data-target=".testJoinInsertSelectSubquery .collapse">
+<h2>testJoinInsertSelectSubquery()
+        </h2>
+<pre>testJoinInsertSelectSubquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinInsertValuesColumns" id="testJoinInsertValuesColumns"></a><div class="element clickable method public testJoinInsertValuesColumns" data-toggle="collapse" data-target=".testJoinInsertValuesColumns .collapse">
+<h2>testJoinInsertValuesColumns()
+        </h2>
+<pre>testJoinInsertValuesColumns() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinInsertValuesMultiple" id="testJoinInsertValuesMultiple"></a><div class="element clickable method public testJoinInsertValuesMultiple" data-toggle="collapse" data-target=".testJoinInsertValuesMultiple .collapse">
+<h2>testJoinInsertValuesMultiple()
+        </h2>
+<pre>testJoinInsertValuesMultiple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinInsertValuesSimple" id="testJoinInsertValuesSimple"></a><div class="element clickable method public testJoinInsertValuesSimple" data-toggle="collapse" data-target=".testJoinInsertValuesSimple .collapse">
+<h2>testJoinInsertValuesSimple()
+        </h2>
+<pre>testJoinInsertValuesSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinReplaceValuesSimple" id="testJoinReplaceValuesSimple"></a><div class="element clickable method public testJoinReplaceValuesSimple" data-toggle="collapse" data-target=".testJoinReplaceValuesSimple .collapse">
+<h2>testJoinReplaceValuesSimple()
+        </h2>
+<pre>testJoinReplaceValuesSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinSelect_Advanced" id="testJoinSelect_Advanced"></a><div class="element clickable method public testJoinSelect_Advanced" data-toggle="collapse" data-target=".testJoinSelect_Advanced .collapse">
+<h2>testJoinSelect_Advanced()
+        </h2>
+<pre>testJoinSelect_Advanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinSelect_Simple" id="testJoinSelect_Simple"></a><div class="element clickable method public testJoinSelect_Simple" data-toggle="collapse" data-target=".testJoinSelect_Simple .collapse">
+<h2>testJoinSelect_Simple()
+        </h2>
+<pre>testJoinSelect_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoinSelect_Subquery" id="testJoinSelect_Subquery"></a><div class="element clickable method public testJoinSelect_Subquery" data-toggle="collapse" data-target=".testJoinSelect_Subquery .collapse">
+<h2>testJoinSelect_Subquery()
+        </h2>
+<pre>testJoinSelect_Subquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_DeleteAdvanced" id="testJoin_DeleteAdvanced"></a><div class="element clickable method public testJoin_DeleteAdvanced" data-toggle="collapse" data-target=".testJoin_DeleteAdvanced .collapse">
+<h2>testJoin_DeleteAdvanced()
+        </h2>
+<pre>testJoin_DeleteAdvanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_DeleteSimple" id="testJoin_DeleteSimple"></a><div class="element clickable method public testJoin_DeleteSimple" data-toggle="collapse" data-target=".testJoin_DeleteSimple .collapse">
+<h2>testJoin_DeleteSimple()
+        </h2>
+<pre>testJoin_DeleteSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_Set" id="testJoin_Set"></a><div class="element clickable method public testJoin_Set" data-toggle="collapse" data-target=".testJoin_Set .collapse">
+<h2>testJoin_Set()
+        </h2>
+<pre>testJoin_Set() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_Truncate" id="testJoin_Truncate"></a><div class="element clickable method public testJoin_Truncate" data-toggle="collapse" data-target=".testJoin_Truncate .collapse">
+<h2>testJoin_Truncate()
+        </h2>
+<pre>testJoin_Truncate() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_UpdateAdvanced" id="testJoin_UpdateAdvanced"></a><div class="element clickable method public testJoin_UpdateAdvanced" data-toggle="collapse" data-target=".testJoin_UpdateAdvanced .collapse">
+<h2>testJoin_UpdateAdvanced()
+        </h2>
+<pre>testJoin_UpdateAdvanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testJoin_UpdateSimple" id="testJoin_UpdateSimple"></a><div class="element clickable method public testJoin_UpdateSimple" data-toggle="collapse" data-target=".testJoin_UpdateSimple .collapse">
+<h2>testJoin_UpdateSimple()
+        </h2>
+<pre>testJoin_UpdateSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Array" id="testParse_Array"></a><div class="element clickable method public testParse_Array" data-toggle="collapse" data-target=".testParse_Array .collapse">
+<h2>testParse_Array()
+        </h2>
+<pre>testParse_Array() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Boolean" id="testParse_Boolean"></a><div class="element clickable method public testParse_Boolean" data-toggle="collapse" data-target=".testParse_Boolean .collapse">
+<h2>testParse_Boolean()
+        </h2>
+<pre>testParse_Boolean() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Float" id="testParse_Float"></a><div class="element clickable method public testParse_Float" data-toggle="collapse" data-target=".testParse_Float .collapse">
+<h2>testParse_Float()
+        </h2>
+<pre>testParse_Float() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Integer" id="testParse_Integer"></a><div class="element clickable method public testParse_Integer" data-toggle="collapse" data-target=".testParse_Integer .collapse">
+<h2>testParse_Integer()
+        </h2>
+<pre>testParse_Integer() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Like" id="testParse_Like"></a><div class="element clickable method public testParse_Like" data-toggle="collapse" data-target=".testParse_Like .collapse">
+<h2>testParse_Like()
+        </h2>
+<pre>testParse_Like() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Like_Named" id="testParse_Like_Named"></a><div class="element clickable method public testParse_Like_Named" data-toggle="collapse" data-target=".testParse_Like_Named .collapse">
+<h2>testParse_Like_Named()
+        </h2>
+<pre>testParse_Like_Named() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Named" id="testParse_Named"></a><div class="element clickable method public testParse_Named" data-toggle="collapse" data-target=".testParse_Named .collapse">
+<h2>testParse_Named()
+        </h2>
+<pre>testParse_Named() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_Null" id="testParse_Null"></a><div class="element clickable method public testParse_Null" data-toggle="collapse" data-target=".testParse_Null .collapse">
+<h2>testParse_Null()
+        </h2>
+<pre>testParse_Null() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_String" id="testParse_String"></a><div class="element clickable method public testParse_String" data-toggle="collapse" data-target=".testParse_String .collapse">
+<h2>testParse_String()
+        </h2>
+<pre>testParse_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_String_Confuse" id="testParse_String_Confuse"></a><div class="element clickable method public testParse_String_Confuse" data-toggle="collapse" data-target=".testParse_String_Confuse .collapse">
+<h2>testParse_String_Confuse()
+        </h2>
+<pre>testParse_String_Confuse() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_String_Multiline" id="testParse_String_Multiline"></a><div class="element clickable method public testParse_String_Multiline" data-toggle="collapse" data-target=".testParse_String_Multiline .collapse">
+<h2>testParse_String_Multiline()
+        </h2>
+<pre>testParse_String_Multiline() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testParse_String_Quote" id="testParse_String_Quote"></a><div class="element clickable method public testParse_String_Quote" data-toggle="collapse" data-target=".testParse_String_Quote .collapse">
+<h2>testParse_String_Quote()
+        </h2>
+<pre>testParse_String_Quote() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Cast" id="testQuoteIdentifier_Cast"></a><div class="element clickable method public testQuoteIdentifier_Cast" data-toggle="collapse" data-target=".testQuoteIdentifier_Cast .collapse">
+<h2>testQuoteIdentifier_Cast()
+        </h2>
+<pre>testQuoteIdentifier_Cast() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Cast_Confuse" id="testQuoteIdentifier_Cast_Confuse"></a><div class="element clickable method public testQuoteIdentifier_Cast_Confuse" data-toggle="collapse" data-target=".testQuoteIdentifier_Cast_Confuse .collapse">
+<h2>testQuoteIdentifier_Cast_Confuse()
+        </h2>
+<pre>testQuoteIdentifier_Cast_Confuse() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Expression" id="testQuoteIdentifier_Expression"></a><div class="element clickable method public testQuoteIdentifier_Expression" data-toggle="collapse" data-target=".testQuoteIdentifier_Expression .collapse">
+<h2>testQuoteIdentifier_Expression()
+        </h2>
+<pre>testQuoteIdentifier_Expression() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Function" id="testQuoteIdentifier_Function"></a><div class="element clickable method public testQuoteIdentifier_Function" data-toggle="collapse" data-target=".testQuoteIdentifier_Function .collapse">
+<h2>testQuoteIdentifier_Function()
+        </h2>
+<pre>testQuoteIdentifier_Function() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_None" id="testQuoteIdentifier_None"></a><div class="element clickable method public testQuoteIdentifier_None" data-toggle="collapse" data-target=".testQuoteIdentifier_None .collapse">
+<h2>testQuoteIdentifier_None()
+        </h2>
+<pre>testQuoteIdentifier_None() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Quoted" id="testQuoteIdentifier_Quoted"></a><div class="element clickable method public testQuoteIdentifier_Quoted" data-toggle="collapse" data-target=".testQuoteIdentifier_Quoted .collapse">
+<h2>testQuoteIdentifier_Quoted()
+        </h2>
+<pre>testQuoteIdentifier_Quoted() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Simple" id="testQuoteIdentifier_Simple"></a><div class="element clickable method public testQuoteIdentifier_Simple" data-toggle="collapse" data-target=".testQuoteIdentifier_Simple .collapse">
+<h2>testQuoteIdentifier_Simple()
+        </h2>
+<pre>testQuoteIdentifier_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Strict" id="testQuoteIdentifier_Strict"></a><div class="element clickable method public testQuoteIdentifier_Strict" data-toggle="collapse" data-target=".testQuoteIdentifier_Strict .collapse">
+<h2>testQuoteIdentifier_Strict()
+        </h2>
+<pre>testQuoteIdentifier_Strict() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Strict_Fail" id="testQuoteIdentifier_Strict_Fail"></a><div class="element clickable method public testQuoteIdentifier_Strict_Fail" data-toggle="collapse" data-target=".testQuoteIdentifier_Strict_Fail .collapse">
+<h2>testQuoteIdentifier_Strict_Fail()
+        </h2>
+<pre>testQuoteIdentifier_Strict_Fail() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_Strict_TableColumn" id="testQuoteIdentifier_Strict_TableColumn"></a><div class="element clickable method public testQuoteIdentifier_Strict_TableColumn" data-toggle="collapse" data-target=".testQuoteIdentifier_Strict_TableColumn .collapse">
+<h2>testQuoteIdentifier_Strict_TableColumn()
+        </h2>
+<pre>testQuoteIdentifier_Strict_TableColumn() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_TableColumn" id="testQuoteIdentifier_TableColumn"></a><div class="element clickable method public testQuoteIdentifier_TableColumn" data-toggle="collapse" data-target=".testQuoteIdentifier_TableColumn .collapse">
+<h2>testQuoteIdentifier_TableColumn()
+        </h2>
+<pre>testQuoteIdentifier_TableColumn() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_TableColumn_Quoted" id="testQuoteIdentifier_TableColumn_Quoted"></a><div class="element clickable method public testQuoteIdentifier_TableColumn_Quoted" data-toggle="collapse" data-target=".testQuoteIdentifier_TableColumn_Quoted .collapse">
+<h2>testQuoteIdentifier_TableColumn_Quoted()
+        </h2>
+<pre>testQuoteIdentifier_TableColumn_Quoted() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuoteIdentifier_WithAlias" id="testQuoteIdentifier_WithAlias"></a><div class="element clickable method public testQuoteIdentifier_WithAlias" data-toggle="collapse" data-target=".testQuoteIdentifier_WithAlias .collapse">
+<h2>testQuoteIdentifier_WithAlias()
+        </h2>
+<pre>testQuoteIdentifier_WithAlias() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_Array" id="testQuote_Array"></a><div class="element clickable method public testQuote_Array" data-toggle="collapse" data-target=".testQuote_Array .collapse">
+<h2>testQuote_Array()
+        </h2>
+<pre>testQuote_Array() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_False" id="testQuote_False"></a><div class="element clickable method public testQuote_False" data-toggle="collapse" data-target=".testQuote_False .collapse">
+<h2>testQuote_False()
+        </h2>
+<pre>testQuote_False() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_Float" id="testQuote_Float"></a><div class="element clickable method public testQuote_Float" data-toggle="collapse" data-target=".testQuote_Float .collapse">
+<h2>testQuote_Float()
+        </h2>
+<pre>testQuote_Float() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_Int" id="testQuote_Int"></a><div class="element clickable method public testQuote_Int" data-toggle="collapse" data-target=".testQuote_Int .collapse">
+<h2>testQuote_Int()
+        </h2>
+<pre>testQuote_Int() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_Null" id="testQuote_Null"></a><div class="element clickable method public testQuote_Null" data-toggle="collapse" data-target=".testQuote_Null .collapse">
+<h2>testQuote_Null()
+        </h2>
+<pre>testQuote_Null() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_NullDefault" id="testQuote_NullDefault"></a><div class="element clickable method public testQuote_NullDefault" data-toggle="collapse" data-target=".testQuote_NullDefault .collapse">
+<h2>testQuote_NullDefault()
+        </h2>
+<pre>testQuote_NullDefault() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_String" id="testQuote_String"></a><div class="element clickable method public testQuote_String" data-toggle="collapse" data-target=".testQuote_String .collapse">
+<h2>testQuote_String()
+        </h2>
+<pre>testQuote_String() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_StringMultiline" id="testQuote_StringMultiline"></a><div class="element clickable method public testQuote_StringMultiline" data-toggle="collapse" data-target=".testQuote_StringMultiline .collapse">
+<h2>testQuote_StringMultiline()
+        </h2>
+<pre>testQuote_StringMultiline() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_StringQuotes" id="testQuote_StringQuotes"></a><div class="element clickable method public testQuote_StringQuotes" data-toggle="collapse" data-target=".testQuote_StringQuotes .collapse">
+<h2>testQuote_StringQuotes()
+        </h2>
+<pre>testQuote_StringQuotes() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testQuote_True" id="testQuote_True"></a><div class="element clickable method public testQuote_True" data-toggle="collapse" data-target=".testQuote_True .collapse">
+<h2>testQuote_True()
+        </h2>
+<pre>testQuote_True() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_Advanced" id="testSplitColumns_Advanced"></a><div class="element clickable method public testSplitColumns_Advanced" data-toggle="collapse" data-target=".testSplitColumns_Advanced .collapse">
+<h2>testSplitColumns_Advanced()
+        </h2>
+<pre>testSplitColumns_Advanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_Delete" id="testSplitColumns_Delete"></a><div class="element clickable method public testSplitColumns_Delete" data-toggle="collapse" data-target=".testSplitColumns_Delete .collapse">
+<h2>testSplitColumns_Delete()
+        </h2>
+<pre>testSplitColumns_Delete() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_InsertSelect" id="testSplitColumns_InsertSelect"></a><div class="element clickable method public testSplitColumns_InsertSelect" data-toggle="collapse" data-target=".testSplitColumns_InsertSelect .collapse">
+<h2>testSplitColumns_InsertSelect()
+        </h2>
+<pre>testSplitColumns_InsertSelect() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_InsertValues" id="testSplitColumns_InsertValues"></a><div class="element clickable method public testSplitColumns_InsertValues" data-toggle="collapse" data-target=".testSplitColumns_InsertValues .collapse">
+<h2>testSplitColumns_InsertValues()
+        </h2>
+<pre>testSplitColumns_InsertValues() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_Select" id="testSplitColumns_Select"></a><div class="element clickable method public testSplitColumns_Select" data-toggle="collapse" data-target=".testSplitColumns_Select .collapse">
+<h2>testSplitColumns_Select()
+        </h2>
+<pre>testSplitColumns_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_SelectRealLifeExample" id="testSplitColumns_SelectRealLifeExample"></a><div class="element clickable method public testSplitColumns_SelectRealLifeExample" data-toggle="collapse" data-target=".testSplitColumns_SelectRealLifeExample .collapse">
+<h2>testSplitColumns_SelectRealLifeExample()
+        </h2>
+<pre>testSplitColumns_SelectRealLifeExample() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_SelectSubFrom" id="testSplitColumns_SelectSubFrom"></a><div class="element clickable method public testSplitColumns_SelectSubFrom" data-toggle="collapse" data-target=".testSplitColumns_SelectSubFrom .collapse">
+<h2>testSplitColumns_SelectSubFrom()
+        </h2>
+<pre>testSplitColumns_SelectSubFrom() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_SelectSubquery" id="testSplitColumns_SelectSubquery"></a><div class="element clickable method public testSplitColumns_SelectSubquery" data-toggle="collapse" data-target=".testSplitColumns_SelectSubquery .collapse">
+<h2>testSplitColumns_SelectSubquery()
+        </h2>
+<pre>testSplitColumns_SelectSubquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitColumns_Simple" id="testSplitColumns_Simple"></a><div class="element clickable method public testSplitColumns_Simple" data-toggle="collapse" data-target=".testSplitColumns_Simple .collapse">
+<h2>testSplitColumns_Simple()
+        </h2>
+<pre>testSplitColumns_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit" id="testSplitLimit"></a><div class="element clickable method public testSplitLimit" data-toggle="collapse" data-target=".testSplitLimit .collapse">
+<h2>testSplitLimit()
+        </h2>
+<pre>testSplitLimit() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_Comma" id="testSplitLimit_Comma"></a><div class="element clickable method public testSplitLimit_Comma" data-toggle="collapse" data-target=".testSplitLimit_Comma .collapse">
+<h2>testSplitLimit_Comma()
+        </h2>
+<pre>testSplitLimit_Comma() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_Fail" id="testSplitLimit_Fail"></a><div class="element clickable method public testSplitLimit_Fail" data-toggle="collapse" data-target=".testSplitLimit_Fail .collapse">
+<h2>testSplitLimit_Fail()
+        </h2>
+<pre>testSplitLimit_Fail() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_Offset" id="testSplitLimit_Offset"></a><div class="element clickable method public testSplitLimit_Offset" data-toggle="collapse" data-target=".testSplitLimit_Offset .collapse">
+<h2>testSplitLimit_Offset()
+        </h2>
+<pre>testSplitLimit_Offset() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_Select" id="testSplitLimit_Select"></a><div class="element clickable method public testSplitLimit_Select" data-toggle="collapse" data-target=".testSplitLimit_Select .collapse">
+<h2>testSplitLimit_Select()
+        </h2>
+<pre>testSplitLimit_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_SelectNoLimit" id="testSplitLimit_SelectNoLimit"></a><div class="element clickable method public testSplitLimit_SelectNoLimit" data-toggle="collapse" data-target=".testSplitLimit_SelectNoLimit .collapse">
+<h2>testSplitLimit_SelectNoLimit()
+        </h2>
+<pre>testSplitLimit_SelectNoLimit() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitLimit_Truncate" id="testSplitLimit_Truncate"></a><div class="element clickable method public testSplitLimit_Truncate" data-toggle="collapse" data-target=".testSplitLimit_Truncate .collapse">
+<h2>testSplitLimit_Truncate()
+        </h2>
+<pre>testSplitLimit_Truncate() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitSet" id="testSplitSet"></a><div class="element clickable method public testSplitSet" data-toggle="collapse" data-target=".testSplitSet .collapse">
+<h2>testSplitSet()
+        </h2>
+<pre>testSplitSet() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitSet_Insert" id="testSplitSet_Insert"></a><div class="element clickable method public testSplitSet_Insert" data-toggle="collapse" data-target=".testSplitSet_Insert .collapse">
+<h2>testSplitSet_Insert()
+        </h2>
+<pre>testSplitSet_Insert() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitSet_Update" id="testSplitSet_Update"></a><div class="element clickable method public testSplitSet_Update" data-toggle="collapse" data-target=".testSplitSet_Update .collapse">
+<h2>testSplitSet_Update()
+        </h2>
+<pre>testSplitSet_Update() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Alias" id="testSplitTables_Alias"></a><div class="element clickable method public testSplitTables_Alias" data-toggle="collapse" data-target=".testSplitTables_Alias .collapse">
+<h2>testSplitTables_Alias()
+        </h2>
+<pre>testSplitTables_Alias() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Delete" id="testSplitTables_Delete"></a><div class="element clickable method public testSplitTables_Delete" data-toggle="collapse" data-target=".testSplitTables_Delete .collapse">
+<h2>testSplitTables_Delete()
+        </h2>
+<pre>testSplitTables_Delete() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_InsertSelect" id="testSplitTables_InsertSelect"></a><div class="element clickable method public testSplitTables_InsertSelect" data-toggle="collapse" data-target=".testSplitTables_InsertSelect .collapse">
+<h2>testSplitTables_InsertSelect()
+        </h2>
+<pre>testSplitTables_InsertSelect() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_InsertSet" id="testSplitTables_InsertSet"></a><div class="element clickable method public testSplitTables_InsertSet" data-toggle="collapse" data-target=".testSplitTables_InsertSet .collapse">
+<h2>testSplitTables_InsertSet()
+        </h2>
+<pre>testSplitTables_InsertSet() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_InsertValues" id="testSplitTables_InsertValues"></a><div class="element clickable method public testSplitTables_InsertValues" data-toggle="collapse" data-target=".testSplitTables_InsertValues .collapse">
+<h2>testSplitTables_InsertValues()
+        </h2>
+<pre>testSplitTables_InsertValues() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Join" id="testSplitTables_Join"></a><div class="element clickable method public testSplitTables_Join" data-toggle="collapse" data-target=".testSplitTables_Join .collapse">
+<h2>testSplitTables_Join()
+        </h2>
+<pre>testSplitTables_Join() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Select" id="testSplitTables_Select"></a><div class="element clickable method public testSplitTables_Select" data-toggle="collapse" data-target=".testSplitTables_Select .collapse">
+<h2>testSplitTables_Select()
+        </h2>
+<pre>testSplitTables_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Simple" id="testSplitTables_Simple"></a><div class="element clickable method public testSplitTables_Simple" data-toggle="collapse" data-target=".testSplitTables_Simple .collapse">
+<h2>testSplitTables_Simple()
+        </h2>
+<pre>testSplitTables_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Subjoin" id="testSplitTables_Subjoin"></a><div class="element clickable method public testSplitTables_Subjoin" data-toggle="collapse" data-target=".testSplitTables_Subjoin .collapse">
+<h2>testSplitTables_Subjoin()
+        </h2>
+<pre>testSplitTables_Subjoin() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Subquery" id="testSplitTables_Subquery"></a><div class="element clickable method public testSplitTables_Subquery" data-toggle="collapse" data-target=".testSplitTables_Subquery .collapse">
+<h2>testSplitTables_Subquery()
+        </h2>
+<pre>testSplitTables_Subquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplitTables_Update" id="testSplitTables_Update"></a><div class="element clickable method public testSplitTables_Update" data-toggle="collapse" data-target=".testSplitTables_Update .collapse">
+<h2>testSplitTables_Update()
+        </h2>
+<pre>testSplitTables_Update() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_DeleteAdvanced" id="testSplit_DeleteAdvanced"></a><div class="element clickable method public testSplit_DeleteAdvanced" data-toggle="collapse" data-target=".testSplit_DeleteAdvanced .collapse">
+<h2>testSplit_DeleteAdvanced()
+        </h2>
+<pre>testSplit_DeleteAdvanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_DeleteSimple" id="testSplit_DeleteSimple"></a><div class="element clickable method public testSplit_DeleteSimple" data-toggle="collapse" data-target=".testSplit_DeleteSimple .collapse">
+<h2>testSplit_DeleteSimple()
+        </h2>
+<pre>testSplit_DeleteSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_DeleteSubquery" id="testSplit_DeleteSubquery"></a><div class="element clickable method public testSplit_DeleteSubquery" data-toggle="collapse" data-target=".testSplit_DeleteSubquery .collapse">
+<h2>testSplit_DeleteSubquery()
+        </h2>
+<pre>testSplit_DeleteSubquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Fail" id="testSplit_Fail"></a><div class="element clickable method public testSplit_Fail" data-toggle="collapse" data-target=".testSplit_Fail .collapse">
+<h2>testSplit_Fail()
+        </h2>
+<pre>testSplit_Fail() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Insert" id="testSplit_Insert"></a><div class="element clickable method public testSplit_Insert" data-toggle="collapse" data-target=".testSplit_Insert .collapse">
+<h2>testSplit_Insert()
+        </h2>
+<pre>testSplit_Insert() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertSelectSimple" id="testSplit_InsertSelectSimple"></a><div class="element clickable method public testSplit_InsertSelectSimple" data-toggle="collapse" data-target=".testSplit_InsertSelectSimple .collapse">
+<h2>testSplit_InsertSelectSimple()
+        </h2>
+<pre>testSplit_InsertSelectSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertSelectSubquery" id="testSplit_InsertSelectSubquery"></a><div class="element clickable method public testSplit_InsertSelectSubquery" data-toggle="collapse" data-target=".testSplit_InsertSelectSubquery .collapse">
+<h2>testSplit_InsertSelectSubquery()
+        </h2>
+<pre>testSplit_InsertSelectSubquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertSetSimple" id="testSplit_InsertSetSimple"></a><div class="element clickable method public testSplit_InsertSetSimple" data-toggle="collapse" data-target=".testSplit_InsertSetSimple .collapse">
+<h2>testSplit_InsertSetSimple()
+        </h2>
+<pre>testSplit_InsertSetSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertValuesColumns" id="testSplit_InsertValuesColumns"></a><div class="element clickable method public testSplit_InsertValuesColumns" data-toggle="collapse" data-target=".testSplit_InsertValuesColumns .collapse">
+<h2>testSplit_InsertValuesColumns()
+        </h2>
+<pre>testSplit_InsertValuesColumns() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertValuesMultiple" id="testSplit_InsertValuesMultiple"></a><div class="element clickable method public testSplit_InsertValuesMultiple" data-toggle="collapse" data-target=".testSplit_InsertValuesMultiple .collapse">
+<h2>testSplit_InsertValuesMultiple()
+        </h2>
+<pre>testSplit_InsertValuesMultiple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_InsertValuesSimple" id="testSplit_InsertValuesSimple"></a><div class="element clickable method public testSplit_InsertValuesSimple" data-toggle="collapse" data-target=".testSplit_InsertValuesSimple .collapse">
+<h2>testSplit_InsertValuesSimple()
+        </h2>
+<pre>testSplit_InsertValuesSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_ReplaceValuesSimple" id="testSplit_ReplaceValuesSimple"></a><div class="element clickable method public testSplit_ReplaceValuesSimple" data-toggle="collapse" data-target=".testSplit_ReplaceValuesSimple .collapse">
+<h2>testSplit_ReplaceValuesSimple()
+        </h2>
+<pre>testSplit_ReplaceValuesSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select" id="testSplit_Select"></a><div class="element clickable method public testSplit_Select" data-toggle="collapse" data-target=".testSplit_Select .collapse">
+<h2>testSplit_Select()
+        </h2>
+<pre>testSplit_Select() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select_Advanced" id="testSplit_Select_Advanced"></a><div class="element clickable method public testSplit_Select_Advanced" data-toggle="collapse" data-target=".testSplit_Select_Advanced .collapse">
+<h2>testSplit_Select_Advanced()
+        </h2>
+<pre>testSplit_Select_Advanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select_Semicolon" id="testSplit_Select_Semicolon"></a><div class="element clickable method public testSplit_Select_Semicolon" data-toggle="collapse" data-target=".testSplit_Select_Semicolon .collapse">
+<h2>testSplit_Select_Semicolon()
+        </h2>
+<pre>testSplit_Select_Semicolon() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select_Simple" id="testSplit_Select_Simple"></a><div class="element clickable method public testSplit_Select_Simple" data-toggle="collapse" data-target=".testSplit_Select_Simple .collapse">
+<h2>testSplit_Select_Simple()
+        </h2>
+<pre>testSplit_Select_Simple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select_Subquery" id="testSplit_Select_Subquery"></a><div class="element clickable method public testSplit_Select_Subquery" data-toggle="collapse" data-target=".testSplit_Select_Subquery .collapse">
+<h2>testSplit_Select_Subquery()
+        </h2>
+<pre>testSplit_Select_Subquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Select_SubqueryMadness" id="testSplit_Select_SubqueryMadness"></a><div class="element clickable method public testSplit_Select_SubqueryMadness" data-toggle="collapse" data-target=".testSplit_Select_SubqueryMadness .collapse">
+<h2>testSplit_Select_SubqueryMadness()
+        </h2>
+<pre>testSplit_Select_SubqueryMadness() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Set" id="testSplit_Set"></a><div class="element clickable method public testSplit_Set" data-toggle="collapse" data-target=".testSplit_Set .collapse">
+<h2>testSplit_Set()
+        </h2>
+<pre>testSplit_Set() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_Truncate" id="testSplit_Truncate"></a><div class="element clickable method public testSplit_Truncate" data-toggle="collapse" data-target=".testSplit_Truncate .collapse">
+<h2>testSplit_Truncate()
+        </h2>
+<pre>testSplit_Truncate() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_UpdateAdvanced" id="testSplit_UpdateAdvanced"></a><div class="element clickable method public testSplit_UpdateAdvanced" data-toggle="collapse" data-target=".testSplit_UpdateAdvanced .collapse">
+<h2>testSplit_UpdateAdvanced()
+        </h2>
+<pre>testSplit_UpdateAdvanced() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_UpdateSimple" id="testSplit_UpdateSimple"></a><div class="element clickable method public testSplit_UpdateSimple" data-toggle="collapse" data-target=".testSplit_UpdateSimple .collapse">
+<h2>testSplit_UpdateSimple()
+        </h2>
+<pre>testSplit_UpdateSimple() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+<a name="testSplit_UpdateSubquery" id="testSplit_UpdateSubquery"></a><div class="element clickable method public testSplit_UpdateSubquery" data-toggle="collapse" data-target=".testSplit_UpdateSubquery .collapse">
+<h2>testSplit_UpdateSubquery()
+        </h2>
+<pre>testSplit_UpdateSubquery() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="span8"><p class="long_description"></p></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a2</a> and<br>
+            generated on 2012-05-03T17:31:12+02:00.<br></footer></div>
+</div>
+</body>
+</html>
