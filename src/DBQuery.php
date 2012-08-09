@@ -663,18 +663,15 @@ class DBQuery
                 foreach ($expression as &$field) {
                     $field = DBQuery_Splitter::quoteIdentifier($field, $flags);
                 }
-                
-                $expression = join(', ', $expression);
             }
+            $expression = join(', ', $expression);
         } else {
             if ($flags & DBQuery::_QUOTE_OPTIONS) $expression = DBQuery_Splitter::quoteIdentifier($expression, $flags);
         }
         
         return new self($type . (isset($expression) ? " $expression" : ''));
     }
-	
-	
-   	//------------- Convert query ------------------------
+    
     
    	/**
      * Get a query to count the number of rows that the resultset would contain.
@@ -684,8 +681,6 @@ class DBQuery
      */
    	public function count($flags=0)
    	{
-        DB::conn()->query($query->asUpdate());
-        
         $statement = DBQuery_Splitter::buildCountQuery($this->getParts(), $flags);
         return new self($statement);
    	}
