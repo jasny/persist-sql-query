@@ -196,7 +196,7 @@ class DBQuery
 			if (!empty($this->partsAdd)) $parts = DBQuery_Splitter::addParts($parts, $this->partsAdd);
 			if (key($parts) == 'select' && empty($parts['columns'])) $parts['columns'] = '*';
             
-			if (isset($parts['on duplicate key update']) && $parts['on duplicate key update'] === true) {
+			if (isset($parts['on duplicate key update']) && trim($parts['on duplicate key update']) === '1') {
                 $columns = DBQuery_Splitter::splitColumns($parts);
                 foreach ($columns as &$column) {
                     $column = "$column = VALUES($column)";
@@ -317,16 +317,19 @@ class DBQuery
    			default:		$part = 'from';
    		}
    		
+        if (!($flags & self::_QUOTE_OPTIONS)) $flags |= self::QUOTE_STRICT;
+        
         list($join, $on) = preg_split('/\s+ON\s+/i', $join) + array(null, null);
         if ($join == '') $join = ',';
         
+        $table = DBQuery_Splitter::quoteIdentifier($table, $flags);
         $on = DBQuery_Splitter::quoteIdentifier($on, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_LOOSE);
    		
    		if ($flags & self::PREPEND && ~$flags & self::REPLACE) {
-   			$this->setPart($part, DBQuery_Splitter::quoteIdentifier($table, $flags) . ($join ? ' ' . $join : ''), $flags);
+   			$this->setPart($part, $table . ($join ? ' ' . $join : ''), $flags);
    			if (!empty($on)) $this->setPart($part, "ON $on", self::APPEND);
    		} else {
-			$this->setPart($part, ($join ? $join . ' ' : '') . DBQuery_Splitter::quoteIdentifier($table, $flags) . (!empty($on) ? " ON $on" : ""), $flags);
+			$this->setPart($part, ($join ? $join . ' ' : '') . $table . (!empty($on) ? " ON $on" : ""), $flags);
    		}
 
 		return $this;
@@ -373,8 +376,8 @@ class DBQuery
    	public function column($column, $flags=0)
    	{
    		if (is_array($column)) {
-            foreach ($column as &$col) {
-                $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+            foreach ($column as $key=>&$col) {
+                $col = DBQuery_Splitter::quoteIdentifier($col, $flags) . (!is_int($key) ? ' AS ' .  DBQuery_Splitter::quoteIdentifier($key, DBQuery::QUOTE_STRICT) : '');
             }
    			
    			$column = join(', ', $column);
@@ -407,6 +410,8 @@ class DBQuery
    	 *  Set:        DBQuery::SET_EXPRESSION or DBQuery::SET_VALUE (default)
    	 *  Quote expr: DBQuery::QUOTE_%
 	 *
+     * For an INSERT INTO ... SELECT query $column should be a DBQuery object
+     * 
      * @param string|array $column  Column name or array(column => value, ...)
 	 * @param mixed        $value   Value or expression (omit if $column is an array)
 	 * @param int          $flags   Options as bitset
@@ -414,6 +419,13 @@ class DBQuery
    	 */
     public function set($column, $value=null, $flags=0)
     {
+        // INSERT INTO ... SELECT ..
+        if ($this->getType() == 'INSERT' && $column instanceof self && $column->getType() == 'SELECT') {
+            $this->setPart('query', $column);
+            return $this;
+        }
+        
+        
    		$empty = $this->getType() == 'INSERT' ? 'DEFAULT' : 'NULL';
    		
    		if (is_array($column)) {
@@ -467,7 +479,7 @@ class DBQuery
         
 		return $this;
    	}
-   	   	
+    
 	/**
 	 * Add criteria as WHERE expression to query statement.
      * 
@@ -559,26 +571,34 @@ class DBQuery
     /**
      * Add ON DUPLICATE KEY UPDATE to an INSERT query.
      * 
-     * @param mixed $column      Column name or array('column' => expression, ...), if omitted col=VALUES(col) is added for each column
+     * @param mixed $column      Column name, array(column, ...) or array('column' => expression, ...)
      * @param mixed $expression  Expression or value  
-     * @param int   $flags       DBQuery::SET_VALUE or DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::QUOTE_%
+     * @param int   $flags       DBQuery::SET_VALUE, DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::QUOTE_%
      * @return DBQuery  $this
      */
     public function onDuplicateKeyUpdate($column=true, $expression=null, $flags=0)
     {
    		if (is_array($column)) {
-            if ($flags & self::SET_EXPRESSION) {
-                foreach ($column as $key=>&$val) {
-                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
+            if (is_int(key($column))) {
+                foreach ($column as &$col) {
+                    $col = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT);
+                    $col .= " = VALUES($col)";
                 }
-   			} else {
+   			} elseif ($flags & self::SET_VALUE) {
                 foreach ($column as $key=>&$val) {
                     $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::quote($val);
                 }
-   			}
+            } else {
+                foreach ($column as $key=>&$val) {
+                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
+                }
+            }
    		} elseif ($column !== true) {
-            $column = DBQuery_Splitter::quoteIdentifier($column, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' .
-              ($flags & self::SET_EXPRESSION ? DBQuery_Splitter::mapIdentifiers($value, $flags) : DBQuery_Splitter::quote($value, 'DEFAULT'));
+            $column = DBQuery_Splitter::quoteIdentifier($column, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT);
+            
+            if (!isset($expression)) $column .= " = VALUES($column)";
+              elseif ($flags & self::SET_VALUE) $column .= ' = ' . DBQuery_Splitter::quote($value, 'DEFAULT');
+              else $column .= ' = ' . DBQuery_Splitter::mapIdentifiers($value, $flags);
         }
         
         $this->setPart('on duplicate key update', $column, $flags);
@@ -611,6 +631,18 @@ class DBQuery
 	{
 		return $this->limit($rowcount, $rowcount * ($page-1));
 	}
+
+
+	/**
+	 * Set the options part of a query.
+	 *
+	 * @param string $options
+	 * @return DBQuery  $this
+	 */
+	public function options($options)
+	{
+		return $this->setPart($options);
+	}
     
     
 	/**
@@ -640,31 +672,6 @@ class DBQuery
         
         return new self($type . (isset($expression) ? " $expression" : ''));
     }
-
-	/**
-	 * Magic method to get or set any part of the query.
-	 * 
-     * @param string $part
-     * @param array  $args
-	 * @return DBQuery  $this
-	 */
-    public function __call($part, $args)
-    {
-        // Get part
-        if (substr($part, 0, 3) == 'get') {
-            return $this->getPart(substr($part, 3));
-        }
-        
-        // Set part
-        $part = preg_replace('/([a-z])([A-Z])/', '$1 $2', $part);
-        list($expression, $flags) = $args + array(null, 0);
-
-        if (DBQuery_Splitter::holdsIdentifiers($part)) $expression = DBQuery_Splitter::quoteIdentifier($expression, $flags);
-        
-        $this->setPart($name, $expression, $flags);
-        
-		return $this;
-    }    
 	
 	
    	//------------- Convert query ------------------------

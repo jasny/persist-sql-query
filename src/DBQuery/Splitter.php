@@ -79,7 +79,7 @@ class DBQuery_Splitter
 			
 			$quoted = preg_replace_callback('/`[^`]*+`|([^`\.]++)/', array('DBQuery_Splitter', 'quoteIdentifier_ab'), $identifier);
 			
-			if (!preg_match('/^(?:`[^`]*`\.)*`[^`]*`$/', $quoted)) throw new Exception("Unable to quote '$identifier' safely");
+			if ($quoted && !preg_match('/^(?:`[^`]*`\.)*`[^`]*`$/', $quoted)) throw new Exception("Unable to quote '$identifier' safely");
 			return $quoted;
 		}
 		
@@ -193,17 +193,6 @@ class DBQuery_Splitter
 		
 		return $type;
 	}
-
-	/**
-	 * Returns true if part can hold identifiers.
-	 * 
-	 * @param string $key
-	 * @return boolean
-	 */
-	public static function holdsIdentifiers($key)
-	{
-		return !in_array($key, array('select', 'insert', 'replace', 'update', 'delete', 'truncate', 'values', 'limit', 'options'));
-	}
 	
 	/**
 	 * Add parts to existing statement
@@ -216,7 +205,7 @@ class DBQuery_Splitter
 	{
 		if (is_array($sql)) $parts =& $sql;
 		  else $parts = self::split($sql);;
-		 
+
 		if (!empty($add)) {
 			foreach ($add as $key=>&$partsAdd) {
 				if (!empty($parts[$key])) $parts[$key] = trim($parts[$key]);
@@ -226,7 +215,7 @@ class DBQuery_Splitter
 				} elseif ($key === 'values') {
 					$parts[$key] = (isset($partsAdd[DBQuery::PREPEND]) ? '(' . join('), (', $partsAdd[DBQuery::PREPEND]) . ')' : '') . (isset($partsAdd[DBQuery::PREPEND]) && !empty($parts[$key]) ? ', ' : '') . $parts[$key] . (isset($partsAdd[DBQuery::APPEND]) && !empty($parts[$key]) ? ', ' : '') .  (isset($partsAdd[DBQuery::APPEND]) ? '(' . join('), (', $partsAdd[DBQuery::APPEND]) . ')' : '');
 				} elseif ($key === 'from' || $key === 'into' || $key === 'table') {
-                    if (!preg_match('/^(\w+|`.*`)$/', $parts[$key])) $parts[$key] = '(' . $parts[$key] . ')';
+                    if (!empty($parts[$key]) && !preg_match('/^(\w+|`.*`)$/', $parts[$key])) $parts[$key] = '(' . $parts[$key] . ')';
 					$parts[$key] = trim((isset($partsAdd[DBQuery::PREPEND]) ? join(' ', $partsAdd[DBQuery::PREPEND]) . ' ' : '') . (!empty($parts[$key]) ? $parts[$key] : '') . (isset($partsAdd[DBQuery::APPEND]) ? ' ' . join(' ', $partsAdd[DBQuery::APPEND]) : ''), ', ');
 				} elseif ($key === 'where' || $key === 'having') {
 					$items = array_merge(isset($partsAdd[DBQuery::PREPEND]) ? $partsAdd[DBQuery::PREPEND] : array(), !empty($parts[$key]) ? array($parts[$key]) : array(), isset($partsAdd[DBQuery::APPEND]) ? $partsAdd[DBQuery::APPEND] : array());
@@ -388,6 +377,8 @@ class DBQuery_Splitter
 	 */
 	public static function join($parts)
 	{
+        $type = self::getQueryType($parts);
+        
 		$sql_parts = array();
 		
 		foreach ($parts as $key=>&$part) {
@@ -395,8 +386,11 @@ class DBQuery_Splitter
             if ($part === '') $part = null;
             
 			if (isset($part) || empty($sql_parts)) {
+                if (($key == 'columns' || $key == 'values') && $type == 'INSERT') $part = '(' . $part . ')';
 				$sql_parts[] .= ($key === 'columns' || $key === 'query' || $key === 'table' || $key === 'options' ? '' : strtoupper($key) . (isset($part) ? " " : "")) . trim($part, " \t\n,");
-			}
+			} else {
+                unset($sql_parts[$key]);
+            }
 		}
 
 		return join(' ', $sql_parts);
@@ -599,8 +593,8 @@ class DBQuery_Splitter
 	public static function splitColumns($sql, $flags=0)
 	{
 		if (is_array($sql) || self::getQueryType($sql)) {
-			$parts = self::split($sql);
-			if (!isset($parts['columns'])) throw new Exception("It's not possible to extract columns of a $type query. $sql");
+			$parts = is_array($sql) ? $sql : self::split($sql);
+			if (!isset($parts['columns'])) throw new Exception("It's not possible to extract columns of a " .  self::getQueryType($sql) . " query.");
 
             $sql = preg_replace('/^\(|\)$/', '', $parts['columns']);
 		}
