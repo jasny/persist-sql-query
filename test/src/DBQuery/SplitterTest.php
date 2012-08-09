@@ -340,16 +340,6 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testHoldsIdentifiers_From()
-    {
-    	$this->assertTrue(DBQuery_Splitter::holdsIdentifiers('from'));
-    }
-    
-    public function testHoldsIdentifiers_Select()
-    {
-    	$this->assertFalse(DBQuery_Splitter::holdsIdentifiers('select'));
-    }
-    
     //--------
     
     
@@ -578,13 +568,13 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
 	public function testSplit_InsertValuesColumns()
     {
 		$parts = DBQuery_Splitter::split("INSERT INTO `test` (`id`, description, `values`) VALUES (NULL, 'abc', 10)");
-    	$this->assertEquals(array('insert'=>'', 'into'=>'`test`', 'columns'=>"(`id`, description, `values`)", 'set'=>'', 'values'=>"(NULL, 'abc', 10)", 'query'=>'', 'on duplicate key update'=>''), array_map('trim', $parts));
+    	$this->assertEquals(array('insert'=>'', 'into'=>'`test`', 'columns'=>"`id`, description, `values`", 'set'=>'', 'values'=>"(NULL, 'abc', 10)", 'query'=>'', 'on duplicate key update'=>''), array_map('trim', $parts));
     }
 
 	public function testSplit_InsertValuesMultiple()
     {
 		$parts = DBQuery_Splitter::split("INSERT INTO `test` (`id`, description, `values`) VALUES (NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)");
-    	$this->assertEquals(array('insert'=>'', 'into'=>'`test`', 'columns'=>"(`id`, description, `values`)", 'set'=>'', 'values'=>"(NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)", 'query'=>'', 'on duplicate key update'=>''), array_map('trim', $parts));
+    	$this->assertEquals(array('insert'=>'', 'into'=>'`test`', 'columns'=>"`id`, description, `values`", 'set'=>'', 'values'=>"(NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)", 'query'=>'', 'on duplicate key update'=>''), array_map('trim', $parts));
     }
     
 	public function testSplit_InsertSetSimple()
@@ -619,13 +609,13 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
 
 	public function testJoinInsertValuesColumns()
     {
-		$sql = DBQuery_Splitter::join(array('insert'=>'', 'into'=>'`test`', 'columns'=>"(`id`, description, `values`)", 'set'=>'', 'values'=>"(NULL, 'abc', 10)", 'query'=>'', 'on duplicate key update'=>''));
+		$sql = DBQuery_Splitter::join(array('insert'=>'', 'into'=>'`test`', 'columns'=>"`id`, description, `values`", 'set'=>'', 'values'=>"(NULL, 'abc', 10)", 'query'=>'', 'on duplicate key update'=>''));
     	$this->assertEquals("INSERT INTO `test` (`id`, description, `values`) VALUES (NULL, 'abc', 10)", $sql);
     }
 
 	public function testJoinInsertValuesMultiple()
     {
-		$sql = DBQuery_Splitter::join(array('insert'=>'', 'into'=>'`test`', 'columns'=>"(`id`, description, `values`)", 'set'=>'', 'values'=>"(NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)", 'query'=>'', 'on duplicate key update'=>''));
+		$sql = DBQuery_Splitter::join(array('insert'=>'', 'into'=>'`test`', 'columns'=>"`id`, description, `values`", 'set'=>'', 'values'=>"(NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)", 'query'=>'', 'on duplicate key update'=>''));
     	$this->assertEquals("INSERT INTO `test` (`id`, description, `values`) VALUES (NULL, 'abc', 10), (NULL, 'bb', 20), (NULL, 'cde', 30)", $sql);
     }
     

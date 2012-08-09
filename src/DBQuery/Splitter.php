@@ -386,7 +386,7 @@ class DBQuery_Splitter
             if ($part === '') $part = null;
             
 			if (isset($part) || empty($sql_parts)) {
-                if (($key == 'columns' || $key == 'values') && $type == 'INSERT') $part = '(' . $part . ')';
+                if ($key == 'columns' && $type == 'INSERT') $part = '(' . $part . ')';
 				$sql_parts[] .= ($key === 'columns' || $key === 'query' || $key === 'table' || $key === 'options' ? '' : strtoupper($key) . (isset($part) ? " " : "")) . trim($part, " \t\n,");
 			} else {
                 unset($sql_parts[$key]);
@@ -451,7 +451,7 @@ class DBQuery_Splitter
         if (!preg_match('/^\s*' .
 		  '(INSERT|REPLACE)\b((?:\s+(?:LOW_PRIORITY|DELAYED|HIGH_PRIORITY|IGNORE)\b)*)\s*' .
           '(?:\bINTO\b\s*(' . self::REGEX_VALUES . '))?' .
-		  '(\(\s*' . self::REGEX_VALUES . '\)\s*)?' .
+		  '(?:\((\s*' . self::REGEX_VALUES . ')\)\s*)?' .
 		  '(?:\bSET\b\s*(' . self::REGEX_VALUES . '))?' .
 		  '(?:\bVALUES\s*(\(\s*' . self::REGEX_VALUES . '\)\s*(?:,\s*\(' . self::REGEX_VALUES . '\)\s*)*))?' .
 		  '(\bSELECT\b\s*' . self::REGEX_VALUES . '|\#sub\d+\s*)?' .

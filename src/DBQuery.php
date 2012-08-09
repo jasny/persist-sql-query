@@ -373,7 +373,7 @@ class DBQuery
 	 * @param int   $flags   Options as bitset
 	 * @return DBQuery  $this
    	 */
-   	public function column($column, $flags=0)
+   	public function columns($column, $flags=0)
    	{
    		if (is_array($column)) {
             foreach ($column as $key=>&$col) {
@@ -391,15 +391,15 @@ class DBQuery
    	}
 
     /**
-   	 * Alias of DBQuery::column().
+   	 * Alias of DBQuery::columns().
 	 *
 	 * @param mixed $column  Column name or array(column, ...)
 	 * @param int   $flags   Options as bitset
 	 * @return DBQuery  $this
    	 */
-   	public function columns($column, $flags=0)
+   	public function column($column, $flags=0)
    	{
-        return $this->column($column, $flags);
+        return $this->columns($column, $flags);
     }
     
    	/**
