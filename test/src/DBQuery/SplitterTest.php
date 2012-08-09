@@ -75,70 +75,70 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
     }
     
     
-    public function testQuoteIdentifier_Simple()
+    public function testbackquote_Simple()
     {
-    	$this->assertEquals('`test`', DBQuery_Splitter::quoteIdentifier("test"));
+    	$this->assertEquals('`test`', DBQuery_Splitter::backquote("test"));
     }
 
-    public function testQuoteIdentifier_Quoted()
+    public function testbackquote_Quoted()
     {
-    	$this->assertEquals('`test`', DBQuery_Splitter::quoteIdentifier("`test`"));
+    	$this->assertEquals('`test`', DBQuery_Splitter::backquote("`test`"));
     }
     
-    public function testQuoteIdentifier_TableColumn()
+    public function testbackquote_TableColumn()
     {
-    	$this->assertEquals('`abc`.`test`', DBQuery_Splitter::quoteIdentifier("abc.test"));
+    	$this->assertEquals('`abc`.`test`', DBQuery_Splitter::backquote("abc.test"));
     }
 
-    public function testQuoteIdentifier_TableColumn_Quoted()
+    public function testbackquote_TableColumn_Quoted()
     {
-    	$this->assertEquals('`abc`.`test`', DBQuery_Splitter::quoteIdentifier("`abc`.`test`"));
+    	$this->assertEquals('`abc`.`test`', DBQuery_Splitter::backquote("`abc`.`test`"));
     }
     
-    public function testQuoteIdentifier_WithAlias()
+    public function testbackquote_WithAlias()
     {
-		$this->assertEquals('`abc`.`test` AS `def`', DBQuery_Splitter::quoteIdentifier("abc.test AS def"));
+		$this->assertEquals('`abc`.`test` AS `def`', DBQuery_Splitter::backquote("abc.test AS def"));
     }
 
-    public function testQuoteIdentifier_Function()
+    public function testbackquote_Function()
     {
-    	$this->assertEquals('count(`abc`.`test`) AS `count`', DBQuery_Splitter::quoteIdentifier("count(abc.test) AS count"));
+    	$this->assertEquals('count(`abc`.`test`) AS `count`', DBQuery_Splitter::backquote("count(abc.test) AS count"));
     }
 
-    public function testQuoteIdentifier_Cast()
+    public function testbackquote_Cast()
     {
-    	$this->assertEquals('`qqq`, cast(`abc`.`test` AS DATETIME)', DBQuery_Splitter::quoteIdentifier("qqq, cast(`abc`.test AS DATETIME)"));
+    	$this->assertEquals('`qqq`, cast(`abc`.`test` AS DATETIME)', DBQuery_Splitter::backquote("qqq, cast(`abc`.test AS DATETIME)"));
     }
 
-    public function testQuoteIdentifier_Cast_Confuse()
+    public function testbackquote_Cast_Confuse()
     {
-    	$this->assertEquals('`qqq`, cast(myfn(`abc`.`test` as `myarg`) AS DATETIME) AS `date`', DBQuery_Splitter::quoteIdentifier("qqq, cast(myfn(`abc`.test as myarg) AS DATETIME) AS date"));
+    	$this->assertEquals('`qqq`, cast(myfn(`abc`.`test` as `myarg`) AS DATETIME) AS `date`', DBQuery_Splitter::backquote("qqq, cast(myfn(`abc`.test as myarg) AS DATETIME) AS date"));
     }
     
-    public function testQuoteIdentifier_Expression()
+    public function testbackquote_Expression()
     {
-    	$this->assertEquals('`abc`.`test` - `def`.`total`*10 AS `grandtotal`', DBQuery_Splitter::quoteIdentifier("abc.test - def.total*10 AS grandtotal"));
+    	$this->assertEquals('`abc`.`test` - `def`.`total`*10 AS `grandtotal`', DBQuery_Splitter::backquote("abc.test - def.total*10 AS grandtotal"));
     }
 
-    public function testQuoteIdentifier_None()
+    public function testbackquote_None()
     {
-    	$this->assertEquals('abc', DBQuery_Splitter::quoteIdentifier("abc", DBQuery::QUOTE_NONE));
+    	$this->assertEquals('abc', DBQuery_Splitter::backquote("abc", DBQuery::BACKQUOTE_NONE));
     }
     
-    public function testQuoteIdentifier_Strict()
+    public function testbackquote_Strict()
     {
-    	$this->assertEquals('`abd-def*10`', DBQuery_Splitter::quoteIdentifier("abd-def*10", DBQuery::QUOTE_STRICT));
+    	$this->assertEquals('`abd-def*10`', DBQuery_Splitter::backquote("abd-def*10", DBQuery::BACKQUOTE_STRICT));
     }
 
-    public function testQuoteIdentifier_Strict_TableColumn()
+    public function testbackquote_Strict_TableColumn()
     {
-    	$this->assertEquals('`abc`.`test-10`', DBQuery_Splitter::quoteIdentifier("`abc`.test-10", DBQuery::QUOTE_STRICT));
+    	$this->assertEquals('`abc`.`test-10`', DBQuery_Splitter::backquote("`abc`.test-10", DBQuery::BACKQUOTE_STRICT));
     }
     
-    public function testQuoteIdentifier_Strict_Fail()
+    public function testbackquote_Strict_Fail()
     {
     	$this->setExpectedException('Exception', "Unable to quote '`abc`.`test`-10' safely");
-    	DBQuery_Splitter::quoteIdentifier("`abc`.`test`-10", DBQuery::QUOTE_STRICT);
+    	DBQuery_Splitter::backquote("`abc`.`test`-10", DBQuery::BACKQUOTE_STRICT);
     }
 
     

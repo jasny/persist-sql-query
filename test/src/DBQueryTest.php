@@ -35,50 +35,64 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("SELECT `abc` FROM `test`", (string)$query);
     }
 
+    public function testSelectStatement_ReplaceTable()
+    {
+    	$query = new DBQuery("SELECT id, description FROM `test` WHERE xy > 10");
+    	$query->from("abc");
+		$this->assertEquals("SELECT id, description FROM `abc` WHERE xy > 10", (string)$query);
+    }
+
     public function testSelectStatement_AddTable()
     {
         // Removing the extra space between table and comma, would make the code slower.
         
     	$query = new DBQuery("SELECT id, description FROM `test` WHERE xy > 10");
-    	$query->from("abc");
+    	$query->from("abc", DBQuery::APPEND);
 		$this->assertEquals("SELECT id, description FROM `test` , `abc` WHERE xy > 10", (string)$query);
     }
 
-    public function testSelectStatement_AddTable_LeftJoin()
+    public function testSelectStatement_InnerJoin()
+    {
+		$query = new DBQuery("SELECT id, description FROM `test`");
+    	$query->innerJoin("abc");
+		$this->assertEquals("SELECT id, description FROM `test` INNER JOIN `abc`", (string)$query);
+    }
+
+    public function testSelectStatement_InnerJoin_On()
+    {
+		$query = new DBQuery("SELECT id, description FROM `test`");
+    	$query->innerJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("SELECT id, description FROM `test` INNER JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }
+
+    public function testSelectStatement_LeftJoin()
     {
     	$query = new DBQuery("SELECT id, description FROM `test` WHERE xy > 10");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest");
+    	$query->leftJoin("abc", "test.id = abc.idTest");
 		$this->assertEquals("SELECT id, description FROM `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` WHERE xy > 10", (string)$query);
     }
 
-    public function testSelectStatement_AddTable_AsString()
+    public function testSelectStatement_LeftJoin_Again()
     {
 		$query = new DBQuery("SELECT id, description FROM `test` LEFT JOIN x ON test.x_id = x.id");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest");
+    	$query->leftJoin("abc", "test.id = abc.idTest");
 		$this->assertEquals("SELECT id, description FROM (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
     }
 
-    public function testSelectStatement_AddTable_StraightJoin()
-    {
-		$query = new DBQuery("SELECT id, description FROM `test`");
-    	$query->from("abc", "STRAIGHT JOIN");
-		$this->assertEquals("SELECT id, description FROM `test` STRAIGHT JOIN `abc`", (string)$query);
-    }
-
-    public function testSelectStatement_AddTable_Replace()
-    {
-		$query = new DBQuery("SELECT id, description FROM `test`");
-    	$query->from("abc", null, DBQuery::REPLACE);
-		$this->assertEquals("SELECT id, description FROM `abc`", (string)$query);
-    }
-
-    public function testSelectStatement_AddTable_Prepend()
+    public function testSelectStatement_LeftJoin_Prepend()
     {
 		$query = new DBQuery("SELECT id, description FROM `test` LEFT JOIN x ON test.x_id = x.id");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest", DBQuery::PREPEND);
+    	$query->leftJoin("abc", "test.id = abc.idTest", DBQuery::PREPEND);
 		$this->assertEquals("SELECT id, description FROM `abc` LEFT JOIN (`test` LEFT JOIN x ON test.x_id = x.id) ON `test`.`id` = `abc`.`idTest`", (string)$query);
     }
         
+    public function testSelectStatement_RightJoin()
+    {
+    	$query = new DBQuery("SELECT id, description FROM `test` WHERE xy > 10");
+    	$query->rightJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("SELECT id, description FROM `test` RIGHT JOIN `abc` ON `test`.`id` = `abc`.`idTest` WHERE xy > 10", (string)$query);
+    }
+
     public function testSelectStatement_Where_Simple()
     {
     	$query = new DBQuery("SELECT id, description FROM `test`");
@@ -216,6 +230,13 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
     //--------
 
     
+    public function testInsertStatement_ReplaceTable()
+    {
+    	$query = new DBQuery("INSERT INTO `test` SET description='abc', type_id=10");
+    	$query->into("abc");
+		$this->assertEquals("INSERT INTO `abc` SET description='abc', type_id=10", (string)$query);
+    }
+
     public function testInsertStatement_AddSet()
     {
     	$query = new DBQuery("INSERT INTO `test` SET description='abc', type_id=10");
@@ -241,6 +262,13 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
     //--------
 
     
+    public function testUpdateStatement_AddSet()
+    {
+    	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
+    	$query->set("abc", 12);
+		$this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12", (string)$query);
+    }
+    
     public function testUpdateStatement_AddSet_Simple()
     {
     	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
@@ -248,7 +276,7 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc`=12", (string)$query);
     }
         	
-    public function testUpdateStatement_AddSet()
+    public function testUpdateStatement_AddSet_Array()
     {
 		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10 WHERE xyz=10");
     	$query->set(array('abc'=>12, 'def'=>"a"));
@@ -262,41 +290,62 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("UPDATE `test` SET `abc`=12 WHERE xyz=10", (string)$query);    	
     }
 
-    public function testUpdateStatement_AddTable()
-    {
-    	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10 WHERE xy > 10");
-    	$query->table("abc", "LEFT JOIN ON test.id = abc.idTest");
-		$this->assertEquals("UPDATE `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10 WHERE xy > 10", (string)$query);
-    }
-
-    public function testUpdateStatement_AddTable_String()
-    {
-		$query = new DBQuery("UPDATE `test` LEFT JOIN x ON test.x_id = x.id SET description='abc', type_id=10");
-    	$query->table("abc", "LEFT JOIN ON test.id = abc.idTest");
-		$this->assertEquals("UPDATE (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10", (string)$query);
-    }
-
-    public function testUpdateStatement_AddTable_StraightJoin()
+    public function testUpdateStatement_ReplaceTable()
     {
 		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
-    	$query->table("abc", "STRAIGHT JOIN");
-		$this->assertEquals("UPDATE `test` STRAIGHT JOIN `abc` SET description='abc', type_id=10", (string)$query);
-    }
-
-    public function testUpdateStatement_AddTable_Replace()
-    {
-		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
-    	$query->table("abc", null, DBQuery::REPLACE);
+    	$query->table("abc");
 		$this->assertEquals("UPDATE `abc` SET description='abc', type_id=10", (string)$query);
     }
 
-    public function testUpdateStatement_AddTable_Prepend()
+    public function testUpdateStatement_AddTable()
+    {
+		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
+    	$query->table("abc", DBQuery::APPEND);
+		$this->assertEquals("UPDATE `test` , `abc` SET description='abc', type_id=10", (string)$query);
+    }
+
+    public function testUpdateStatement_InnerJoin()
+    {
+		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
+    	$query->innerJoin("abc");
+		$this->assertEquals("UPDATE `test` INNER JOIN `abc` SET description='abc', type_id=10", (string)$query);
+    }
+
+    public function testUpdateStatement_InnerJoin_On()
+    {
+		$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
+    	$query->innerJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("UPDATE `test` INNER JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10", (string)$query);
+    }
+
+    public function testUpdateStatement_LeftJoin()
+    {
+    	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10 WHERE xy > 10");
+    	$query->leftJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("UPDATE `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10 WHERE xy > 10", (string)$query);
+    }
+
+    public function testUpdateStatement_LeftJoin_Again()
     {
 		$query = new DBQuery("UPDATE `test` LEFT JOIN x ON test.x_id = x.id SET description='abc', type_id=10");
-    	$query->table("abc", "LEFT JOIN ON test.id = abc.idTest", DBQuery::PREPEND);
+    	$query->leftJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("UPDATE (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10", (string)$query);
+    }
+
+    public function testUpdateStatement_LeftJoin_Prepend()
+    {
+		$query = new DBQuery("UPDATE `test` LEFT JOIN x ON test.x_id = x.id SET description='abc', type_id=10");
+    	$query->leftJoin("abc", "test.id = abc.idTest", DBQuery::PREPEND);
 		$this->assertEquals("UPDATE `abc` LEFT JOIN (`test` LEFT JOIN x ON test.x_id = x.id) ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10", (string)$query);
     }
-    
+
+    public function testUpdateStatement_RightJoin()
+    {
+    	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10 WHERE xy > 10");
+    	$query->rightJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("UPDATE `test` RIGHT JOIN `abc` ON `test`.`id` = `abc`.`idTest` SET description='abc', type_id=10 WHERE xy > 10", (string)$query);
+    }
+
     public function testUpdateStatement_Where_Simple()
     {
     	$query = new DBQuery("UPDATE `test` SET description='abc', type_id=10");
@@ -350,38 +399,52 @@ class DBQueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("DELETE `test`.* FROM `test`", (string)$query);
     }    
 
-    public function testDeleteStatement_AddTable()
-    {
-    	$query = new DBQuery("DELETE FROM `test`");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest");
-		$this->assertEquals("DELETE FROM `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
-    }    
-
-    public function testDeleteStatement_AddTable_String()
-    {
-		$query = new DBQuery("DELETE FROM `test` LEFT JOIN x ON test.x_id = x.id");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest");
-		$this->assertEquals("DELETE FROM (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
-    }    
-
-    public function testDeleteStatement_AddTable_StraightJoin()
+    public function testDeleteStatement_ReplaceTable()
     {
 		$query = new DBQuery("DELETE FROM `test`");
-    	$query->from("abc", "STRAIGHT JOIN");
-		$this->assertEquals("DELETE FROM `test` STRAIGHT JOIN `abc`", (string)$query);
-    }    
-
-    public function testDeleteStatement_AddTable_Replace()
-    {
-		$query = new DBQuery("DELETE FROM `test`");
-    	$query->from("abc", null, DBQuery::REPLACE);
+    	$query->from("abc");
 		$this->assertEquals("DELETE FROM `abc`", (string)$query);
     }    
 
-    public function testDeleteStatement_AddTable_Prepend()
+    public function testDeleteStatement_AddTable()
+    {
+		$query = new DBQuery("DELETE FROM `test`");
+    	$query->from("abc", DBQuery::APPEND);
+		$this->assertEquals("DELETE FROM `test` , `abc`", (string)$query);
+    }    
+
+    public function testDeleteStatement_InnerJoin()
+    {
+		$query = new DBQuery("DELETE FROM `test`");
+    	$query->innerJoin("abc");
+		$this->assertEquals("DELETE FROM `test` INNER JOIN `abc`", (string)$query);
+    }    
+
+    public function testDeleteStatement_InnerJoin_ON()
+    {
+		$query = new DBQuery("DELETE FROM `test`");
+    	$query->innerJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("DELETE FROM `test` INNER JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }    
+
+    public function testDeleteStatement_LeftJoin()
+    {
+    	$query = new DBQuery("DELETE FROM `test`");
+    	$query->leftJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("DELETE FROM `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }    
+
+    public function testDeleteStatement_LeftJoin_Again()
     {
 		$query = new DBQuery("DELETE FROM `test` LEFT JOIN x ON test.x_id = x.id");
-    	$query->from("abc", "LEFT JOIN ON test.id = abc.idTest", DBQuery::PREPEND);
+    	$query->leftJoin("abc", "test.id = abc.idTest");
+		$this->assertEquals("DELETE FROM (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }    
+
+    public function testDeleteStatement_LeftJoin_Prepend()
+    {
+		$query = new DBQuery("DELETE FROM `test` LEFT JOIN x ON test.x_id = x.id");
+    	$query->leftJoin("abc", "test.id = abc.idTest", DBQuery::PREPEND);
 		$this->assertEquals("DELETE FROM `abc` LEFT JOIN (`test` LEFT JOIN x ON test.x_id = x.id) ON `test`.`id` = `abc`.`idTest`", (string)$query);
     }
     

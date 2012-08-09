@@ -62,47 +62,52 @@ class DBQuery_Splitter
 	 * Quotes a string so it can be used as a table or column name.
 	 * Dots are seen as seperator and are kept out of quotes.
 	 * 
-	 * Doesn't quote expressions without DBQuery::QUOTE_STRICT. This means it is not secure without this option. 
+	 * Doesn't quote expressions without DBQuery::BACKQUOTE_STRICT. This means it is not secure without this option. 
 	 * 
 	 * @param string   $identifier
-	 * @param int      $flags       DBQuery::QUOTE_%
+	 * @param int      $flags       DBQuery::BACKQUOTE_%
 	 * @return string
 	 * 
 	 * @todo Cleanup misquoted TRIM function
 	 */
-	public static function quoteIdentifier($identifier, $flags=0)
+	public static function backquote($identifier, $flags=0)
 	{
 		// Strict
-		if ($flags & DBQuery::QUOTE_STRICT) {
+		if ($flags & DBQuery::BACKQUOTE_STRICT) {
 			$identifier = trim($identifier);
 			if (preg_match('/^\w++$/', $identifier)) return "`$identifier`";
 			
-			$quoted = preg_replace_callback('/`[^`]*+`|([^`\.]++)/', array('DBQuery_Splitter', 'quoteIdentifier_ab'), $identifier);
+			$quoted = preg_replace_callback('/`[^`]*+`|([^`\.]++)/', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
 			
 			if ($quoted && !preg_match('/^(?:`[^`]*`\.)*`[^`]*`$/', $quoted)) throw new Exception("Unable to quote '$identifier' safely");
 			return $quoted;
 		}
 		
 		// None
-		if (($flags & DBQuery::_QUOTE_OPTIONS) == DBQuery::QUOTE_NONE) {
+		if (($flags & DBQuery::_BACKQUOTE_OPTIONS) == DBQuery::BACKQUOTE_NONE) {
 		 	return $identifier;
 		}
+
+        // Words
+		if ($flags & DBQuery::BACKQUOTE_WORDS) {
+            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|ASC|DESC|BINARY)(?<=^|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+            return $quoted;
+		}
         
-        // Loose
-		$quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array('DBQuery_Splitter', 'quoteIdentifier_ab'), $identifier);
-		if (preg_match('/\bCAST\s*\(/i', $quoted)) $quoted = self::quoteIdentifier_castCleanup($quoted);
-        
+        // Smart
+		$quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+		if (preg_match('/\bCAST\s*\(/i', $quoted)) $quoted = self::backquote_castCleanup($quoted);
         return $quoted;
 	}
 	
     /**
-     * Callback function for quoteIdentifier.
+     * Callback function for backquote.
 	 * @ignore
      * 
      * @param array $match
      * @return string
      */
-    protected static function quoteIdentifier_ab($match)
+    protected static function backquote_ab($match)
     {
         return !empty($match[1]) ? '`' . $match[1] . '`' : $match[0];
     }
@@ -114,12 +119,12 @@ class DBQuery_Splitter
 	 * @param string|array $match  Match or identifier
 	 * @return string  
 	 */
-	protected static function quoteIdentifier_castCleanup($match)
+	protected static function backquote_castCleanup($match)
 	{
 		if (is_array($match) && !isset($match[2])) return $match[0];
 		if (!is_array($match)) $match = array(2=>$match);
 		
-		$match[2] = preg_replace_callback('/((?:' . self::REGEX_QUOTED . '|[^()`"\']++)*)(?:\(((?R)*)\))?/i', array(__CLASS__, 'quoteIdentifier_castCleanup'), $match[2]);
+		$match[2] = preg_replace_callback('/((?:' . self::REGEX_QUOTED . '|[^()`"\']++)*)(?:\(((?R)*)\))?/i', array(__CLASS__, 'backquote_castCleanup'), $match[2]);
 		if (!empty($match[1]) && preg_match('/\CAST\s*$/i', $match[1])) $match[2] = preg_replace('/(\bAS\b\s*)`([^`]++)`(\s*)$/i', '\1\2\3', $match[2]);
 		
 		return isset($match[0]) ? "{$match[1]}({$match[2]})" : $match[2]; 
@@ -234,7 +239,7 @@ class DBQuery_Splitter
      * 
 	 * @param mixed $column Expression, column name, column number, expression with placeholders or array(column=>value, ...)
 	 * @param mixed $value  Value or array of values
-	 * @param int   $flags  DBQuery::QUOTE_%
+	 * @param int   $flags  DBQuery::BACKQUOTE_%
 	 * @return string
 	 */
 	public static function buildWhere($column, $value=null, $flags=0)
@@ -250,7 +255,7 @@ class DBQuery_Splitter
         }
 
         $placeholders = self::countPlaceholders($column);
-        $column = self::quoteIdentifier($column, $flags);
+        $column = self::backquote($column, $flags);
         
 		// Simple case
         if ($placeholders == 0) {

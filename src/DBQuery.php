@@ -9,33 +9,40 @@
 class DBQuery
 {
 	/** Prepend to part */
-	const PREPEND = 1;
+	const PREPEND = 0x1;
 	/** Append to part */
-	const APPEND = 2;
+	const APPEND = 0x2;
 	/** Replace part */
-	const REPLACE = 4;
-	
-	/** Don't quote identifiers at all */
-	const QUOTE_NONE = 0x100;
-	/** Quote identifiers inside expressions */
-	const QUOTE_LOOSE = 0x200;
-	/** Quote string as field/table name */
-	const QUOTE_STRICT = 0x400;
+	const REPLACE = 0x4;
 	/**
-     * Any of the quote options
+     * Any of the placement options
      * @ignore
      */
-	const _QUOTE_OPTIONS = 0x700;
+	const _PLACEMENT_OPTIONS = 0x7;
+    
+	/** Don't quote identifiers at all */
+	const BACKQUOTE_NONE = 0x100;
+	/** Quote identifiers inside expressions */
+	const BACKQUOTE_SMART = 0x200;
+	/** Quote each word as identifier */
+	const BACKQUOTE_WORDS = 0x400;
+	/** Quote string as field/table name */
+	const BACKQUOTE_STRICT = 0x800;
+	/**
+     * Any of the backquote options
+     * @ignore
+     */
+	const _BACKQUOTE_OPTIONS = 0xF00;
 	
 	/** Quote value as value when adding a column in a '[UPDATE|INSERT] SET ...' query */
-	const SET_VALUE = 0x800;
+	const SET_VALUE = 0x1000;
 	/** Quote value as expression when adding a column in a '[UPDATE|INSERT] SET ...' query */
-	const SET_EXPRESSION = 0x1000;
+	const SET_EXPRESSION = 0x2000;
 	
 	/** Unquote values */
-	const UNQUOTE = 0x2000;
+	const UNQUOTE = 0x4000;
 	/** Cast values */
-	const CAST = 0x4000;
+	const CAST = 0x8000;
 	
     /** Count all rows ignoring limit */
     const ALL_ROWS = 1;
@@ -276,7 +283,7 @@ class DBQuery
 	 * 
 	 * @param mixed  $part       The key identifying the part
 	 * @param string $expression
-	 * @param int    $flags      DBQuery::APPEND (default), DBQuery::PREPEND or DBQuery::REPLACE + DBQuery::QUOTE_%
+	 * @param int    $flags      DBQuery::APPEND (default), DBQuery::PREPEND or DBQuery::REPLACE + DBQuery::BACKQUOTE_%
 	 */
 	protected function setPart($part, $expression, $flags=DBQuery::APPEND)
 	{
@@ -295,79 +302,122 @@ class DBQuery
         }
 	}
     
+    
 	/**
-	 * Add a join statement to the from part.
+	 * Add a table.
      * 
-     * { @example
-     *   $query = new DBQuery("SELECT");
-     *   $query->from("foo");
-     *   $query->from("bar", "INNER JOIN ON foo.id = bar.foo_id");
-     * }}
-	 *
-	 * @param string $table  tablename
-	 * @param string $join   JOIN ON that.field = this.field
-	 * @param int    $flags  DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @param string $table
+	 * @param string $joinType  LEFT JOIN, INNER JOIN, etc
+	 * @param string $joinOn    that.field = this.field
+	 * @param int    $flags     DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_% options as bitset.
 	 * @return DBQuery  $this
 	 */
-	public function from($table, $join=null, $flags=0)
-   	{
+    protected function addTable($table, $joinType=null, $joinOn=null, $flags=0)
+    {
    		switch ($this->getType()) {
    			case 'INSERT':	$part = 'into'; break;
    			case 'UPDATE':	$part = 'table'; break;
    			default:		$part = 'from';
    		}
    		
-        if (!($flags & self::_QUOTE_OPTIONS)) $flags |= self::QUOTE_STRICT;
-        
-        list($join, $on) = preg_split('/\s+ON\s+/i', $join) + array(null, null);
-        if ($join == '') $join = ',';
-        
-        $table = DBQuery_Splitter::quoteIdentifier($table, $flags);
-        $on = DBQuery_Splitter::quoteIdentifier($on, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_LOOSE);
+        if (!($flags & self::_BACKQUOTE_OPTIONS)) $flags |= self::BACKQUOTE_WORDS;
+        if (!($flags & self::_PLACEMENT_OPTIONS)) $flags |= $joinType ? self::APPEND : self::REPLACE;
+        if (!isset($joinType) && ~$flags & self::REPLACE) $joinType = ',';
    		
-   		if ($flags & self::PREPEND && ~$flags & self::REPLACE) {
-   			$this->setPart($part, $table . ($join ? ' ' . $join : ''), $flags);
-   			if (!empty($on)) $this->setPart($part, "ON $on", self::APPEND);
+        $table = DBQuery_Splitter::backquote($table, $flags);
+        $joinOn = DBQuery_Splitter::backquote($joinOn, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_SMART);
+        
+        if ($flags & self::REPLACE) {
+            $this->setPart($part, $table, $flags);
+        } elseif ($flags & self::PREPEND) {
+   			$this->setPart($part, $table . ($joinType ? ' ' . $joinType : ''), $flags);
+   			if (!empty($joinOn)) $this->setPart($part, "ON $joinOn", self::APPEND);
    		} else {
-			$this->setPart($part, ($join ? $join . ' ' : '') . $table . (!empty($on) ? " ON $on" : ""), $flags);
+			$this->setPart($part, $joinType . ' ' . $table . (!empty($joinOn) ? " ON $joinOn" : ""), $flags);
    		}
 
 		return $this;
+    }
+    
+	/**
+	 * Set the FROM table of a SELECT query.
+     * 
+	 * @param string $table  tablename
+	 * @param int    $flags  DBQuery::BACKQUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+	public function from($table, $flags=0)
+   	{
+        return $this->addTable($table, null, null, $flags);
    	}
     
 	/**
-	 * Alias of DBQuery::from().
+	 * Set the table of an UPDATE query.
      * 
 	 * @param string $table    tablename
-	 * @param string $join     JOIN ON that.field = this.field
-	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_% options as bitset.
 	 * @return DBQuery  $this
 	 */
-    public function table($table, $join=null, $flags=0)
+    public function table($table, $flags=0)
     {
-        return $this->from($table, $join, $flags);
+        return $this->addTable($table, null, null, $flags);
     }
 	
 	/**
-	 * Alias of DBQuery::from().
+	 * Set the INTO table of an INSERT query.
      * 
 	 * @param string $table    tablename
-	 * @param string $join     JOIN ON that.field = this.field
-	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_% options as bitset.
+	 * @param int    $flags    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_% options as bitset.
 	 * @return DBQuery  $this
 	 */
-    public function into($table, $join=null, $flags=0)
+    public function into($table, $flags=0)
     {
-        return $this->from($table, $join, $flags);
+        return $this->addTable($table, null, null, $flags);
     }
 	
+	/**
+	 * Add an inner join to the query.
+     * 
+	 * @param string $table  tablename
+	 * @param int    $flags  DBQuery::BACKQUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+	public function innerJoin($table, $on=null, $flags=0)
+   	{
+        return $this->addTable($table, "INNER JOIN", $on, $flags);
+   	}
+    
+	/**
+	 * Add an inner join to the query.
+     * 
+	 * @param string $table  tablename
+	 * @param int    $flags  DBQuery::BACKQUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+	public function leftJoin($table, $on, $flags=0)
+   	{
+        return $this->addTable($table, "LEFT JOIN", $on, $flags);
+   	}
+    
+	/**
+	 * Add an inner join to the query.
+     * 
+	 * @param string $table  tablename
+	 * @param int    $flags  DBQuery::BACKQUOTE_% options as bitset.
+	 * @return DBQuery  $this
+	 */
+	public function rightJoin($table, $on, $flags=0)
+   	{
+        return $this->addTable($table, "RIGHT JOIN", $on, $flags);
+   	}
+    
     
     /**
    	 * Add column(s) to query statement.
    	 * 
    	 * Flags:
    	 *  Position:   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default)
-   	 *  Quote expr: DBQuery::QUOTE_%
+   	 *  Quote expr: DBQuery::BACKQUOTE_%
 	 *
 	 * @param mixed $column  Column name or array(column, ...)
 	 * @param int   $flags   Options as bitset
@@ -377,12 +427,12 @@ class DBQuery
    	{
    		if (is_array($column)) {
             foreach ($column as $key=>&$col) {
-                $col = DBQuery_Splitter::quoteIdentifier($col, $flags) . (!is_int($key) ? ' AS ' .  DBQuery_Splitter::quoteIdentifier($key, DBQuery::QUOTE_STRICT) : '');
+                $col = DBQuery_Splitter::backquote($col, $flags) . (!is_int($key) ? ' AS ' .  DBQuery_Splitter::backquote($key, DBQuery::BACKQUOTE_STRICT) : '');
             }
    			
    			$column = join(', ', $column);
    		} else {
-            $column = DBQuery_Splitter::quoteIdentifier($column, $flags);
+            $column = DBQuery_Splitter::backquote($column, $flags);
         }
    		
 		$this->setPart('columns', $column, $flags);
@@ -408,7 +458,7 @@ class DBQuery
    	 * Flags:
    	 *  Position:   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default)
    	 *  Set:        DBQuery::SET_EXPRESSION or DBQuery::SET_VALUE (default)
-   	 *  Quote expr: DBQuery::QUOTE_%
+   	 *  Quote expr: DBQuery::BACKQUOTE_%
 	 *
      * For an INSERT INTO ... SELECT query $column should be a DBQuery object
      * 
@@ -432,20 +482,20 @@ class DBQuery
             if ($flags & self::SET_EXPRESSION) {
                 foreach ($column as $key=>&$val) {
                     $kv = strpos($key, '=') !== false;
-                    $val = DBQuery_Splitter::quoteIdentifier($key, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags));
+                    $val = DBQuery_Splitter::backquote($key, $kv ? $flags : $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags));
                 }
    			} else {
                 foreach ($column as $key=>&$val) {
                     $kv = strpos($key, '=') !== false;
-                    $val = DBQuery_Splitter::quoteIdentifier($key, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::quote($val));
+                    $val = DBQuery_Splitter::backquote($key, $kv ? $flags : $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ($kv ? '' : ' = ' . DBQuery_Splitter::quote($val));
                 }
    			}
    			
    			$column = join(', ', $column);
    		} else {
             $kv = strpos($column, '=') !== false;
-            $column = DBQuery_Splitter::quoteIdentifier($column, $kv ? $flags : $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT)
-              . ($kv ? '' : ' = ' . ($flags & self::SET_EXPRESSION ? DBQuery_Splitter::quoteIdentifier($value, $flags) : DBQuery_Splitter::quote($value, $empty)));
+            $column = DBQuery_Splitter::backquote($column, $kv ? $flags : $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT)
+              . ($kv ? '' : ' = ' . ($flags & self::SET_EXPRESSION ? DBQuery_Splitter::backquote($value, $flags) : DBQuery_Splitter::quote($value, $empty)));
         }
    		
 		$this->setPart('set', $column, $flags);
@@ -494,7 +544,7 @@ class DBQuery
      * 
 	 * @param mixed $column  Expression, column name, column number, expression with placeholders or array(column=>value, ...)
 	 * @param mixed $value   Value or array of values
-	 * @param int   $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @param int   $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_%
 	 * @return DBQuery  $this
 	 */
 	public function where($column, $value=null, $flags=0)
@@ -511,7 +561,7 @@ class DBQuery
 	 * 
 	 * @param mixed $column  Expression, column name, column number, expression with placeholders or array(column=>value, ...)
 	 * @param mixed $value   Value or array of values
-	 * @param int   $flag    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @param int   $flag    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_%
 	 * @return DBQuery  $this
 	 */
 	public final function having($column, $value=null, $flags=0)
@@ -526,15 +576,15 @@ class DBQuery
 	 * Add GROUP BY expression to query statement.
 	 *
 	 * @param string|array $column  GROUP BY expression (string) or array with columns
-	 * @param int          $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::QUOTE_%
+	 * @param int          $flags   DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_%
 	 * @return DBQuery  $this
 	 */
 	public function groupBy($column, $flags=0)
 	{
 		if (is_scalar($column)) {
-			$column = DBQuery_Splitter::quoteIdentifier($column, $flags);
+			$column = DBQuery_Splitter::backquote($column, $flags);
 		} else {
-			foreach ($column as &$col) $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+			foreach ($column as &$col) $col = DBQuery_Splitter::backquote($col, $flags);
 			$column = join(', ', $column);
 		}
 		
@@ -547,7 +597,7 @@ class DBQuery
 	 * Add ORDER BY expression to query statement.
 	 *
 	 * @param mixed $column  ORDER BY expression (string) or array with columns
-	 * @param int   $flags   DBQuery::ASC or DBQuery::DESC + DBQuery::REPLACE, DBQuery::PREPEND (default) or DBQuery::APPEND + DBQuery::QUOTE_%.
+	 * @param int   $flags   DBQuery::ASC or DBQuery::DESC + DBQuery::REPLACE, DBQuery::PREPEND (default) or DBQuery::APPEND + DBQuery::BACKQUOTE_%.
 	 * @return DBQuery  $this
 	 */
 	public function orderBy($column, $flags=0)
@@ -555,7 +605,7 @@ class DBQuery
         if (!is_array($column)) $column = array($column);
         
         foreach ($column as &$col) {
-            $col = DBQuery_Splitter::quoteIdentifier($col, $flags);
+            $col = DBQuery_Splitter::backquote($col, $flags);
             
             if ($flags & self::DESC) $col .= ' DESC';
               elseif ($flags & self::ASC) $col .= ' ASC';
@@ -573,7 +623,7 @@ class DBQuery
      * 
      * @param mixed $column      Column name, array(column, ...) or array('column' => expression, ...)
      * @param mixed $expression  Expression or value  
-     * @param int   $flags       DBQuery::SET_VALUE, DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::QUOTE_%
+     * @param int   $flags       DBQuery::SET_VALUE, DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::BACKQUOTE_%
      * @return DBQuery  $this
      */
     public function onDuplicateKeyUpdate($column=true, $expression=null, $flags=0)
@@ -581,20 +631,20 @@ class DBQuery
    		if (is_array($column)) {
             if (is_int(key($column))) {
                 foreach ($column as &$col) {
-                    $col = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT);
+                    $col = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT);
                     $col .= " = VALUES($col)";
                 }
    			} elseif ($flags & self::SET_VALUE) {
                 foreach ($column as $key=>&$val) {
-                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::quote($val);
+                    $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ' = ' . DBQuery_Splitter::quote($val);
                 }
             } else {
                 foreach ($column as $key=>&$val) {
-                    $val = DBQuery_Splitter::quoteIdentifier($key, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
+                    $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
                 }
             }
    		} elseif ($column !== true) {
-            $column = DBQuery_Splitter::quoteIdentifier($column, $flags & ~self::_QUOTE_OPTIONS | self::QUOTE_STRICT);
+            $column = DBQuery_Splitter::backquote($column, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT);
             
             if (!isset($expression)) $column .= " = VALUES($column)";
               elseif ($flags & self::SET_VALUE) $column .= ' = ' . DBQuery_Splitter::quote($value, 'DEFAULT');
@@ -637,11 +687,13 @@ class DBQuery
 	 * Set the options part of a query.
 	 *
 	 * @param string $options
+     * @param int    $flags
 	 * @return DBQuery  $this
 	 */
-	public function options($options)
+	public function options($options, $flags=0)
 	{
-		return $this->setPart($options);
+		$this->setPart('options', $options, $flags);
+        return $this;
 	}
     
     
@@ -659,14 +711,14 @@ class DBQuery
         list($expression, $flags) = $args + array(null, 0);
         
         if (is_array($expression)) {
-            if ($flags & DBQuery::_QUOTE_OPTIONS) {
+            if ($flags & DBQuery::_BACKQUOTE_OPTIONS) {
                 foreach ($expression as &$field) {
-                    $field = DBQuery_Splitter::quoteIdentifier($field, $flags);
+                    $field = DBQuery_Splitter::backquote($field, $flags);
                 }
             }
             $expression = join(', ', $expression);
         } else {
-            if ($flags & DBQuery::_QUOTE_OPTIONS) $expression = DBQuery_Splitter::quoteIdentifier($expression, $flags);
+            if ($flags & DBQuery::_BACKQUOTE_OPTIONS) $expression = DBQuery_Splitter::backquote($expression, $flags);
         }
         
         return new self($type . (isset($expression) ? " $expression" : ''));
@@ -684,4 +736,32 @@ class DBQuery
         $statement = DBQuery_Splitter::buildCountQuery($this->getParts(), $flags);
         return new self($statement);
    	}
+    
+    
+	/**
+	 * Quote a value so it can be savely used in a query.
+	 * 
+	 * @param mixed  $value
+	 * @param string $empty  Return $empty if $value is null
+	 * @return string
+	 */
+	public static function quote($value, $empty='NULL')
+	{
+        return DBQuery_Splitter::quote($value, $empty);
+    }
+
+    /**
+	 * Quotes a string so it can be used as a table or column name.
+	 * Dots are seen as seperator and are kept out of quotes.
+	 * 
+	 * Doesn't quote expressions without DBQuery::BACKQUOTE_STRICT. This means it is not secure without this option. 
+	 * 
+	 * @param string   $identifier
+	 * @param int      $flags       DBQuery::BACKQUOTE_%, defaults to DBQuery::BACKQUOTE_SMART
+	 * @return string
+	 */
+	public static function backquote($identifier, $flags=0)
+	{
+        return DBQuery_Splitter::backquote($identifier, $flags);
+    }    
 }
