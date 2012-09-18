@@ -90,12 +90,12 @@ class DBQuery_Splitter
 
         // Words
 		if ($flags & DBQuery::BACKQUOTE_WORDS) {
-            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|ASC|DESC|BINARY)(?<=^|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
             return $quoted;
 		}
         
         // Smart
-		$quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+		$quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
 		if (preg_match('/\bCAST\s*\(/i', $quoted)) $quoted = self::backquote_castCleanup($quoted);
         return $quoted;
 	}
@@ -295,7 +295,7 @@ class DBQuery_Splitter
 		// Extract any subqueries
 		$offset = array_push($sets, null) - 1;
 		
-		if (self::getQueryType($sql) === 'INSERT') {
+		if (self::getQueryType($sql) === 'INSERT' || self::getQueryType($sql) === 'REPLACE') {
 			$parts = self::split($sql);
 			if (isset($parts['query'])) {
 				self::extractSubsets($parts['query'], $sets);
@@ -391,7 +391,7 @@ class DBQuery_Splitter
             if ($part === '') $part = null;
             
 			if (isset($part) || empty($sql_parts)) {
-                if ($key == 'columns' && $type == 'INSERT') $part = '(' . $part . ')';
+                if ($key == 'columns' && ($type == 'INSERT' || $type == 'REPLACE')) $part = '(' . $part . ')';
 				$sql_parts[] .= ($key === 'columns' || $key === 'query' || $key === 'table' || $key === 'options' ? '' : strtoupper($key) . (isset($part) ? " " : "")) . trim($part, " \t\n,");
 			} else {
                 unset($sql_parts[$key]);
@@ -733,7 +733,7 @@ class DBQuery_Splitter
 		$type = self::getQueryType($sql);
 		
         $parts = is_array($sql) ? $sql : self::split($sql);
-        if ($type == 'insert' && isset($parts['query'])) $parts = self::split($parts['query']);
+        if (($type == 'INSERT' || $type == 'REPLACE') && isset($parts['query'])) $parts = self::split($parts['query']);
 
         if (!isset($parts['from']) && !isset($parts['into']) && !isset($parts['table'])) throw new Exception("Unable to count rows for $type query. $sql");
         $table = isset($parts['from']) ? $parts['from'] : (isset($parts['into']) ? $parts['into'] : $parts['table']);

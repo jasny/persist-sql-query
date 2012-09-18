@@ -283,7 +283,7 @@ class DBQuery
 	 * 
 	 * @param mixed  $part       The key identifying the part
 	 * @param string $expression
-	 * @param int    $flags      DBQuery::APPEND (default), DBQuery::PREPEND or DBQuery::REPLACE + DBQuery::BACKQUOTE_%
+	 * @param int    $flags      DBQuery::APPEND, DBQuery::PREPEND or DBQuery::REPLACE
 	 */
 	protected function setPart($part, $expression, $flags=DBQuery::APPEND)
 	{
@@ -293,8 +293,6 @@ class DBQuery
         
 		$this->clearCachedStatement();
 		
-        if ($flags & (self::APPEND | self::PREPEND | self::REPLACE) == 0) $flags |= self::REPLACE;
-                
 		if ($flags & self::REPLACE) {
             $this->partsReplace[$part] = $expression;
         } else {
@@ -315,7 +313,8 @@ class DBQuery
     protected function addTable($table, $joinType=null, $joinOn=null, $flags=0)
     {
    		switch ($this->getType()) {
-   			case 'INSERT':	$part = 'into'; break;
+   			case 'INSERT':
+            case 'REPLACE': $part = 'into'; break;
    			case 'UPDATE':	$part = 'table'; break;
    			default:		$part = 'from';
    		}
@@ -470,13 +469,13 @@ class DBQuery
     public function set($column, $value=null, $flags=0)
     {
         // INSERT INTO ... SELECT ..
-        if ($this->getType() == 'INSERT' && $column instanceof self && $column->getType() == 'SELECT') {
-            $this->setPart('query', $column);
+        if (($this->getType() == 'INSERT' || $this->getType() == 'REPLACE') && (($column instanceof self && $column->getType() == 'SELECT') || (is_string($column) && !isset($value) && DBQuery_Splitter::getQueryType($column) == 'SELECT'))) {
+            $this->setPart('query', $column, $flags);
             return $this;
         }
         
         
-   		$empty = $this->getType() == 'INSERT' ? 'DEFAULT' : 'NULL';
+   		$empty = ($this->getType() == 'INSERT' || $this->getType() == 'REPLACE') ? 'DEFAULT' : 'NULL';
    		
    		if (is_array($column)) {
             if ($flags & self::SET_EXPRESSION) {
