@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class DBQuery_Splitter | DBQuery</title>
+
+	<script type="text/javascript" src="resources/combined.js?394153670"></script>
+	<script type="text/javascript" src="elementlist.js?2953238693"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-DBQuery.html">DBQuery</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-DBQuery.html">DBQuery</a></li>
+				<li class="active"><a href="class-DBQuery_Splitter.html">DBQuery_Splitter</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-DBQuery.html" title="Summary of DBQuery"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class DBQuery_Splitter</h1>
+
+
+	<div class="description">
+	
+<p>Break down a mysql query statement to different parts, which can be altered
+and joined again. Supported types: SELECT, INSERT, REPLACE, UPDATE, DELETE,
+TRUNCATE.</p>
+
+<p>SELECT ... UNION syntax is <em>not</em> supported. DELETE ... USING syntax is
+<em>not</em> supported. Invalid query statements might give unexpected
+results.</p>
+
+<p>All methods of this class are static.</p>
+
+<p>{ @internal This class highly depends on complicated PCRE regular
+expressions. So if your not really really really good at reading/writing these,
+don't touch this class. To prevent a regex getting in some crazy (or
+catastrophic) backtracking loop, use regexbuddy (<a
+href="http://www.regexbuddy.com">http://www.regexbuddy.com</a>) or some other
+step-by-step regex debugger. The performance of each function is really
+important, since these functions will be called a lot in 1 page and should be
+concidered abstraction overhead. The focus is on performance not readability of
+the code.<br />
+Expression REGEX_VALUES matches all quoted strings, all backquoted identifiers
+and all words and all non-word chars upto the next keyword. It uses atomic
+groups to look for the next keyword after each quoted string and complete word,
+not after each char. Atomic groups are also neccesary to prevent catastrophic
+backtracking when the regex should fail.<br />
+Expressions like '/\w+\s*(abc)?\s*\w+z/' should be prevented. If this regex
+would try to match "ef ghi", the regex will first take all 3 spaces for the
+first \s*. When the regex fails it retries taking the first 2 spaces for the
+first \s* and the 3rd space for the second \s*, etc, etc. This causes the
+matching to take more than 3 times as long as '/\w+\s*(abc\s*)?\w+z/' would.
+This is the reason why trailing spaces are included with REGEX_VALUES and not
+automaticly trimmed. }}</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-DBQuery.html">DBQuery</a><br />
+
+		<b>Located at</b> <a href="source-class-DBQuery_Splitter.html#3-759" title="Go to source code">src/DBQuery/Splitter.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="quote" id="_quote">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_quote">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#39-58" title="Go to source code">quote</a>( <span>mixed <var>$value</var></span>, <span>string <var>$empty</var> = <span class="php-quote">'NULL'</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Quote a value so it can be savely used in a query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quote a value so it can be savely used in a query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+					<dt><var>$empty</var></dt>
+					<dd><code>string</code><br>$empty Return $empty if $value is null</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="backquote" id="_backquote">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_backquote">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#61-101" title="Go to source code">backquote</a>( <span>string <var>$identifier</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Quotes a string so it can be used as a table or column name. Dots are seen as
+seperator and are kept out of quotes.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quotes a string so it can be used as a table or column name. Dots are seen as
+seperator and are kept out of quotes.</p>
+
+<p>Doesn't quote expressions without DBQuery::BACKQUOTE_STRICT. This means it is
+not secure without this option.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identifier</var></dt>
+					<dd><code>string</code><br>$identifier</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="isIdentifier" id="_isIdentifier">
+
+		<td class="attributes"><code>
+			 public static
+			boolean
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_isIdentifier">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#133-142" title="Go to source code">isIdentifier</a>( <span>string <var>$name</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Check if expression is a field/table name</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Check if expression is a field/table name</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$name</var></dt>
+					<dd><code>string</code><br>$name</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>boolean</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="parse" id="_parse">
+
+		<td class="attributes"><code>
+			 public static
+			mixed
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_parse">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#144-164" title="Go to source code">parse</a>( <span>mixed <var>$statement</var></span>, <span>array <var>$params</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Insert parameters into SQL query. Don't mix unnamed ('?') and named (':key')
+placeholders.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Insert parameters into SQL query. Don't mix unnamed ('?') and named (':key')
+placeholders.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$statement</var></dt>
+					<dd><code>mixed</code><br>$statement Query string or DBQuery::Statement object</dd>
+					<dt><var>$params</var></dt>
+					<dd><code>array</code><br>$params Parameters to parse into statement on placeholders</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="countPlaceholders" id="_countPlaceholders">
+
+		<td class="attributes"><code>
+			 public static
+			integer
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_countPlaceholders">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#166-178" title="Go to source code">countPlaceholders</a>( <span>string <var>$statement</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Count the number of placeholders in a statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Count the number of placeholders in a statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$statement</var></dt>
+					<dd><code>string</code><br>$statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>integer</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getQueryType" id="_getQueryType">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getQueryType">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#183-200" title="Go to source code">getQueryType</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Return the type of the query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the type of the query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query statement (or an array with parts)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="addParts" id="_addParts">
+
+		<td class="attributes"><code>
+			 public static
+			array|string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_addParts">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#202-235" title="Go to source code">addParts</a>( <span>array|string <var>$sql</var></span>, <span>array <var>$add</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Add parts to existing statement</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add parts to existing statement</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>array|string</code><br>$sql Parts (array) or statement (string)</dd>
+					<dt><var>$add</var></dt>
+					<dd><code>array</code><br>$add Parts to add as array(key=&gt;array(DBQuery::PREPEND=&gt;array(),
+DBQuery::APPEND=&gt;array(), ...)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array|string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="buildWhere" id="_buildWhere">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_buildWhere">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#237-269" title="Go to source code">buildWhere</a>( <span>mixed <var>$column</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Build a where expression.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Build a where expression.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Expression, column name, column number, expression with placeholders or
+array(column=&gt;value, ...)</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value Value or array of values</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="extractSubsets" id="_extractSubsets">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_extractSubsets">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#274-320" title="Go to source code">extractSubsets</a>( <span>string <var>$sql</var></span>, <span>array <var>&amp; $sets</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Extract subqueries from sql query (on for SELECT queries) and replace them
+with #subX in the main query. Returns array(main query, subquery1, [subquery2,
+...])</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Extract subqueries from sql query (on for SELECT queries) and replace them
+with #subX in the main query. Returns array(main query, subquery1, [subquery2,
+...])</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql</dd>
+					<dt><var>$sets</var></dt>
+					<dd><code>array</code><br>$sets Do not use!</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="injectSubsets" id="_injectSubsets">
+
+		<td class="attributes"><code>
+			 public static
+			string|array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_injectSubsets">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#322-346" title="Go to source code">injectSubsets</a>( <span>array <var>$sets</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Inject extracted subsets back into main sql query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Inject extracted subsets back into main sql query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sets</var></dt>
+					<dd><code>array</code><br>$sets array(main query, subquery, ...) or array(main parts, subparts, ...); may
+be passed by reference</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string|array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="split" id="_split">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_split">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#351-372" title="Go to source code">split</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split a query. If a part is not set whitin the SQL query, the part is an
+empty string.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split a query. If a part is not set whitin the SQL query, the part is an
+empty string.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="join" id="_join">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_join">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#374-402" title="Go to source code">join</a>( <span>array <var>$parts</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Join parts to create a query. The parts are joined in the order in which they
+appear in the array.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Join parts to create a query. The parts are joined in the order in which they
+appear in the array.</p>
+
+<p>CAUTION: The parts are joined blindly (no validation), so shit in shit
+out</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$parts</var></dt>
+					<dd><code>array</code><br>$parts</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitSelectQuery" id="_splitSelectQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitSelectQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#404-445" title="Go to source code">splitSelectQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split select query. NOTE: Splitting a query with a subquery is considerably
+slower.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split select query. NOTE: Splitting a query with a subquery is considerably
+slower.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL SELECT query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitInsertQuery" id="_splitInsertQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitInsertQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#447-471" title="Go to source code">splitInsertQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split insert/replace query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split insert/replace query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL INSERT query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitUpdateQuery" id="_splitUpdateQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitUpdateQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#473-507" title="Go to source code">splitUpdateQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split update query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split update query</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL UPDATE query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitDeleteQuery" id="_splitDeleteQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitDeleteQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#509-544" title="Go to source code">splitDeleteQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split delete query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split delete query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL DELETE query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitTruncateQuery" id="_splitTruncateQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitTruncateQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#546-565" title="Go to source code">splitTruncateQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split delete query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split delete query</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL DELETE query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitSetQuery" id="_splitSetQuery">
+
+		<td class="attributes"><code>
+			 protected static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitSetQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#567-586" title="Go to source code">splitSetQuery</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Split set query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split set query</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL SET query statement</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitColumns" id="_splitColumns">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitColumns">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#591-619" title="Go to source code">splitColumns</a>( <span>string <var>$sql</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Return the columns of a (partual) query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the columns of a (partual) query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query or 'column, column, ...'</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::SPLIT_% option</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitSet" id="_splitSet">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitSet">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#621-654" title="Go to source code">splitSet</a>( <span>string <var>$sql</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Return the columns of a (partual) query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the columns of a (partual) query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query or 'column, column, ...'</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::SPLIT_% option</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitTables" id="_splitTables">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitTables">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#656-694" title="Go to source code">splitTables</a>( <span>string <var>$sql</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Return the table names of a (partual) query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the table names of a (partual) query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query or FROM part</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>array(alias/name =&gt; table)<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="splitLimit" id="_splitLimit">
+
+		<td class="attributes"><code>
+			 public static
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_splitLimit">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#696-719" title="Go to source code">splitLimit</a>( <span>string <var>$sql</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Split limit in array(limit, offset)</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split limit in array(limit, offset)</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>string</code><br>$sql SQL query or limit part</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="buildCountQuery" id="_buildCountQuery">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_buildCountQuery">#</a>
+		<code><a href="source-class-DBQuery_Splitter.html#724-758" title="Go to source code">buildCountQuery</a>( <span>mixed <var>$sql</var></span>, <span>boolean <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Build query to count the number of rows</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Build query to count the number of rows</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$sql</var></dt>
+					<dd><code>mixed</code><br>$sql Statement</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>boolean</code><br>$flags Optional DBQuery::ALL_ROWS</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="REGEX_VALUES" id="REGEX_VALUES">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery_Splitter.html#33" title="Go to source code"><b>REGEX_VALUES</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'(?:\w++|`[^`]*+`|&quot;(?:[^&quot;\\\\]++|\\\\.)*+&quot;|\'(?:[^\'\\\\]++|\\\\.)*+\'|\s++|[^`&quot;\'\w\s])*?'</span></code></td>
+		<td class="description"><div>
+			<a href="#REGEX_VALUES" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="REGEX_IDENTIFIER" id="REGEX_IDENTIFIER">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery_Splitter.html#34" title="Go to source code"><b>REGEX_IDENTIFIER</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'(?:(?:\w++|`[^`]*+`)(?:\.(?:\w++|`[^`]*+`)){0,2})'</span></code></td>
+		<td class="description"><div>
+			<a href="#REGEX_IDENTIFIER" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="REGEX_QUOTED" id="REGEX_QUOTED">
+
+		<td class="attributes"><code>string</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery_Splitter.html#35" title="Go to source code"><b>REGEX_QUOTED</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-quote">'(?:`[^`]*+`|&quot;(?:[^&quot;\\\\]++|\\\\.)*+&quot;|\'(?:[^\'\\\\]++|\\\\.)*+\')'</span></code></td>
+		<td class="description"><div>
+			<a href="#REGEX_QUOTED" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		DBQuery API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

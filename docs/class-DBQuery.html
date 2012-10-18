@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class DBQuery | DBQuery</title>
+
+	<script type="text/javascript" src="resources/combined.js?394153670"></script>
+	<script type="text/javascript" src="elementlist.js?2953238693"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-DBQuery.html">DBQuery</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-DBQuery.html">DBQuery</a></li>
+				<li><a href="class-DBQuery_Splitter.html">DBQuery_Splitter</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-DBQuery.html" title="Summary of DBQuery"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class DBQuery</h1>
+
+
+	<div class="description">
+	
+<p>Query builder for MySQL query statements. All editing statements support
+fluent interfaces.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-DBQuery.html">DBQuery</a><br />
+
+		<b>Located at</b> <a href="source-class-DBQuery.html#3-766" title="Go to source code">src/DBQuery.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-DBQuery.html#112-120" title="Go to source code">__construct</a>( <span>string <var>$statement</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Class constructor</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Class constructor</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$statement</var></dt>
+					<dd><code>string</code><br>$statement Query statement</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getType" id="_getType">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getType">#</a>
+		<code><a href="source-class-DBQuery.html#125-135" title="Go to source code">getType</a>( )</code>
+
+		<div class="description short">
+			
+<p>Return the type of the query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the type of the query</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getBaseStatement" id="_getBaseStatement">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getBaseStatement">#</a>
+		<code><a href="source-class-DBQuery.html#137-145" title="Go to source code">getBaseStatement</a>( )</code>
+
+		<div class="description short">
+			
+<p>Return the statement without any added or replaced parts.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return the statement without any added or replaced parts.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__toString" id="___toString">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___toString">#</a>
+		<code><a href="source-class-DBQuery.html#147-158" title="Go to source code">__toString</a>( )</code>
+
+		<div class="description short">
+			
+<p>Cast statement object to string.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Cast statement object to string.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getSubquery" id="_getSubquery">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getSubquery">#</a>
+		<code><a href="source-class-DBQuery.html#160-178" title="Go to source code">getSubquery</a>( <span>integer <var>$subset</var> = <span class="php-num">1</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get a subquery (from base statement).</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get a subquery (from base statement).</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$subset</var></dt>
+					<dd><code>integer</code><br>$subset Number of subquery (start with 1)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getBaseParts" id="_getBaseParts">
+
+		<td class="attributes"><code>
+			 protected 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getBaseParts">#</a>
+		<code><a href="source-class-DBQuery.html#180-189" title="Go to source code">getBaseParts</a>( )</code>
+
+		<div class="description short">
+			
+<p>Split the base statement</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Split the base statement</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getParts" id="_getParts">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getParts">#</a>
+		<code><a href="source-class-DBQuery.html#191-218" title="Go to source code">getParts</a>( )</code>
+
+		<div class="description short">
+			
+<p>Apply the added and replacement parts to the parts of the base query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Apply the added and replacement parts to the parts of the base query.</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getPart" id="_getPart">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getPart">#</a>
+		<code><a href="source-class-DBQuery.html#220-230" title="Go to source code">getPart</a>( <span>mixed <var>$key</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Return a specific part of the statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Return a specific part of the statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$key</var></dt>
+					<dd><code>mixed</code><br>$key The key identifying the part</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getTables" id="_getTables">
+
+		<td class="attributes"><code>
+			 public 
+			DB_Table
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getTables">#</a>
+		<code><a href="source-class-DBQuery.html#232-241" title="Go to source code">getTables</a>( <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get the tables used in this statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the tables used in this statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::SPLIT_% options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>DB_Table</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getColumns" id="_getColumns">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getColumns">#</a>
+		<code><a href="source-class-DBQuery.html#243-252" title="Go to source code">getColumns</a>( <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get the columns used in the statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the columns used in the statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::SPLIT_% and DBQuery::UNQUOTE options</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="getValues" id="_getValues">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_getValues">#</a>
+		<code><a href="source-class-DBQuery.html#254-264" title="Go to source code">getValues</a>( <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get the values used in the statement. Only for INSERT INTO ... VALUES ...
+query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get the values used in the statement. Only for INSERT INTO ... VALUES ...
+query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags Optional DBQuery::UNQUOTE</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="clearCachedStatement" id="_clearCachedStatement">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_clearCachedStatement">#</a>
+		<code><a href="source-class-DBQuery.html#270-279" title="Go to source code">clearCachedStatement</a>( )</code>
+
+		<div class="description short">
+			
+<p>Clear cached statement. This doesn't clear cached columns and values.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Clear cached statement. This doesn't clear cached columns and values.</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="setPart" id="_setPart">
+
+		<td class="attributes"><code>
+			 protected 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_setPart">#</a>
+		<code><a href="source-class-DBQuery.html#281-301" title="Go to source code">setPart</a>( <span>mixed <var>$part</var></span>, <span>string <var>$expression</var></span>, <span>integer <var>$flags</var> = <code><a href="class-DBQuery.html#APPEND">DBQuery::<b>APPEND</b></a></code></span> )</code>
+
+		<div class="description short">
+			
+<p>Add/set an expression to any part of the query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add/set an expression to any part of the query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$part</var></dt>
+					<dd><code>mixed</code><br>$part The key identifying the part</dd>
+					<dt><var>$expression</var></dt>
+					<dd><code>string</code><br>$expression</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::APPEND, DBQuery::PREPEND or DBQuery::REPLACE</dd>
+				</dl></div>
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="addTable" id="_addTable">
+
+		<td class="attributes"><code>
+			 protected 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_addTable">#</a>
+		<code><a href="source-class-DBQuery.html#304-339" title="Go to source code">addTable</a>( <span>string <var>$table</var></span>, <span>string <var>$joinType</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$joinOn</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add a table.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add a table.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table</dd>
+					<dt><var>$joinType</var></dt>
+					<dd><code>string</code><br>$joinType LEFT JOIN, INNER JOIN, etc</dd>
+					<dt><var>$joinOn</var></dt>
+					<dd><code>string</code><br>$joinOn that.field = this.field</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_% options as bitset.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="from" id="_from">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_from">#</a>
+		<code><a href="source-class-DBQuery.html#341-351" title="Go to source code">from</a>( <span>string <var>$table</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the FROM table of a SELECT query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the FROM table of a SELECT query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_% options as bitset.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="table" id="_table">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_table">#</a>
+		<code><a href="source-class-DBQuery.html#353-363" title="Go to source code">table</a>( <span>string <var>$table</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the table of an UPDATE query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the table of an UPDATE query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_% options as bitset.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="into" id="_into">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_into">#</a>
+		<code><a href="source-class-DBQuery.html#365-375" title="Go to source code">into</a>( <span>string <var>$table</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the INTO table of an INSERT query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the INTO table of an INSERT query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_% options as bitset.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="innerJoin" id="_innerJoin">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_innerJoin">#</a>
+		<code><a href="source-class-DBQuery.html#377-387" title="Go to source code">innerJoin</a>( <span>string <var>$table</var></span>, <span>integer <var>$on</var> = <span class="php-keyword1">null</span></span>, <span>mixed <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add an inner join to the query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add an inner join to the query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$on</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_% options as bitset.</dd>
+					<dt><var>$flags</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="leftJoin" id="_leftJoin">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_leftJoin">#</a>
+		<code><a href="source-class-DBQuery.html#389-399" title="Go to source code">leftJoin</a>( <span>string <var>$table</var></span>, <span>integer <var>$on</var></span>, <span>mixed <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add an inner join to the query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add an inner join to the query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$on</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_% options as bitset.</dd>
+					<dt><var>$flags</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="rightJoin" id="_rightJoin">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_rightJoin">#</a>
+		<code><a href="source-class-DBQuery.html#401-411" title="Go to source code">rightJoin</a>( <span>string <var>$table</var></span>, <span>integer <var>$on</var></span>, <span>mixed <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add an inner join to the query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add an inner join to the query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$table</var></dt>
+					<dd><code>string</code><br>$table tablename</dd>
+					<dt><var>$on</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_% options as bitset.</dd>
+					<dt><var>$flags</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="columns" id="_columns">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_columns">#</a>
+		<code><a href="source-class-DBQuery.html#414-440" title="Go to source code">columns</a>( <span>mixed <var>$column</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add column(s) to query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add column(s) to query statement.</p>
+
+<p>Flags: Position: DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND
+(default) Quote expr: DBQuery::BACKQUOTE_%</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Column name or array(column, ...)</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags Options as bitset</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="column" id="_column">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_column">#</a>
+		<code><a href="source-class-DBQuery.html#442-452" title="Go to source code">column</a>( <span>mixed <var>$column</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Alias of DBQuery::columns().</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Alias of DBQuery::columns().</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Column name or array(column, ...)</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags Options as bitset</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="set" id="_set">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_set">#</a>
+		<code><a href="source-class-DBQuery.html#454-503" title="Go to source code">set</a>( <span>string|array <var>$column</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add an expression to the SET part of an INSERT SET ... or UPDATE SET
+query</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add an expression to the SET part of an INSERT SET ... or UPDATE SET
+query</p>
+
+<p>Flags: Position: DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND
+(default) Set: DBQuery::SET_EXPRESSION or DBQuery::SET_VALUE (default) Quote
+expr: DBQuery::BACKQUOTE_%</p>
+
+<p>For an INSERT INTO ... SELECT query $column should be a DBQuery object</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>string|array</code><br>$column Column name or array(column =&gt; value, ...)</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value Value or expression (omit if $column is an array)</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags Options as bitset</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="values" id="_values">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_values">#</a>
+		<code><a href="source-class-DBQuery.html#505-530" title="Go to source code">values</a>( <span>mixed <var>$values</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add a row of values to an "INSERT ... VALUES (...)" query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add a row of values to an "INSERT ... VALUES (...)" query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$values</var></dt>
+					<dd><code>mixed</code><br>$values Statement (string) or array of values or array with rows</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags Options as bitset</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="where" id="_where">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_where">#</a>
+		<code><a href="source-class-DBQuery.html#532-555" title="Go to source code">where</a>( <span>mixed <var>$column</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add criteria as WHERE expression to query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add criteria as WHERE expression to query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Expression, column name, column number, expression with placeholders or
+array(column=&gt;value, ...)</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value Value or array of values</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+				<h4>Example</h4>
+				<div class="list">
+						$query-&gt;where('foo', 10); // WHERE <code>foo</code> = 10<br />
+						$query-&gt;where('foo &gt; ?', 10); // WHERE <code>foo</code> &gt; 10<br />
+						$query-&gt;where('foo IS NULL'); // WHERE <code>foo</code> IS NULL<br />
+						$query-&gt;where('foo', array(10, 20)); // WHERE <code>foo</code> IN (10, 20)<br />
+						$query-&gt;where('foo BETWEEN ? AND ?', array(10, 20)); // WHERE
+<code>foo</code> BETWEEN 10 AND 20<br />
+						$query-&gt;where('bar LIKE %?%', "blue"); // WHERE <code>bar</code> LIKE
+"%blue%"<br />
+						$query-&gt;where('foo = ? AND bar LIKE %?%', array(10, "blue")); // WHERE
+<code>foo</code> = 10 AND <code>bar</code> LIKE "%blue%"<br />
+						$query-&gt;where(array('foo'=&gt;10, 'bar'=&gt;"blue")); // WHERE
+<code>foo</code> = 10 AND <code>bar</code> = "blue"<br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="having" id="_having">
+
+		<td class="attributes"><code>
+			final public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_having">#</a>
+		<code><a href="source-class-DBQuery.html#557-572" title="Go to source code">having</a>( <span>mixed <var>$column</var></span>, <span>mixed <var>$value</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add criteria as HAVING expression to query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add criteria as HAVING expression to query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Expression, column name, column number, expression with placeholders or
+array(column=&gt;value, ...)</dd>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value Value or array of values</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flag DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+				<h4>See</h4>
+				<div class="list">
+						<code><code><a href="class-DBQuery.html#_where">DBQuery::where()</a></code></code><br />
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="groupBy" id="_groupBy">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_groupBy">#</a>
+		<code><a href="source-class-DBQuery.html#574-593" title="Go to source code">groupBy</a>( <span>string|array <var>$column</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add GROUP BY expression to query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add GROUP BY expression to query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>string|array</code><br>$column GROUP BY expression (string) or array with columns</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND +
+DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="orderBy" id="_orderBy">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_orderBy">#</a>
+		<code><a href="source-class-DBQuery.html#595-618" title="Go to source code">orderBy</a>( <span>mixed <var>$column</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add ORDER BY expression to query statement.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add ORDER BY expression to query statement.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column ORDER BY expression (string) or array with columns</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::ASC or DBQuery::DESC + DBQuery::REPLACE, DBQuery::PREPEND
+(default) or DBQuery::APPEND + DBQuery::BACKQUOTE_%.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="onDuplicateKeyUpdate" id="_onDuplicateKeyUpdate">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_onDuplicateKeyUpdate">#</a>
+		<code><a href="source-class-DBQuery.html#620-656" title="Go to source code">onDuplicateKeyUpdate</a>( <span>mixed <var>$column</var> = <span class="php-keyword1">true</span></span>, <span>mixed <var>$expression</var> = <span class="php-keyword1">null</span></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Add ON DUPLICATE KEY UPDATE to an INSERT query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add ON DUPLICATE KEY UPDATE to an INSERT query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$column</var></dt>
+					<dd><code>mixed</code><br>$column Column name, array(column, ...) or array('column' =&gt; expression, ...)</dd>
+					<dt><var>$expression</var></dt>
+					<dd><code>mixed</code><br>$expression Expression or value</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::SET_VALUE, DBQuery::SET_EXPRESSION (default) + DBQuery::REPLACE,
+DBQuery::PREPEND or DBQuery::APPEND (default) + DBQuery::BACKQUOTE_%</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="limit" id="_limit">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_limit">#</a>
+		<code><a href="source-class-DBQuery.html#659-670" title="Go to source code">limit</a>( <span>integer|string <var>$rowcount</var></span>, <span>integer <var>$offset</var> = <span class="php-keyword1">null</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the limit for the number of rows returned when excecuted.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the limit for the number of rows returned when excecuted.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$rowcount</var></dt>
+					<dd><code>integer|string</code><br>$rowcount Number of rows of full limit statement</dd>
+					<dt><var>$offset</var></dt>
+					<dd><code>integer</code><br>$offset Start at row</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="page" id="_page">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_page">#</a>
+		<code><a href="source-class-DBQuery.html#672-682" title="Go to source code">page</a>( <span>integer <var>$page</var></span>, <span>integer <var>$rowcount</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the limit by specifying the page.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the limit by specifying the page.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$page</var></dt>
+					<dd><code>integer</code><br>$page Page numer, starts with page 1</dd>
+					<dt><var>$rowcount</var></dt>
+					<dd><code>integer</code><br>$rowcount Number of rows per page</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="options" id="_options">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_options">#</a>
+		<code><a href="source-class-DBQuery.html#685-696" title="Go to source code">options</a>( <span>string <var>$options</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Set the options part of a query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Set the options part of a query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$options</var></dt>
+					<dd><code>string</code><br>$options</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br>$this<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="__callStatic" id="___callStatic">
+
+		<td class="attributes"><code>
+			 public static
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___callStatic">#</a>
+		<code><a href="source-class-DBQuery.html#699-724" title="Go to source code">__callStatic</a>( <span>string <var>$type</var></span>, <span>array <var>$args</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Magic method to build a query from scratch.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Magic method to build a query from scratch.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$type</var></dt>
+					<dd><code>string</code><br>$type</dd>
+					<dt><var>$args</var></dt>
+					<dd><code>array</code><br>$args</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="count" id="_count">
+
+		<td class="attributes"><code>
+			 public 
+			<code><a href="class-DBQuery.html">DBQuery</a></code>
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_count">#</a>
+		<code><a href="source-class-DBQuery.html#727-737" title="Go to source code">count</a>( <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Get a query to count the number of rows that the resultset would contain.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get a query to count the number of rows that the resultset would contain.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::ALL_ROWS</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code><code><a href="class-DBQuery.html">DBQuery</a></code></code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="quote" id="_quote">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_quote">#</a>
+		<code><a href="source-class-DBQuery.html#740-750" title="Go to source code">quote</a>( <span>mixed <var>$value</var></span>, <span>string <var>$empty</var> = <span class="php-quote">'NULL'</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Quote a value so it can be savely used in a query.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quote a value so it can be savely used in a query.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+					<dt><var>$empty</var></dt>
+					<dd><code>string</code><br>$empty Return $empty if $value is null</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="backquote" id="_backquote">
+
+		<td class="attributes"><code>
+			 public static
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_backquote">#</a>
+		<code><a href="source-class-DBQuery.html#752-765" title="Go to source code">backquote</a>( <span>string <var>$identifier</var></span>, <span>integer <var>$flags</var> = <span class="php-num">0</span></span> )</code>
+
+		<div class="description short">
+			
+<p>Quotes a string so it can be used as a table or column name. Dots are seen as
+seperator and are kept out of quotes.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Quotes a string so it can be used as a table or column name. Dots are seen as
+seperator and are kept out of quotes.</p>
+
+<p>Doesn't quote expressions without DBQuery::BACKQUOTE_STRICT. This means it is
+not secure without this option.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$identifier</var></dt>
+					<dd><code>string</code><br>$identifier</dd>
+					<dt><var>$flags</var></dt>
+					<dd><code>integer</code><br>$flags DBQuery::BACKQUOTE_%, defaults to DBQuery::BACKQUOTE_SMART</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+	<table class="summary" id="constants">
+	<caption>Constants summary</caption>
+	<tr data-order="PREPEND" id="PREPEND">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#11-12" title="Go to source code"><b>PREPEND</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x1</span></code></td>
+		<td class="description"><div>
+			<a href="#PREPEND" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Prepend to part</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Prepend to part</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="APPEND" id="APPEND">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#13-14" title="Go to source code"><b>APPEND</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x2</span></code></td>
+		<td class="description"><div>
+			<a href="#APPEND" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Append to part</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Append to part</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="REPLACE" id="REPLACE">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#15-16" title="Go to source code"><b>REPLACE</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x4</span></code></td>
+		<td class="description"><div>
+			<a href="#REPLACE" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Replace part</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Replace part</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BACKQUOTE_NONE" id="BACKQUOTE_NONE">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#23-24" title="Go to source code"><b>BACKQUOTE_NONE</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x100</span></code></td>
+		<td class="description"><div>
+			<a href="#BACKQUOTE_NONE" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Don't quote identifiers at all</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Don't quote identifiers at all</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BACKQUOTE_SMART" id="BACKQUOTE_SMART">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#25-26" title="Go to source code"><b>BACKQUOTE_SMART</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x200</span></code></td>
+		<td class="description"><div>
+			<a href="#BACKQUOTE_SMART" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Quote identifiers inside expressions</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Quote identifiers inside expressions</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BACKQUOTE_WORDS" id="BACKQUOTE_WORDS">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#27-28" title="Go to source code"><b>BACKQUOTE_WORDS</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x400</span></code></td>
+		<td class="description"><div>
+			<a href="#BACKQUOTE_WORDS" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Quote each word as identifier</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Quote each word as identifier</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="BACKQUOTE_STRICT" id="BACKQUOTE_STRICT">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#29-30" title="Go to source code"><b>BACKQUOTE_STRICT</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x800</span></code></td>
+		<td class="description"><div>
+			<a href="#BACKQUOTE_STRICT" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Quote string as field/table name</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Quote string as field/table name</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="SET_VALUE" id="SET_VALUE">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#37-38" title="Go to source code"><b>SET_VALUE</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x1000</span></code></td>
+		<td class="description"><div>
+			<a href="#SET_VALUE" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Quote value as value when adding a column in a '[UPDATE|INSERT] SET ...'
+query</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Quote value as value when adding a column in a '[UPDATE|INSERT] SET ...'
+query</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="SET_EXPRESSION" id="SET_EXPRESSION">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#39-40" title="Go to source code"><b>SET_EXPRESSION</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x2000</span></code></td>
+		<td class="description"><div>
+			<a href="#SET_EXPRESSION" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Quote value as expression when adding a column in a '[UPDATE|INSERT] SET ...'
+query</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Quote value as expression when adding a column in a '[UPDATE|INSERT] SET ...'
+query</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="UNQUOTE" id="UNQUOTE">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#42-43" title="Go to source code"><b>UNQUOTE</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x4000</span></code></td>
+		<td class="description"><div>
+			<a href="#UNQUOTE" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Unquote values</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Unquote values</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="CAST" id="CAST">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#44-45" title="Go to source code"><b>CAST</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x8000</span></code></td>
+		<td class="description"><div>
+			<a href="#CAST" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Cast values</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Cast values</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="ALL_ROWS" id="ALL_ROWS">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#47-48" title="Go to source code"><b>ALL_ROWS</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">1</span></code></td>
+		<td class="description"><div>
+			<a href="#ALL_ROWS" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Count all rows ignoring limit</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Count all rows ignoring limit</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="ASC" id="ASC">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#50-51" title="Go to source code"><b>ASC</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x10</span></code></td>
+		<td class="description"><div>
+			<a href="#ASC" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Sort ascending</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Sort ascending</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="DESC" id="DESC">
+
+		<td class="attributes"><code>integer</code></td>
+		<td class="name"><code>
+				<a href="source-class-DBQuery.html#52-53" title="Go to source code"><b>DESC</b></a>
+		</code></td>
+		<td class="value"><code><span class="php-num">0x20</span></code></td>
+		<td class="description"><div>
+			<a href="#DESC" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Sort descending</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Sort descending</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="statement" id="$statement">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#55-59" title="Go to source code"><var>$statement</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$statement" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Query statement</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Query statement</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="queryType" id="$queryType">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#61-65" title="Go to source code"><var>$queryType</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$queryType" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The type of the query</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The type of the query</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="baseParts" id="$baseParts">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#67-71" title="Go to source code"><var>$baseParts</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$baseParts" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The parts of the split base statement extracted in sets</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The parts of the split base statement extracted in sets</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="partsReplace" id="$partsReplace">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#74-78" title="Go to source code"><var>$partsReplace</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$partsReplace" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The parts to replace the ones of the base statement.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The parts to replace the ones of the base statement.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="partsAdd" id="$partsAdd">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#80-84" title="Go to source code"><var>$partsAdd</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$partsAdd" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The parts to add to base statement.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The parts to add to base statement.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="subqueries" id="$subqueries">
+		<td class="attributes"><code>
+			protected  
+			<code><a href="class-DBQuery.html">DBQuery</a>[]</code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#86-90" title="Go to source code"><var>$subqueries</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$subqueries" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Extracted subqueries</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Extracted subqueries</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="cachedStatement" id="$cachedStatement">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#93-97" title="Go to source code"><var>$cachedStatement</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$cachedStatement" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The build statements</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The build statements</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="cachedParts" id="$cachedParts">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#99-103" title="Go to source code"><var>$cachedParts</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$cachedParts" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>The build parts</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>The build parts</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="cachedTablenames" id="$cachedTablenames">
+		<td class="attributes"><code>
+			protected  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DBQuery.html#105-109" title="Go to source code"><var>$cachedTablenames</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$cachedTablenames" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Extracted table names</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Extracted table names</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		DBQuery API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
