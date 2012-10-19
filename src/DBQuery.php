@@ -670,8 +670,16 @@ class DBQuery
      * @param int $rowcount  Number of rows per page
      * @return DBQuery  $this
      */
-    public function page($page, $rowcount)
+    public function page($page, $rowcount=null)
     {
+        if (!isset($rowcount)) {
+            $limit = $this->getPart('limit');
+            if (strpos($limit, ',') !== false) $limit = substr($limit, strpos($limit, ',') + 1);
+            
+            $rowcount = (int)trim($limit);
+            if (!$rowcount) return $this;
+        }
+        
         return $this->limit($rowcount, $rowcount * ($page - 1));
     }
 
