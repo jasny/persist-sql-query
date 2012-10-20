@@ -58,3 +58,7 @@ Map fields for an INSERT INTO ... SELECT ... ON DUPLICATE KEY query
         $mysql->query($insert); // INSERT INTO `abc` (`ref`, `man`, `woman`, `amount`)
                                 //  SELECT `ref` AS `ref`, `boy` AS `man`, `girl` AS `woman`, SUM(`z`.`bucks`) AS `amount` FROM `foo` LEFT JOIN `z` ON `foo`.`id` = `z`.`foo_id` GROUP BY `foo`.id`
                                 //  ON DUPLICATE KEY UPDATE `ref` = VALUES(`ref`), `man` = VALUES(`man`), `woman` = VALUES(`woman`), `amount` = VALUES(`amount`)
+
+## API documentation (generated) ##
+
+http://jasny.github.com/DBQuery-MySQL/docs
