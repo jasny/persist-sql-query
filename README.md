@@ -20,16 +20,20 @@ DBQuery can be easily installed using [composer](http://getcomposer.org/). Alter
 An example to simple to be using a query builder
 
     <?php
+        use Jasny\MySQL\DBQuery;
+        
         $query = DBQuery::select()->columns('id, name')->from('foo')->where('active = 1');
         $result = $mysqli->query($query); // SELECT `id`, `name` FROM `foo` WHERE `active` = 1
 
 Dynamicly apply paging and filtering on a query
 
     <?php
+        use Jasny\MySQL\DBQuery;
+        
         $query = new DBQuery("SELECT * FROM foo LEFT JOIN bar ON foo.bar_id = bar.id WHERE active = 1 LIMIT 25");
         if (isset($_GET['page'])) $query->page(3);
 
-        $filter = isset($_POST['filter']) : $_POST['filter'] : array(); // array('type' => 'bike', 'price between ? and ?' => array(10, 20))
+        $filter = isset($_POST['filter']) ? $_POST['filter'] : array(); // array('type' => 'bike', 'price between ? and ?' => array(10, 20))
         foreach ($filter as $field => $value) {
             $query->where($field, $value);
         }
@@ -39,7 +43,9 @@ Dynamicly apply paging and filtering on a query
 Map fields for an INSERT INTO ... SELECT ... ON DUPLICATE KEY query
 
     <?php
-        $fields = array(
+        use Jasny\MySQL\DBQuery;
+        
+        $columns = array(
             'ref' => 'ref',
             'man' => 'boy',
             'woman' => 'girl',

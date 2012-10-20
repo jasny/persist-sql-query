@@ -1,12 +1,13 @@
 <?php
 
+use Jasny\MySQL\DBQuery;
+
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once __DIR__ . '/../src/DBQuery.php';
-require_once __DIR__ . '/../src/DBQuery/Splitter.php';
+require_once __DIR__ . '/../../../src/Jasny/MySQL/DBQuery.php';
+require_once __DIR__ . '/../../../src/Jasny/MySQL/DBQuery/Splitter.php';
 
 /**
- * Test for modifing DBQuery objects.
  * 
  * @package Test
  * @subpackage DBQuery

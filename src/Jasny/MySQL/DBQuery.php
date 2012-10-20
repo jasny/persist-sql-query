@@ -1,5 +1,9 @@
 <?php
 
+namespace Jasny\MySQL;
+
+require_once __DIR__ . '/DBQuery/Splitter.php';
+
 /**
  * Query builder for MySQL query statements.
  * All editing statements support fluent interfaces.
@@ -170,7 +174,7 @@ class DBQuery
             foreach ($statements as $i => $statement) $this->subqueries[$i] = new static($statement, $this);
         }
 
-        if (!isset($this->subqueries[$subset])) throw new Exception("Unable to get subquery #$subset: Query only has " . count($this->subqueries) . (count($this->subqueries) == 1 ? " subquery." : " subqueries."));
+        if (!isset($this->subqueries[$subset])) throw new \Exception("Unable to get subquery #$subset: Query only has " . count($this->subqueries) . (count($this->subqueries) == 1 ? " subquery." : " subqueries."));
         return $this->subqueries[$subset];
     }
 
@@ -284,7 +288,7 @@ class DBQuery
     {
         $part = strtolower($part);
 
-        if (!array_key_exists($part, $this->getBaseParts())) throw new Exception("A " . $this->getType() . " query doesn't have a $part part");
+        if (!array_key_exists($part, $this->getBaseParts())) throw new \Exception("A " . $this->getType() . " query doesn't have a $part part");
 
         $this->clearCachedStatement();
 
@@ -705,7 +709,7 @@ class DBQuery
      */
     public static function __callStatic($type, $args)
     {
-        if (DBQuery_Splitter::getQueryType($type) == null) throw new Exception("Unknown query type '$type'.");
+        if (DBQuery_Splitter::getQueryType($type) == null) throw new \Exception("Unknown query type '$type'.");
 
         list($expression, $flags) = $args + array(null, 0);
 

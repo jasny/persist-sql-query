@@ -1,5 +1,7 @@
 <?php
 
+namespace Jasny\MySQL;
+
 /**
  * Break down a mysql query statement to different parts, which can be altered and joined again.
  * Supported types: SELECT, INSERT, REPLACE, UPDATE, DELETE, TRUNCATE.
@@ -77,9 +79,9 @@ class DBQuery_Splitter
             $identifier = trim($identifier);
             if (preg_match('/^\w++$/', $identifier)) return "`$identifier`";
 
-            $quoted = preg_replace_callback('/`[^`]*+`|([^`\.]++)/', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+            $quoted = preg_replace_callback('/`[^`]*+`|([^`\.]++)/', array(__CLASS__, 'backquote_ab'), $identifier);
 
-            if ($quoted && !preg_match('/^(?:`[^`]*`\.)*`[^`]*`$/', $quoted)) throw new Exception("Unable to quote '$identifier' safely");
+            if ($quoted && !preg_match('/^(?:`[^`]*`\.)*`[^`]*`$/', $quoted)) throw new \Exception("Unable to quote '$identifier' safely");
             return $quoted;
         }
 
@@ -90,12 +92,12 @@ class DBQuery_Splitter
 
         // Words
         if ($flags & DBQuery::BACKQUOTE_WORDS) {
-            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
             return $quoted;
         }
 
         // Smart
-        $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array('DBQuery_Splitter', 'backquote_ab'), $identifier);
+        $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array(__CLASS__, 'backquote_ab'), $identifier);
         if (preg_match('/\bCAST\s*\(/i', $quoted)) $quoted = self::backquote_castCleanup($quoted);
         return $quoted;
     }
@@ -367,7 +369,7 @@ class DBQuery_Splitter
             case 'SET': return self::splitSetQuery($sql);
         }
 
-        throw new Exception("Unable to split " . (!empty($type) ? "$type " : "") . "query. $sql");
+        throw new \Exception("Unable to split " . (!empty($type) ? "$type " : "") . "query. $sql");
     }
 
     /**
@@ -427,7 +429,7 @@ class DBQuery_Splitter
                         '(\b(?:PROCEDURE|INTO|FOR\s+UPDATE|LOCK\s+IN\s+SHARE\s*MODE|CASCADE\s*ON)\b.*?)?' .
                         ')?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception('Unable to split SELECT query, invalid syntax:\n' . $sql);
+            throw new \Exception('Unable to split SELECT query, invalid syntax:\n' . $sql);
         }
 
 
@@ -460,7 +462,7 @@ class DBQuery_Splitter
                         '(\bSELECT\b\s*' . self::REGEX_VALUES . '|\#sub\d+\s*)?' .
                         '(?:\bON\s+DUPLICATE\s+KEY\s+UPDATE\b\s*(' . self::REGEX_VALUES . '))?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception("Unable to split INSERT/REPLACE query, invalid syntax:\n" . $sql);
+            throw new \Exception("Unable to split INSERT/REPLACE query, invalid syntax:\n" . $sql);
         }
 
         $keys = array(strtolower($parts[1]), 'into', 'columns', 'set', 'values', 'query', 'on duplicate key update');
@@ -488,7 +490,7 @@ class DBQuery_Splitter
                         '(?:\bWHERE\b\s*(' . self::REGEX_VALUES . '))?' .
                         '(?:\bLIMIT\b\s*(' . self::REGEX_VALUES . '))?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception("Unable to split UPDATE query, invalid syntax:\n" . $sql);
+            throw new \Exception("Unable to split UPDATE query, invalid syntax:\n" . $sql);
         }
 
         array_shift($parts);
@@ -524,7 +526,7 @@ class DBQuery_Splitter
                         '(?:\bORDER\s+BY\b\s*(' . self::REGEX_VALUES . '))?' .
                         '(?:\bLIMIT\b\s*(' . self::REGEX_VALUES . '))?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception("Unable to split DELETE query, invalid syntax:\n" . $sql);
+            throw new \Exception("Unable to split DELETE query, invalid syntax:\n" . $sql);
         }
 
         array_shift($parts);
@@ -551,7 +553,7 @@ class DBQuery_Splitter
                         'TRUNCATE\b(\s+TABLE\b)?\s*' .
                         '(' . self::REGEX_VALUES . ')?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception("Unable to split TRUNCATE query, invalid syntax: $sql");
+            throw new \Exception("Unable to split TRUNCATE query, invalid syntax: $sql");
         }
 
         array_shift($parts);
@@ -571,7 +573,7 @@ class DBQuery_Splitter
                         'SET\b\s*' .
                         '(' . self::REGEX_VALUES . ')?' .
                         '(?:;|$)/si', $sql, $parts)) {
-            throw new Exception("Unable to split SET query, invalid syntax: $sql");
+            throw new \Exception("Unable to split SET query, invalid syntax: $sql");
         }
 
         array_shift($parts);
@@ -591,7 +593,7 @@ class DBQuery_Splitter
     {
         if (is_array($sql) || self::getQueryType($sql)) {
             $parts = is_array($sql) ? $sql : self::split($sql);
-            if (!isset($parts['columns'])) throw new Exception("It's not possible to extract columns of a " . self::getQueryType($sql) . " query.");
+            if (!isset($parts['columns'])) throw new \Exception("It's not possible to extract columns of a " . self::getQueryType($sql) . " query.");
 
             $sql = preg_replace('/^\(|\)$/', '', $parts['columns']);
         }
@@ -621,7 +623,7 @@ class DBQuery_Splitter
     {
         if (is_array($sql) || self::getQueryType($sql)) {
             $parts = self::split($sql);
-            if (!isset($parts['set'])) throw new Exception("It's not possible to extract the set part of a $type query. $sql");
+            if (!isset($parts['set'])) throw new \Exception("It's not possible to extract the set part of a $type query. $sql");
 
             $sql = & $parts['set'];
             unset($parts);
@@ -657,7 +659,7 @@ class DBQuery_Splitter
             if (array_key_exists('from', $parts)) $sql = & $parts['from'];
             elseif (array_key_exists('table', $parts)) $sql = & $parts['table'];
             elseif (array_key_exists('into', $parts)) $sql = & $parts['into'];
-            else throw new Exception("It's not possible to extract tables of a " . self::getQueryType($sql) . " query.");
+            else throw new \Exception("It's not possible to extract tables of a " . self::getQueryType($sql) . " query.");
         }
 
         $matches = null;
@@ -695,7 +697,7 @@ class DBQuery_Splitter
         $type = self::getQueryType($sql);
         if (isset($type)) {
             $parts = self::split($sql);
-            if (!isset($parts['limit'])) throw new Exception("A $type query doesn't have a LIMIT part.");
+            if (!isset($parts['limit'])) throw new \Exception("A $type query doesn't have a LIMIT part.");
             $sql = & $parts['limit'];
         }
 
@@ -705,7 +707,7 @@ class DBQuery_Splitter
         if (preg_match('/^\s*(\d+)\s+OFFSET\s+(\d+)\s*$/', $sql, $matches)) return array($matches[1], $matches[2]);
         if (preg_match('/^\s*(\d+)\s*,\s*(\d+)\s*$/', $sql, $matches)) return array($matches[2], $matches[1]);
 
-        throw new Exception("Invalid limit statement '$sql'");
+        throw new \Exception("Invalid limit statement '$sql'");
     }
 
     //------------- Convert statement --------------------
@@ -724,7 +726,7 @@ class DBQuery_Splitter
         $parts = is_array($sql) ? $sql : self::split($sql);
         if (($type == 'INSERT' || $type == 'REPLACE') && isset($parts['query'])) $parts = self::split($parts['query']);
 
-        if (!isset($parts['from']) && !isset($parts['into']) && !isset($parts['table'])) throw new Exception("Unable to count rows for $type query. $sql");
+        if (!isset($parts['from']) && !isset($parts['into']) && !isset($parts['table'])) throw new \Exception("Unable to count rows for $type query. $sql");
         $table = isset($parts['from']) ? $parts['from'] : (isset($parts['into']) ? $parts['into'] : $parts['table']);
 
         if (($flags & DBQuery::ALL_ROWS) && isset($parts['limit'])) unset($parts['limit']);

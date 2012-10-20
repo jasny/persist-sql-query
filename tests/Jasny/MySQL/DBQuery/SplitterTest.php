@@ -1,9 +1,11 @@
 <?php
 
+use Jasny\MySQL\DBQuery, Jasny\MySQL\DBQuery_Splitter;
+
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once __DIR__ . '/../../src/DBQuery.php';
-require_once __DIR__ . '/../../src/DBQuery/Splitter.php';
+require_once __DIR__ . '/../../../../src/Jasny/MySQL/DBQuery.php';
+require_once __DIR__ . '/../../../../src/Jasny/MySQL/DBQuery/Splitter.php';
 
 /**
  * Test for DBQuery_Splitter.
