@@ -146,7 +146,7 @@ class DBQuery
     }
 
     /**
-     * Cast statement object to string.
+     * Cast query object to SQL string.
      *
      * @return string
      */
@@ -562,7 +562,7 @@ class DBQuery
      * @param int   $flag    DBQuery::REPLACE, DBQuery::PREPEND or DBQuery::APPEND + DBQuery::BACKQUOTE_%
      * @return DBQuery  $this
      */
-    public final function having($column, $value = null, $flags = 0)
+    public function having($column, $value = null, $flags = 0)
     {
         $where = DBQuery_Splitter::buildWhere($column, $value, $flags);
         if (isset($where)) $this->setPart('having', $where, $flags);

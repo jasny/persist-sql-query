@@ -1,5 +1,19 @@
 <?php
 
+/*
+ * BEWARE!!!
+ *   This class highly depends on complicated PCRE regular expressions. So if your not really really really good at reading/writing these, don't touch this class.
+ *   To prevent a regex getting in some crazy (or catastrophic) backtracking loop, use regexbuddy (http://www.regexbuddy.com) or some other step-by-step regex debugger.
+ *   The performance of each function is really important, since these functions will be called a lot in 1 page and should be concidered abstraction overhead. The focus is on performance not readability of the code.
+ * 
+ *   Expression REGEX_VALUES matches all quoted strings, all backquoted identifiers and all words and all non-word chars upto the next keyword.
+ *   It uses atomic groups to look for the next keyword after each quoted string and complete word, not after each char. Atomic groups are also neccesary to prevent catastrophic backtracking when the regex should fail.
+ * 
+ *   Expressions like '/\w+\s*(abc)?\s*\w+z/' should be prevented. If this regex would try to match "ef    ghi", the regex will first take all 3 spaces for the first \s*. When the regex fails it retries taking the
+ *     first 2 spaces for the first \s* and the 3rd space for the second \s*, etc, etc. This causes the matching to take more than 3 times as long as '/\w+\s*(abc\s*)?\w+z/' would.
+ *   This is the reason why trailing spaces are included with REGEX_VALUES and not automaticly trimmed.
+ */
+
 namespace Jasny\MySQL;
 
 /**
@@ -11,19 +25,6 @@ namespace Jasny\MySQL;
  * Invalid query statements might give unexpected results. 
  * 
  * All methods of this class are static.
- * 
- * { @internal
- *   This class highly depends on complicated PCRE regular expressions. So if your not really really really good at reading/writing these, don't touch this class.
- *   To prevent a regex getting in some crazy (or catastrophic) backtracking loop, use regexbuddy (http://www.regexbuddy.com) or some other step-by-step regex debugger.
- *   The performance of each function is really important, since these functions will be called a lot in 1 page and should be concidered abstraction overhead. The focus is on performance not readability of the code.
- * 
- *   Expression REGEX_VALUES matches all quoted strings, all backquoted identifiers and all words and all non-word chars upto the next keyword.
- *   It uses atomic groups to look for the next keyword after each quoted string and complete word, not after each char. Atomic groups are also neccesary to prevent catastrophic backtracking when the regex should fail.
- * 
- *   Expressions like '/\w+\s*(abc)?\s*\w+z/' should be prevented. If this regex would try to match "ef    ghi", the regex will first take all 3 spaces for the first \s*. When the regex fails it retries taking the
- *     first 2 spaces for the first \s* and the 3rd space for the second \s*, etc, etc. This causes the matching to take more than 3 times as long as '/\w+\s*(abc\s*)?\w+z/' would.
- *   This is the reason why trailing spaces are included with REGEX_VALUES and not automaticly trimmed.
- * }}
  * 
  * @package DBQuery
  * 
@@ -90,6 +91,10 @@ class DBQuery_Splitter
             return $identifier;
         }
 
+        // Check if all closing brackets have an opening parenthesis has an opening one to protect against SQL injection
+        preg_match('/(?:(?:' . REGEX_QUOTED . '|[^\(\)]+)*\((?:(?:' . REGEX_QUOTED . '|[^\(\)]+)*|(?R))\))*(?:' . REGEX_QUOTED . '|[^\(\)]+)*/', $identifier, $match);
+        if ($match[0] != $identifier) throw new Exception("Unable to quote '$identifier' safely");
+        
         // Words
         if ($flags & DBQuery::BACKQUOTE_WORDS) {
             $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);

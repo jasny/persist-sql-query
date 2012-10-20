@@ -1,3 +1,3 @@
 
 var ApiGen = ApiGen || {};
-ApiGen.elements = [["c","DBQuery"],["c","DBQuery_Splitter"]];
+ApiGen.elements = [["c","Jasny\\MySQL\\DBQuery"],["c","Jasny\\MySQL\\DBQuery_Splitter"]];
