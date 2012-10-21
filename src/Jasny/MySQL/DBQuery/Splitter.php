@@ -92,12 +92,13 @@ class DBQuery_Splitter
         }
 
         // Check if all closing brackets have an opening parenthesis has an opening one to protect against SQL injection
-        preg_match('/(?:(?:' . REGEX_QUOTED . '|[^\(\)]+)*\((?:(?:' . REGEX_QUOTED . '|[^\(\)]+)*|(?R))\))*(?:' . REGEX_QUOTED . '|[^\(\)]+)*/', $identifier, $match);
-        if ($match[0] != $identifier) throw new Exception("Unable to quote '$identifier' safely");
+        if (!preg_match('/(?:(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*\((?:(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*|(?R))\))*(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*/', $identifier, $match) || $match[0] != $identifier) {
+            throw new \Exception("Unable to quote '$identifier' safely");
+        }
         
         // Words
         if ($flags & DBQuery::BACKQUOTE_WORDS) {
-            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"]*[a-z_][^\s,\.`\'"]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
+            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"()]*[a-z_][^\s,\.`\'"()]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
             return $quoted;
         }
 

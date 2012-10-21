@@ -121,6 +121,13 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('`abc`.`test` - `def`.`total`*10 AS `grandtotal`', DBQuery_Splitter::backquote("abc.test - def.total*10 AS grandtotal"));
     }
 
+    public function testbackquote_Fail()
+    {
+        $identifier = "= 10) OR (xyz(fd = '33'), 20) OR (abc =";
+        $this->setExpectedException('Exception', "Unable to quote '$identifier' safely");
+        DBQuery_Splitter::backquote($identifier);
+    }
+
     public function testbackquote_None()
     {
         $this->assertEquals('abc', DBQuery_Splitter::backquote("abc", DBQuery::BACKQUOTE_NONE));
@@ -140,6 +147,11 @@ class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Exception', "Unable to quote '`abc`.`test`-10' safely");
         DBQuery_Splitter::backquote("`abc`.`test`-10", DBQuery::BACKQUOTE_STRICT);
+    }
+
+    public function testbackquote_Words()
+    {
+        $this->assertEquals('`count`(`abc`.`test`) AS `count`', DBQuery_Splitter::backquote('count(`abc`.`test`) AS `count`', DBQuery::BACKQUOTE_WORDS));
     }
 
     public function testIsIdentifier_Simple()
