@@ -7,8 +7,8 @@ This library is designed to be the ultimate tool for building, splitting and mod
 
 Automatic smart quoting helps against SQL injection and problems with reserved keywords.
 
-DBQuery can be used standalone, in conjunction with [Jasny's DB class](http://github.com/jasny/DB) or in almost any
-framework.
+DBQuery can be used standalone, in conjunction with [Jasny's DB class](http://jasny.github.com/DB-MySQL) or in almost
+any framework.
 
 ## Installation ##
 
