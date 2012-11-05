@@ -1,6 +1,6 @@
 <?php
 
-use Jasny\MySQL\DBQuery;
+namespace Jasny\MySQL;
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../../src/Jasny/MySQL/DBQuery/Splitter.php';
  * @package Test
  * @subpackage DBQuery
  */
-class DBQueryTest extends PHPUnit_Framework_TestCase
+class DBQueryTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testSelectStatement_AddColumn()

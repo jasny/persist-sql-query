@@ -1,6 +1,6 @@
 <?php
 
-use Jasny\MySQL\DBQuery, Jasny\MySQL\DBQuery_Splitter;
+namespace Jasny\MySQL;
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../../src/Jasny/MySQL/DBQuery/Splitter.php';
  * @package Test
  * @subpackage DBQuery
  */
-class DBQuery_SplitterTest extends PHPUnit_Framework_TestCase
+class DBQuery_SplitterTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
