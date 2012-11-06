@@ -18,8 +18,8 @@
     "require": {
         "php": ">=5.3.0"
     },
-    "suggest" : {
-        "jasny/DB-MySQL": "A simple DB layer in PHP for using MySQL",
+    "suggest": {
+        "jasny/DB-MySQL": "A simple DB layer in PHP for using MySQL"
     },
     "autoload": {
         "psr-0": {
