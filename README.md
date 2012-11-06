@@ -12,8 +12,9 @@ any framework.
 
 ## Installation ##
 
-DBQuery can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the
-.zip and copy the file from the 'src' folder.
+Jasny DBQuery-MySQL is registred at packagist as [jasny/dbquery-mysql](https://packagist.org/packages/jasny/dbquery-mysql)
+and can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the .zip
+and copy the file from the 'src' folder.
 
 ## Examples ##
 
