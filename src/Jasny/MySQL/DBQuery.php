@@ -126,7 +126,6 @@ class DBQuery
     /**
      * Return the type of the query
      *
-     * @param int $subset
      * @return string
      */
     public function getType()
