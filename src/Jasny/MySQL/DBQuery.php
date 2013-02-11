@@ -626,18 +626,13 @@ class DBQuery
     public function onDuplicateKeyUpdate($column = true, $expression = null, $flags = 0)
     {
         if (is_array($column)) {
-            if (is_int(key($column))) {
-                foreach ($column as &$col) {
-                    $col = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT);
-                    $col .= " = VALUES($col)";
-                }
-            } elseif ($flags & self::SET_VALUE) {
-                foreach ($column as $key => &$val) {
-                    $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ' = ' . DBQuery_Splitter::quote($val);
-                }
-            } else {
-                foreach ($column as $key => &$val) {
-                    $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT) . ' = ' . DBQuery_Splitter::mapIdentifiers($val, $flags);
+            foreach ($column as $key => &$val) {
+                if (is_int($key)) {
+                    $val = DBQuery_Splitter::backquote($val, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT);
+                    $val .= " = VALUES($val)";
+                } else {
+                    $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT)
+                            . ' = ' . $flags & self::SET_VALUE ? DBQuery_Splitter::quote($val) : DBQuery_Splitter::mapIdentifiers($val, $flags);
                 }
             }
         } elseif ($column !== true) {
@@ -673,16 +668,16 @@ class DBQuery
      * @param int $rowcount  Number of rows per page
      * @return DBQuery  $this
      */
-    public function page($page, $rowcount=null)
+    public function page($page, $rowcount = null)
     {
         if (!isset($rowcount)) {
             $limit = $this->getPart('limit');
             if (strpos($limit, ',') !== false) $limit = substr($limit, strpos($limit, ',') + 1);
-            
+
             $rowcount = (int)trim($limit);
             if (!$rowcount) return $this;
         }
-        
+
         return $this->limit($rowcount, $rowcount * ($page - 1));
     }
 
