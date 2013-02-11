@@ -647,9 +647,10 @@ class DBQuery
                     $val .= " = VALUES($val)";
                 } else {
                     $val = DBQuery_Splitter::backquote($key, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT)
-                            . ' = ' . $flags & self::SET_VALUE ? DBQuery_Splitter::quote($val) : DBQuery_Splitter::mapIdentifiers($val, $flags);
+                            . ' = ' . ($flags & self::SET_VALUE ? DBQuery_Splitter::quote($val) : DBQuery_Splitter::backquote($val, $flags));
                 }
             }
+            $column = join(', ', $column);
         } elseif ($column !== true) {
             $column = DBQuery_Splitter::backquote($column, $flags & ~self::_BACKQUOTE_OPTIONS | self::BACKQUOTE_STRICT);
 
@@ -785,7 +786,11 @@ class DBQuery
      */
     public static function bind($statement, $params)
     {
-        if (!is_array($params) || is_int(key($params))) $params = array_splice(func_get_args(), 1);
+        if (!is_array($params) || is_int(key($params))) {
+            $params = func_get_args();
+            $params = array_splice($params, 1);
+        }
+        
         return DBQuery_Splitter::bind($statement, $params);
     }
 
