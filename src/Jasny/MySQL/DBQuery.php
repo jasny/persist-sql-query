@@ -112,12 +112,27 @@ class DBQuery
     protected $cachedTablenames;
 
     /**
-     * Class constructor
-     *
+     * Class constructor.
+     * Don't mix both types ('?' and ':key') of placeholders.
+     * 
+     * @example new DBQuery("SELECT * FROM mytable");
+     * @example new DBQuery("SELECT * FROM mytable WHERE id=?", $id);
+     * @example new DBQuery("SELECT * FROM mytable WHERE name=:name AND age>:age AND status='A'", array('id'=>$id, 'age'=>$age));
+     * 
      * @param string $statement  Query statement
+     * @param mixed  $params     Parameters for placeholders
      */
-    public function __construct($statement)
+    public function __construct($statement, $params = array())
     {
+        if (func_num_args() > 1) {
+            if (!is_array($params) || is_int(key($params))) {
+                $params = func_get_args();
+                $params = array_splice($params, 1);
+            }
+
+            if (!empty($params)) $statement = DBQuery_Splitter::bind($statement, $params);
+        }
+
         $this->statement = $statement;
     }
 
@@ -758,6 +773,20 @@ class DBQuery
     public static function backquote($identifier, $flags = 0)
     {
         return DBQuery_Splitter::backquote($identifier, $flags);
+    }
+
+    /**
+     * Insert parameters into SQL query.
+     * Don't mix unnamed ('?') and named (':key') placeholders.
+     *
+     * @param mixed $statement  Query string or DBQuery::Statement object
+     * @param array $params     Parameters to insert into statement on placeholders
+     * @return mixed
+     */
+    public static function bind($statement, $params)
+    {
+        if (!is_array($params) || is_int(key($params))) $params = array_splice(func_get_args(), 1);
+        return DBQuery_Splitter::bind($statement, $params);
     }
 
 }
