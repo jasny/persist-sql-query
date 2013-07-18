@@ -14,7 +14,7 @@
  *   This is the reason why trailing spaces are included with REGEX_VALUES and not automaticly trimmed.
  */
 
-namespace Jasny\MySQL;
+namespace Jasny\DB\MySQL;
 
 /**
  * Break down a mysql query statement to different parts, which can be altered and joined again.
@@ -26,12 +26,12 @@ namespace Jasny\MySQL;
  * 
  * All methods of this class are static.
  * 
- * @package DBQuery
+ * @package Query
  * 
  * @todo It might be possible to use recursion instead of extracting subqueries, using \((SELECT\b)(?R)\). For query other that select, I should do (?:^\s++UPDATE ...|(?<!^)\s++SELECT ...) to match SELECT and not UPDATE statement in recursion.
  * @todo Implement splitValues to get values of INSERT INTO ... VALUES ... statement
  */
-class DBQuery_Splitter
+class QuerySplitter
 {
 
     const REGEX_VALUES = '(?:\w++|`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\s++|[^`"\'\w\s])*?';
@@ -65,10 +65,10 @@ class DBQuery_Splitter
      * Quotes a string so it can be used as a table or column name.
      * Dots are seen as seperator and are kept out of quotes.
      * 
-     * Doesn't quote expressions without DBQuery::BACKQUOTE_STRICT. This means it is not secure without this option. 
+     * Doesn't quote expressions without Query::BACKQUOTE_STRICT. This means it is not secure without this option. 
      * 
      * @param string   $identifier
-     * @param int      $flags       DBQuery::BACKQUOTE_%
+     * @param int      $flags       Query::BACKQUOTE_%
      * @return string
      * 
      * @todo Cleanup misquoted TRIM function
@@ -76,7 +76,7 @@ class DBQuery_Splitter
     public static function backquote($identifier, $flags = 0)
     {
         // Strict
-        if ($flags & DBQuery::BACKQUOTE_STRICT) {
+        if ($flags & Query::BACKQUOTE_STRICT) {
             $identifier = trim($identifier);
             if (preg_match('/^\w++$/', $identifier)) return "`$identifier`";
 
@@ -87,7 +87,7 @@ class DBQuery_Splitter
         }
 
         // None
-        if (($flags & DBQuery::_BACKQUOTE_OPTIONS) == DBQuery::BACKQUOTE_NONE) {
+        if (($flags & Query::_BACKQUOTE_OPTIONS) == Query::BACKQUOTE_NONE) {
             return $identifier;
         }
 
@@ -95,9 +95,9 @@ class DBQuery_Splitter
         if (!preg_match('/(?:(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*\((?:(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*|(?R))\))*(?:' . self::REGEX_QUOTED . '|[^\(\)]++)*/', $identifier, $match) || $match[0] != $identifier) {
             throw new \Exception("Unable to quote '$identifier' safely");
         }
-        
+
         // Words
-        if ($flags & DBQuery::BACKQUOTE_WORDS) {
+        if ($flags & Query::BACKQUOTE_WORDS) {
             $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"()]*[a-z_][^\s,\.`\'"()]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
             return $quoted;
         }
@@ -153,19 +153,23 @@ class DBQuery_Splitter
      * Insert parameters into SQL query.
      * Don't mix unnamed ('?') and named (':key') placeholders.
      *
-     * @param mixed $statement  Query string or DBQuery::Statement object
+     * @param mixed $statement  Query string or Query::Statement object
      * @param array $params     Parameters to insert into statement on placeholders
      * @return mixed
      */
     public static function bind($statement, $params)
     {
         $fn = function ($match) use (&$params) {
-                    if (!empty($match[2]) && !empty($params)) $value = array_shift($params);
-                    elseif (!empty($match[3]) && array_key_exists($match[3], $params)) $value = $params[$match[3]];
-                    else return $match[0];
+                    if (!empty($match[2]) && !empty($params)) {
+                        $value = array_shift($params);
+                    } elseif (!empty($match[3]) && array_key_exists($match[3], $params)) {
+                        $value = $params[$match[3]];
+                    } else {
+                        return $match[0];
+                    }
 
                     if (isset($value) && ($match[1] || $match[4])) $value = $match[1] . $value . $match[4];
-                    return DBQuery_Splitter::quote($value);
+                    return QuerySplitter::quote($value);
                 };
 
         return preg_replace_callback('/`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(%?)(?:(\?)|:(\w++))(%?)/', $fn, $statement);
@@ -210,30 +214,34 @@ class DBQuery_Splitter
      * Add parts to existing statement
      * 
      * @param array|string $sql  Parts (array) or statement (string)
-     * @param array        $add  Parts to add as array(key=>array(DBQuery::PREPEND=>array(), DBQuery::APPEND=>array(), ...)
+     * @param array        $add  Parts to add as array(key=>array(Query::PREPEND=>array(), Query::APPEND=>array(), ...)
      * @return array|string
      */
     public static function addParts($sql, $add)
     {
-        if (is_array($sql)) $parts = & $sql;
-        else $parts = self::split($sql);;
+        if (is_array($sql)) {
+            $parts = & $sql;
+        } else {
+            $parts = self::split($sql);
+            ;
+        }
 
         if (!empty($add)) {
             foreach ($add as $key => &$partsAdd) {
                 if (!empty($parts[$key])) $parts[$key] = trim($parts[$key]);
 
                 if ($key === 'columns' || $key === 'set' || $key === 'group by' || $key === 'order by') {
-                    $parts[$key] = join(', ', array_merge(isset($partsAdd[DBQuery::PREPEND]) ? $partsAdd[DBQuery::PREPEND] : array(), !empty($parts[$key]) ? array($parts[$key]) : array(), isset($partsAdd[DBQuery::APPEND]) ? $partsAdd[DBQuery::APPEND] : array()));
+                    $parts[$key] = join(', ', array_merge(isset($partsAdd[Query::PREPEND]) ? $partsAdd[Query::PREPEND] : array(), !empty($parts[$key]) ? array($parts[$key]) : array(), isset($partsAdd[Query::APPEND]) ? $partsAdd[Query::APPEND] : array()));
                 } elseif ($key === 'values') {
-                    $parts[$key] = (isset($partsAdd[DBQuery::PREPEND]) ? '(' . join('), (', $partsAdd[DBQuery::PREPEND]) . ')' : '') . (isset($partsAdd[DBQuery::PREPEND]) && !empty($parts[$key]) ? ', ' : '') . $parts[$key] . (isset($partsAdd[DBQuery::APPEND]) && !empty($parts[$key]) ? ', ' : '') . (isset($partsAdd[DBQuery::APPEND]) ? '(' . join('), (', $partsAdd[DBQuery::APPEND]) . ')' : '');
+                    $parts[$key] = (isset($partsAdd[Query::PREPEND]) ? '(' . join('), (', $partsAdd[Query::PREPEND]) . ')' : '') . (isset($partsAdd[Query::PREPEND]) && !empty($parts[$key]) ? ', ' : '') . $parts[$key] . (isset($partsAdd[Query::APPEND]) && !empty($parts[$key]) ? ', ' : '') . (isset($partsAdd[Query::APPEND]) ? '(' . join('), (', $partsAdd[Query::APPEND]) . ')' : '');
                 } elseif ($key === 'from' || $key === 'into' || $key === 'table') {
                     if (!empty($parts[$key]) && !preg_match('/^(\w+|`.*`)$/', $parts[$key])) $parts[$key] = '(' . $parts[$key] . ')';
-                    $parts[$key] = trim((isset($partsAdd[DBQuery::PREPEND]) ? join(' ', $partsAdd[DBQuery::PREPEND]) . ' ' : '') . (!empty($parts[$key]) ? $parts[$key] : '') . (isset($partsAdd[DBQuery::APPEND]) ? ' ' . join(' ', $partsAdd[DBQuery::APPEND]) : ''), ', ');
+                    $parts[$key] = trim((isset($partsAdd[Query::PREPEND]) ? join(' ', $partsAdd[Query::PREPEND]) . ' ' : '') . (!empty($parts[$key]) ? $parts[$key] : '') . (isset($partsAdd[Query::APPEND]) ? ' ' . join(' ', $partsAdd[Query::APPEND]) : ''), ', ');
                 } elseif ($key === 'where' || $key === 'having') {
-                    $items = array_merge(isset($partsAdd[DBQuery::PREPEND]) ? $partsAdd[DBQuery::PREPEND] : array(), !empty($parts[$key]) ? array($parts[$key]) : array(), isset($partsAdd[DBQuery::APPEND]) ? $partsAdd[DBQuery::APPEND] : array());
+                    $items = array_merge(isset($partsAdd[Query::PREPEND]) ? $partsAdd[Query::PREPEND] : array(), !empty($parts[$key]) ? array($parts[$key]) : array(), isset($partsAdd[Query::APPEND]) ? $partsAdd[Query::APPEND] : array());
                     if (!empty($items)) $parts[$key] = count($items) == 1 ? reset($items) : '(' . join(') AND (', $items) . ')';
                 } else {
-                    $parts[$key] = (isset($partsAdd[DBQuery::PREPEND]) ? join(' ', $partsAdd[DBQuery::PREPEND]) . ' ' : '') . (!empty($parts[$key]) ? $parts[$key] : '') . (isset($partsAdd[DBQuery::APPEND]) ? ' ' . join(' ', $partsAdd[DBQuery::APPEND]) : '');
+                    $parts[$key] = (isset($partsAdd[Query::PREPEND]) ? join(' ', $partsAdd[Query::PREPEND]) . ' ' : '') . (!empty($parts[$key]) ? $parts[$key] : '') . (isset($partsAdd[Query::APPEND]) ? ' ' . join(' ', $partsAdd[Query::APPEND]) : '');
                 }
             }
         }
@@ -246,7 +254,7 @@ class DBQuery_Splitter
      * 
      * @param mixed $column Expression, column name, column number, expression with placeholders or array(column=>value, ...)
      * @param mixed $value  Value or array of values
-     * @param int   $flags  DBQuery::BACKQUOTE_%
+     * @param int   $flags  Query::BACKQUOTE_%
      * @return string
      */
     public static function buildWhere($column, $value = null, $flags = 0)
@@ -316,7 +324,7 @@ class DBQuery_Splitter
                 preg_match('/(?:`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\((\s*SELECT\b.*\).*)|\w++|[^`"\'\w])*$/si', $sql, $matches, PREG_OFFSET_CAPTURE);
                 if (isset($matches[1])) {
                     $fn = function($match) use(&$sets) {
-                                return '#sub' . DBQuery_Splitter::extractSubsets($match[0], $sets);
+                                return '#sub' . QuerySplitter::extractSubsets($match[0], $sets);
                             };
                     $sql = substr($sql, 0, $matches[1][1]) . preg_replace_callback('/(?:`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|([^`"\'()]+)|\((?R)\))*/si', $fn, substr($sql, $matches[1][1]), 1);
                 }
@@ -592,7 +600,7 @@ class DBQuery_Splitter
      * Return the columns of a (partual) query statement.
      * 
      * @param string $sql    SQL query or 'column, column, ...'
-     * @param int    $flags  DBQuery::SPLIT_% option
+     * @param int    $flags  Query::SPLIT_% option
      * @return array
      */
     public static function splitColumns($sql, $flags = 0)
@@ -622,7 +630,7 @@ class DBQuery_Splitter
      * Return the columns of a (partual) query statement.
      * 
      * @param string $sql    SQL query or 'column, column, ...'
-     * @param int    $flags  DBQuery::SPLIT_% option
+     * @param int    $flags  Query::SPLIT_% option
      * @return array
      */
     public static function splitSet($sql, $flags = 0)
@@ -722,7 +730,7 @@ class DBQuery_Splitter
      * Build query to count the number of rows
      * 
      * @param mixed $sql    Statement
-     * @param bool  $flags  Optional DBQuery::ALL_ROWS
+     * @param bool  $flags  Optional Query::ALL_ROWS
      * @return string
      */
     public static function buildCountQuery($sql, $flags = 0)
@@ -735,7 +743,7 @@ class DBQuery_Splitter
         if (!isset($parts['from']) && !isset($parts['into']) && !isset($parts['table'])) throw new \Exception("Unable to count rows for $type query. $sql");
         $table = isset($parts['from']) ? $parts['from'] : (isset($parts['into']) ? $parts['into'] : $parts['table']);
 
-        if (($flags & DBQuery::ALL_ROWS) && isset($parts['limit'])) unset($parts['limit']);
+        if (($flags & Query::ALL_ROWS) && isset($parts['limit'])) unset($parts['limit']);
 
         if (!empty($parts['having'])) return "SELECT COUNT(*) FROM (" . (is_array($sql) ? self::join($sql) : $sql) . ") AS q";
 
@@ -753,5 +761,4 @@ class DBQuery_Splitter
 
         return self::join(array('select' => '', 'columns' => $column, 'from' => $table, 'where' => isset($parts['where']) ? $parts['where'] : ''));
     }
-
 }

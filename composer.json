@@ -1,10 +1,9 @@
 {
-    "name": "jasny/dbquery-mysql",
-    "description": "The best and most complete query builder/parser for MySQL",
+    "name": "jasny/dbquery",
+    "description": "The best and most complete query builder/parser (for MySQL)",
     "keywords": ["database", "db", "sql", "query", "query builder"],
-    "version": "v1.0.0",
     "license": "MIT",
-    "homepage": "http://jasny.github.com/DBQuery-MySQL",
+    "homepage": "http://jasny.github.com/dbquery",
     "authors": [
         {
             "name": "Arnold Daniels",
@@ -13,18 +12,18 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/jasny/DBQuery-MySQL/issues",
-        "source": "https://github.com/jasny/DBQuery-MySQL"
+        "issues": "https://github.com/jasny/dbquery/issues",
+        "source": "https://github.com/jasny/dbquery"
     },
     "require": {
         "php": ">=5.3.0"
     },
     "suggest": {
-        "jasny/db-mysql": "A simple DB layer in PHP for using MySQL"
+        "jasny/db": "Jasny's DB layer for the masses (it's good)"
     },
     "autoload": {
         "psr-0": {
-            "Jasny\\MySQL\\DBQuery": "src/"
+            "Jasny\\DB\\MySQL\\Query": "src/"
         }
     }
 }
