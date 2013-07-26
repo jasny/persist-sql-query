@@ -62,6 +62,12 @@ class Query
     protected $statement;
 
     /**
+     * Bound parameters
+     * @var array
+     */
+    protected $params = array();
+    
+    /**
      * The type of the query
      * @var string
      */
@@ -109,28 +115,14 @@ class Query
      */
     protected $cachedTablenames;
 
+    
     /**
      * Class constructor.
-     * Don't mix both types ('?' and ':key') of placeholders.
-     * 
-     * @example new Query("SELECT * FROM mytable");
-     * @example new Query("SELECT * FROM mytable WHERE id=?", $id);
-     * @example new Query("SELECT * FROM mytable WHERE name=:name AND age>:age AND status='A'", array('id'=>$id, 'age'=>$age));
      * 
      * @param string $statement  Query statement
-     * @param mixed  $params     Parameters for placeholders
      */
-    public function __construct($statement, $params = array())
+    public function __construct($statement)
     {
-        if (func_num_args() > 1) {
-            if (!is_array($params) || is_int(key($params))) {
-                $params = func_get_args();
-                $params = array_splice($params, 1);
-            }
-
-            if (!empty($params)) $statement = QuerySplitter::bind($statement, $params);
-        }
-
         $this->statement = $statement;
     }
 
@@ -150,7 +142,7 @@ class Query
     /**
      * Return the statement without any added or replaced parts.
      *
-     * @return Query  $this
+     * @return Query
      */
     public function getBaseStatement()
     {
@@ -164,10 +156,13 @@ class Query
      */
     public function __toString()
     {
-        if (empty($this->partsAdd) && empty($this->partsReplace)) return $this->statement;
-
-        if (!isset($this->cachedStatement)) $this->cachedStatement = QuerySplitter::join($this->getParts());
-        return $this->cachedStatement;
+        if (!isset($this->cachedStatement)) {
+            $this->cachedStatement = empty($this->partsAdd) && empty($this->partsReplace)
+                    ? $this->statement
+                    : QuerySplitter::join($this->getParts());
+        }
+        
+        return QuerySplitter::bind($this->cachedStatement, $this->params);
     }
 
     /**
@@ -289,6 +284,31 @@ class Query
         $this->countStatement = null;
     }
 
+    /**
+     * Bind parameters to SQL query.
+     * Don't mix unnamed ('?') and named (':key') placeholders.
+     * 
+     * @example $query = new Query("SELECT * FROM mytable WHERE id=? AND status=?");
+     * @example $query->bind($id, $status);
+     * @example
+     * @example $query = new Query("SELECT * FROM mytable WHERE name=:name AND age>:age AND status='A'");
+     * @example $query->bind(array('name'=>$name, 'age'=>$age))
+     * 
+     * @param array $params  Parameters to insert into statement on placeholders
+     * @return Query $this
+     */
+    public function bind($params)
+    {
+        if (!is_array($params) || is_int(key($params))) {
+            $params = func_get_args();
+            $params = array_splice($params, 1);
+        }
+        
+        $this->params += $params;
+        
+        return $this;
+    }
+    
     /**
      * Add/set an expression to any part of the query.
      * 
@@ -773,23 +793,4 @@ class Query
     {
         return QuerySplitter::backquote($identifier, $flags);
     }
-
-    /**
-     * Insert parameters into SQL query.
-     * Don't mix unnamed ('?') and named (':key') placeholders.
-     *
-     * @param mixed $statement  Query string or Query::Statement object
-     * @param array $params     Parameters to insert into statement on placeholders
-     * @return mixed
-     */
-    public static function bind($statement, $params)
-    {
-        if (!is_array($params) || is_int(key($params))) {
-            $params = func_get_args();
-            $params = array_splice($params, 1);
-        }
-        
-        return QuerySplitter::bind($statement, $params);
-    }
 }
-
