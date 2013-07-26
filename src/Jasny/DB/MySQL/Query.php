@@ -727,7 +727,21 @@ class Query
         $this->setPart('options', $options, $flags);
         return $this;
     }
+    
 
+    /**
+     * Get a query to count the number of rows that the resultset would contain.
+     * 
+     * @param int $flags  Query::ALL_ROWS
+     * @return Query
+     */
+    public function count($flags = 0)
+    {
+        $statement = QuerySplitter::buildCountQuery($this->getParts(), $flags);
+        return new self($statement);
+    }
+
+    
     /**
      * Magic method to build a query from scratch.
      * 
@@ -755,18 +769,7 @@ class Query
         return new self($type . (isset($expression) ? " $expression" : ''));
     }
 
-    /**
-     * Get a query to count the number of rows that the resultset would contain.
-     * 
-     * @param int $flags  Query::ALL_ROWS
-     * @return Query
-     */
-    public function count($flags = 0)
-    {
-        $statement = QuerySplitter::buildCountQuery($this->getParts(), $flags);
-        return new self($statement);
-    }
-
+    
     /**
      * Quote a value so it can be savely used in a query.
      * 
@@ -786,10 +789,10 @@ class Query
      * Doesn't quote expressions without Query::BACKQUOTE_STRICT. This means it is not secure without this option. 
      * 
      * @param string   $identifier
-     * @param int      $flags       Query::BACKQUOTE_%, defaults to Query::BACKQUOTE_SMART
+     * @param int      $flags       Query::BACKQUOTE_%
      * @return string
      */
-    public static function backquote($identifier, $flags = 0)
+    public static function backquote($identifier, $flags = self::BACKQUOTE_STRICT)
     {
         return QuerySplitter::backquote($identifier, $flags);
     }
