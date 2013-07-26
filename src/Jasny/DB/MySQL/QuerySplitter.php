@@ -270,7 +270,7 @@ class QuerySplitter
         // Build where for each column
         if (is_array($column)) {
             foreach ($column as $col => &$value) {
-                $value = self::buildWhere($col, $value);
+                $value = is_int($col) ? self::buildWhere($value) : self::buildWhere($col, $value);
                 if (!isset($value)) unset($column[$col]);
             }
 
