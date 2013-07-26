@@ -64,6 +64,11 @@ class QuerySplitter
             return '(' . join(', ', $value) . ')';
         }
 
+        if ($value instanceof \DateTime) {
+            if (date_default_timezone_get()) $value->setTimezone(new \DateTimeZone(date_default_timezone_get())); // MySQL can't handle timezones
+            $value = $value->format('Y-m-d H:i:s');
+        }
+        
         return '"' . strtr($value, array('\\' => '\\\\', "\0" => '\\0', "\r" => '\\r', "\n" => '\\n', '"' => '\\"')) . '"';
     }
 
