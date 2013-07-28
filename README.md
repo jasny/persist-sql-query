@@ -7,14 +7,14 @@ This library is designed to be the ultimate tool for building, splitting and mod
 
 Automatic smart quoting helps against SQL injection and problems with reserved keywords.
 
-DBQuery can be used standalone, in conjunction with [Jasny's DB layer](http://jasny.github.com/db) or in almost any
+The query builder can be used standalone, in conjunction with [Jasny's DB layer](http://jasny.github.com/db) or in almost any
 framework.
 
 _The current version only support MySQL SQL queries_
 
 ## Installation ##
 
-Jasny's Query builder is registred at packagist as [jasny/dbquery-mysql](https://packagist.org/packages/jasny/dbquery-mysql)
+Jasny's Query builder is registred at packagist as [jasny/dbquery](https://packagist.org/packages/jasny/dbquery)
 and can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the .zip
 and copy the file from the 'src' folder.
 
