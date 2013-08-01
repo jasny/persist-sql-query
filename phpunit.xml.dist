@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true">
+<phpunit colors="true" bootstrap="tests/bootstrap.php">
     <testsuites>
-        <testsuite name="DBQuery (for MySQL) Test Suite">
+        <testsuite name="Jasny DB Query Test Suite">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
