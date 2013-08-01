@@ -11,7 +11,6 @@ require_once __DIR__ . '/QuerySplitter.php';
 class Query
 {
     /** Prepend to part */
-
     const PREPEND = 0x1;
     /** Append to part */
     const APPEND = 0x2;
@@ -55,6 +54,12 @@ class Query
     /** Sort descending */
     const DESC = 0x20;
 
+    /**
+     * Callback to load named queries
+     * @var callback 
+     */
+    protected static $loadNamedCallback;
+    
     /**
      * Query statement
      * @var string
@@ -795,5 +800,34 @@ class Query
     public static function backquote($identifier, $flags = self::BACKQUOTE_STRICT)
     {
         return QuerySplitter::backquote($identifier, $flags);
+    }
+    
+    
+    /**
+     * Set callback to load named queries with
+     * 
+     * @params callback $callback
+     */
+    public static function loadNamedWith($callback)
+    {
+        self::$loadNamedCallback = $callback;
+    }
+    
+    /**
+     * Load a named query
+     * 
+     * @param string $name
+     * @return Query
+     */
+    public static function named($name)
+    {
+        if (!isset(self::$loadNamedCallback)) {
+            throw new \Exception("Unabled to load named queries: first tell how using Query::loadNamedWith()");
+        }
+        
+        $callback = self::$loadNamedCallback;
+        $statement = is_array($callback) ? call_user_func($callback, $name) : $callback($name);
+        
+        return new static($statement);
     }
 }

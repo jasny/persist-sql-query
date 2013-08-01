@@ -11,7 +11,12 @@ require_once 'PHPUnit/Framework/TestCase.php';
  */
 class QueryTest extends \PHPUnit_Framework_TestCase
 {
-
+    public function tearDown()
+    {
+        Query::loadNamedWith(null);
+    }
+    
+    
     public function testSelectStatement_AddColumn()
     {
         $query = new Query("SELECT id, description FROM `test`");
@@ -502,4 +507,21 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("DELETE FROM `test` LIMIT 10", (string)$query);
     }
 
+    
+    public function testNamed()
+    {
+        Query::loadNamedWith(function($name) {
+            return "SELECT * FROM $name";
+        });
+        
+        $this->assertEquals("SELECT * FROM foo", (string)Query::named('foo'));
+    }
+    
+    public function testNamed_Fail()
+    {
+        $err = "Unabled to load named queries: first tell how using Query::loadNamedWith()";
+        $this->setExpectedException('Exception', $err);
+        
+        Query::named('foo');
+    }
 }
