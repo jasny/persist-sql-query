@@ -2,6 +2,8 @@
 
 namespace Jasny\DB\MySQL;
 
+//use JsonSchema\Constraints\String;
+
 require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
@@ -15,13 +17,21 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         Query::loadNamedWith(null);
     }
-    
-    
+
+    // ----- SELECT
+
     public function testSelectStatement_AddColumn()
     {
         $query = new Query("SELECT id, description FROM `test`");
         $query->column("abc");
         $this->assertEquals("SELECT id, description, `abc` FROM `test`", (string)$query);
+    }
+
+    public function testSelectStatement_AddColumn_Array()
+    {
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->column(array("abc", "def", "ghi"), Query::APPEND);
+        $this->assertEquals("SELECT id, description, `abc`, `def`, `ghi` FROM `test`", (string)$query);
     }
 
     public function testSelectStatement_AddColumn_Prepend()
@@ -97,11 +107,11 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testSelectStatement_Where_Simple()
-    {
-        $query = new Query("SELECT id, description FROM `test`");
-        $query->where("status = 1");
-        $this->assertEquals("SELECT id, description FROM `test` WHERE `status` = 1", (string)$query);
-    }
+{
+    $query = new Query("SELECT id, description FROM `test`");
+    $query->where("status = 1");
+    $this->assertEquals("SELECT id, description FROM `test` WHERE `status` = 1", (string)$query);
+}
 
     public function testSelectStatement_Where()
     {
@@ -148,9 +158,16 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectStatement_OrderBy_Simple()
     {
-        $query = new Query("SELECT id, description FROM `test`");
+        $query = new Query("SELECT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
         $query->orderBy("parent_id");
-        $this->assertEquals("SELECT id, description FROM `test` ORDER BY `parent_id`", (string)$query);
+        $this->assertEquals("SELECT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY `parent_id`", (string)$query);
+    }
+
+    public function testSelectStatement_OrderBy_Array()
+    {
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->groupBy(array("test1", "test2", "test3"));
+        $this->assertEquals("SELECT id, description FROM `test` GROUP BY `test1`, `test2`, `test3`", (string)$query);
     }
 
     public function testSelectStatement_OrderBy()
@@ -160,11 +177,33 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY `parent_id`, xyz", (string)$query);
     }
 
+
+    public function testSelectStatement_OrderBy_Asc()
+    {
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->orderBy("parent_id", Query::ASC);
+        $this->assertEquals("SELECT id, description FROM `test` ORDER BY `parent_id` ASC", (string)$query);
+    }
+
+    public function testSelectStatement_OrderBy_Desc()
+    {
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->orderBy("parent_id", Query::DESC);
+        $this->assertEquals("SELECT id, description FROM `test` ORDER BY `parent_id` DESC", (string)$query);
+    }
+
     public function testSelectStatement_OrderBy_Append()
     {
         $query = new Query("SELECT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY xyz");
         $query->orderBy("parent_id", Query::APPEND);
         $this->assertEquals("SELECT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY xyz, `parent_id`", (string)$query);
+    }
+
+    public function testSelectStatement_Order_By_Array()
+    {
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->orderBy(array("name","description","checksum"));
+        $this->assertEquals("SELECT id, description FROM `test` ORDER BY `name`, `description`, `checksum`", (string)$query);
     }
 
     public function testSelectStatement_WhereCriteria_Equals()
@@ -244,8 +283,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
     }
 
-    //--------
+    public function testSelectStatement_Page_Limit_Again()
+    {
+        $query = new Query("SELECT id, description FROM `test` LIMIT 4, 10");
+        $query->page(4);
+        $this->assertEquals("SELECT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
+    }
 
+    //-------- INSERT
 
     public function testInsertStatement_ReplaceTable()
     {
@@ -268,6 +313,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (DEFAULT, \"xyz\", 12)", (string)$query);
     }
 
+//    public function testInsertStatement_AddValues_ArrayOfArrays()
+//    {
+//        $query = new Query("INSERT INTO `test` VALUES (NULL, 'abc', 10)");
+//        $query->values(array(array(null, 'xyz', 12)),array("test","Test"), Query::REPLACE);
+//        echo $query;
+////        $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (\"xyz\")", (string)$query);
+//    } supposed defect
+
     public function testInsertStatement_AddValues_Array()
     {
         $query = new Query("INSERT INTO `test` VALUES (NULL, 'abc', 10)");
@@ -275,14 +328,49 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (DEFAULT, \"xyz\", 12)", (string)$query);
     }
 
-    //--------
 
+    public function testInsertStatemment_Select()
+    {
+        $query = new Query("INSERT INTO `test` ");
+        $query->set("SELECT FROM `table1`");
+        $this->assertEquals("INSERT INTO `test` SELECT FROM `table1`", (string)$query);
+    }
+
+    public function testInsertStatement_OnDuplicateKeyUpdate()
+    {
+        $query = new Query("INSERT INTO table (a,b,c) VALUES (1,2,3)");
+        $query->onDuplicateKeyUpdate("a");
+        $this->assertEquals("INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`)", (string)$query);
+    }
+
+    public function testInsertStatement_OnDuplicateKeyUpdate_arrayColumnArgument()
+    {
+        $query = new Query("INSERT INTO table (a,b,c) VALUES (1,2,3)");
+        $query->onDuplicateKeyUpdate(array("a","c"));
+        $this->assertEquals("INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`), `c` = VALUES(`c`)", (string)$query);
+    }
+
+    public function testInsertStatement_OnDuplicateKeyUpdate_arrayKeyValue()
+    {
+        $query = new Query("INSERT INTO table (a,b,c) VALUES (1,2,3)");
+        $query->onDuplicateKeyUpdate(array("a" => 15,"c" => 14));
+        $this->assertEquals("INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE `a` = 15, `c` = 14", (string)$query);
+    }
+
+    //-------- UPDATE
 
     public function testUpdateStatement_AddSet()
     {
         $query = new Query("UPDATE `test` SET description='abc', type_id=10");
         $query->set("abc", 12);
         $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12", (string)$query);
+    }
+
+    public function testUpdateStatement_AddSet1()
+    {
+        $query = new Query("UPDATE `test` SET description='abc', type_id=10 WHERE xyz=10");
+        $query->set(array('abc' => 12, 'def' => "a"));
+        $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12, `def` = \"a\" WHERE xyz=10", (string)$query);
     }
 
     public function testUpdateStatement_AddSet_Simple()
@@ -405,7 +493,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("UPDATE `test` SET description='abc', type_id=10 LIMIT 10", (string)$query);
     }
 
-    //--------
+    //-------- DELETE
 
 
     public function testDeleteStatement_AddColumn()
@@ -507,21 +595,21 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("DELETE FROM `test` LIMIT 10", (string)$query);
     }
 
-    
+
     public function testNamed()
     {
         Query::loadNamedWith(function($name) {
             return "SELECT * FROM $name";
         });
-        
+
         $this->assertEquals("SELECT * FROM foo", (string)Query::named('foo'));
     }
-    
+
     public function testNamed_Fail()
     {
         $err = "Unabled to load named queries: first tell how using Query::loadNamedWith()";
         $this->setExpectedException('Exception', $err);
-        
+
         Query::named('foo');
     }
 }
