@@ -71,6 +71,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT id, description FROM `test` INNER JOIN `abc`", (string)$query);
     }
 
+//    public function testSelectStatement_InnerJoin_Replace()
+//    {
+//        $query = new Query("SELECT id, description FROM `test` INNER JOIN `abc`");
+//        $query->innerJoin("xyz", null, Query::REPLACE);
+//        $this->assertEquals("SELECT id, description FROM `test` INNER JOIN `xyz`", (string)$query);
+//    }
+
     public function testSelectStatement_InnerJoin_On()
     {
         $query = new Query("SELECT id, description FROM `test`");
@@ -107,11 +114,11 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testSelectStatement_Where_Simple()
-{
+    {
     $query = new Query("SELECT id, description FROM `test`");
     $query->where("status = 1");
     $this->assertEquals("SELECT id, description FROM `test` WHERE `status` = 1", (string)$query);
-}
+    }
 
     public function testSelectStatement_Where()
     {
@@ -289,6 +296,279 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query->page(4);
         $this->assertEquals("SELECT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
     }
+
+    // ---------- Select DISTINCT
+
+    public function testSelectDistinctStatement_AddColumn()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->column("abc");
+        $this->assertEquals("SELECT DISTINCT id, description, `abc` FROM `test`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_AddColumn_Array()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->column(array("abc", "def", "ghi"), Query::APPEND);
+        $this->assertEquals("SELECT DISTINCT id, description, `abc`, `def`, `ghi` FROM `test`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_AddColumn_Prepend()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->column("abc", Query::PREPEND);
+        $this->assertEquals("SELECT DISTINCT `abc`, id, description FROM `test`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_AddColumn_Replace()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->column("abc", Query::REPLACE);
+        $this->assertEquals("SELECT DISTINCT `abc` FROM `test`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_ReplaceTable()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE xy > 10");
+        $query->from("abc");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `abc` WHERE xy > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_AddTable()
+    {
+        // Removing the extra space between table and comma, would make the code slower.
+
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE xy > 10");
+        $query->from("abc", Query::APPEND);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` , `abc` WHERE xy > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_InnerJoin()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->innerJoin("abc");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` INNER JOIN `abc`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_InnerJoin_On()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->innerJoin("abc", "test.id = abc.idTest");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` INNER JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_LeftJoin()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE xy > 10");
+        $query->leftJoin("abc", "test.id = abc.idTest");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest` WHERE xy > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_LeftJoin_Again()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` LEFT JOIN x ON test.x_id = x.id");
+        $query->leftJoin("abc", "test.id = abc.idTest");
+        $this->assertEquals("SELECT DISTINCT id, description FROM (`test` LEFT JOIN x ON test.x_id = x.id) LEFT JOIN `abc` ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_LeftJoin_Prepend()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` LEFT JOIN x ON test.x_id = x.id");
+        $query->leftJoin("abc", "test.id = abc.idTest", Query::PREPEND);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `abc` LEFT JOIN (`test` LEFT JOIN x ON test.x_id = x.id) ON `test`.`id` = `abc`.`idTest`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_RightJoin()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE xy > 10");
+        $query->rightJoin("abc", "test.id = abc.idTest");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` RIGHT JOIN `abc` ON `test`.`id` = `abc`.`idTest` WHERE xy > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Where_Simple()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where("status = 1");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `status` = 1", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Where()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->where("status = 1");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE (id > 10) AND (`status` = 1) GROUP BY type_id HAVING SUM(qty) > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Where_Prepend()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->where("status = 1", null, Query::PREPEND);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE (`status` = 1) AND (id > 10) GROUP BY type_id HAVING SUM(qty) > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Where_Replace()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->where("status = 1", null, Query::REPLACE);
+        $query->where("xyz = 1");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE (`status` = 1) AND (`xyz` = 1) GROUP BY type_id HAVING SUM(qty) > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Having()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->having("status = 1");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING (SUM(qty) > 10) AND (`status` = 1)", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_GroupBy_Simple()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->groupBy("parent_id");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` GROUP BY `parent_id`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_GroupBy()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->groupBy("parent_id");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id, `parent_id` HAVING SUM(qty) > 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_OrderBy_Simple()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10");
+        $query->orderBy("parent_id");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY `parent_id`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_OrderBy_Array()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->groupBy(array("test1", "test2", "test3"));
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` GROUP BY `test1`, `test2`, `test3`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_OrderBy()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY xyz");
+        $query->orderBy("parent_id");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY `parent_id`, xyz", (string)$query);
+    }
+
+
+    public function testSelectDistinctStatement_OrderBy_Asc()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->orderBy("parent_id", Query::ASC);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` ORDER BY `parent_id` ASC", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_OrderBy_Desc()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->orderBy("parent_id", Query::DESC);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` ORDER BY `parent_id` DESC", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_OrderBy_Append()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY xyz");
+        $query->orderBy("parent_id", Query::APPEND);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE id > 10 GROUP BY type_id HAVING SUM(qty) > 10 ORDER BY xyz, `parent_id`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Order_By_Array()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->orderBy(array("name","description","checksum"));
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` ORDER BY `name`, `description`, `checksum`", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_Equals()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where("status", 1);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `status` = 1", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_GreatEq()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where('id >= ?', 1);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `id` >= 1", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_Or()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` WHERE id > 10");
+        $query->where('xyz = ? OR abc = ?', array(10, 20));
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE (id > 10) AND (`xyz` = 10 OR `abc` = 20)", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_In()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where('xyz', array('a', 'b', 'c'));
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `xyz` IN (\"a\", \"b\", \"c\")", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_Between()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where('xyz BETWEEN ? AND ?', array(10, 12));
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `xyz` BETWEEN 10 AND 12", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_WhereCriteria_LikeWildcard()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->where('description LIKE ?%', 'bea');
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` WHERE `description` LIKE \"bea%\"", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Limit()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->limit(10);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LIMIT 10", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Limit_Replace()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` LIMIT 12");
+        $query->limit(50, 30);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LIMIT 50 OFFSET 30", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Limit_String()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` LIMIT 12");
+        $query->limit("50 OFFSET 30");
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LIMIT 50 OFFSET 30", (string)$query);
+    }
+
+    public function testSelecDistincttStatement_Page()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test`");
+        $query->page(4, 10);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Page_Limit()
+    {
+        $query = new Query("SELECT DISTINCT id, description FROM `test` LIMIT 10");
+        $query->page(4);
+        $this->assertEquals("SELECT DISTINCT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
+    }
+
+    public function testSelectDistinctStatement_Page_Limit_Again()
+    {
+        $query = new Query("SELECT id, description FROM `test` LIMIT 4, 10");
+        $query->page(4);
+        $this->assertEquals("SELECT id, description FROM `test` LIMIT 10 OFFSET 30", (string)$query);
+    }
+
 
     //-------- INSERT
 
@@ -503,6 +783,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("DELETE `test`.* FROM `test`", (string)$query);
     }
 
+    public function testDeleteStatement_ReplaceColumn()
+    {
+        $query = new Query("DELETE `test`.* FROM `test`");
+        $query->column("test112.*", Query::REPLACE);
+        $this->assertEquals("DELETE `test112`.* FROM `test`", (string)$query);
+    }
+
     public function testDeleteStatement_ReplaceTable()
     {
         $query = new Query("DELETE FROM `test`");
@@ -594,7 +881,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query->limit(10);
         $this->assertEquals("DELETE FROM `test` LIMIT 10", (string)$query);
     }
-
 
     public function testNamed()
     {
