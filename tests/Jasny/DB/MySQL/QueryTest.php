@@ -71,12 +71,13 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("SELECT id, description FROM `test` INNER JOIN `abc`", (string)$query);
     }
 
-//    public function testSelectStatement_InnerJoin_Replace()
-//    {
-//        $query = new Query("SELECT id, description FROM `test` INNER JOIN `abc`");
-//        $query->innerJoin("xyz", null, Query::REPLACE);
-//        $this->assertEquals("SELECT id, description FROM `test` INNER JOIN `xyz`", (string)$query);
-//    }
+    public function testSelectStatement_InnerJoin_Replace()
+    {
+        $this->markTestSkipped("Supposed defect of not implemented");
+        $query = new Query("SELECT id, description FROM `test` INNER JOIN `abc`");
+        $query->innerJoin("xyz", null, Query::REPLACE);
+        $this->assertEquals("SELECT id, description FROM `test` INNER JOIN `xyz`", (string)$query);
+    }
 
     public function testSelectStatement_InnerJoin_On()
     {
@@ -115,9 +116,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectStatement_Where_Simple()
     {
-    $query = new Query("SELECT id, description FROM `test`");
-    $query->where("status = 1");
-    $this->assertEquals("SELECT id, description FROM `test` WHERE `status` = 1", (string)$query);
+        $query = new Query("SELECT id, description FROM `test`");
+        $query->where("status = 1");
+        $this->assertEquals("SELECT id, description FROM `test` WHERE `status` = 1", (string)$query);
     }
 
     public function testSelectStatement_Where()
@@ -593,13 +594,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (DEFAULT, \"xyz\", 12)", (string)$query);
     }
 
-//    public function testInsertStatement_AddValues_ArrayOfArrays()
-//    {
-//        $query = new Query("INSERT INTO `test` VALUES (NULL, 'abc', 10)");
-//        $query->values(array(array(null, 'xyz', 12)),array("test","Test"), Query::REPLACE);
-//        echo $query;
-////        $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (\"xyz\")", (string)$query);
-//    } supposed defect
+    public function testInsertStatement_AddValues_ArrayOfArrays()
+    {
+        $this->markTestSkipped("Defect");
+        $query = new Query("INSERT INTO `test` VALUES (NULL, 'abc', 10)");
+        $query->values(array(array(null, 'xyz', 12)),array("test","Test"), Query::REPLACE);
+        echo $query;
+        $this->assertEquals("INSERT INTO `test` VALUES (NULL, 'abc', 10), (\"xyz\")", (string)$query);
+    }
 
     public function testInsertStatement_AddValues_Array()
     {
@@ -611,7 +613,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     public function testInsertStatemment_Select()
     {
-        $query = new Query("INSERT INTO `test` ");
+        $query = new Query("INSERT INTO `test`");
         $query->set("SELECT FROM `table1`");
         $this->assertEquals("INSERT INTO `test` SELECT FROM `table1`", (string)$query);
     }
@@ -644,13 +646,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = new Query("UPDATE `test` SET description='abc', type_id=10");
         $query->set("abc", 12);
         $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12", (string)$query);
-    }
-
-    public function testUpdateStatement_AddSet1()
-    {
-        $query = new Query("UPDATE `test` SET description='abc', type_id=10 WHERE xyz=10");
-        $query->set(array('abc' => 12, 'def' => "a"));
-        $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12, `def` = \"a\" WHERE xyz=10", (string)$query);
     }
 
     public function testUpdateStatement_AddSet_Simple()
@@ -880,6 +875,16 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $query = new Query("DELETE FROM `test`");
         $query->limit(10);
         $this->assertEquals("DELETE FROM `test` LIMIT 10", (string)$query);
+    }
+
+    // -- truncate
+
+    public function testTruncateTable()
+    {
+        $this->markTestSkipped("Defect");
+        $query = new Query("TRUNCATE TABLE `dates`");
+        $query->table("aaa");
+        $this->assertEquals("TRUNCATE TABLE `aaa`", (string)$query);
     }
 
     public function testNamed()
