@@ -1,7 +1,7 @@
 Jasny's Query builder for PHP
 =============================
 
-[![Build Status](https://secure.travis-ci.org/jasny/dbquery.png?branch=master)](http://travis-ci.org/jasny/dbquery)
+[![Build Status](https://secure.travis-ci.org/jasny/dbquery-mysql.png?branch=master)](http://travis-ci.org/jasny/dbquery-mysql)
 
 This library is designed to be the ultimate tool for building, splitting and modifying SQL queries.
 
@@ -14,7 +14,7 @@ _The current version only support MySQL SQL queries_
 
 ## Installation ##
 
-Jasny's Query builder is registred at packagist as [jasny/dbquery](https://packagist.org/packages/jasny/dbquery)
+Jasny's Query builder is registred at packagist as [jasny/dbquery-mysql](https://packagist.org/packages/jasny/dbquery-mysql)
 and can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the .zip
 and copy the file from the 'src' folder.
 
@@ -64,4 +64,4 @@ Map fields for an INSERT INTO ... SELECT ... ON DUPLICATE KEY query
 
 ## API documentation (generated) ##
 
-http://jasny.github.com/dbquery/docs
+http://jasny.github.com/dbquery-mysql/docs
