@@ -1,22 +1,23 @@
-Jasny's Query builder for PHP
-=============================
+Jasny's MySQL query builder for PHP
+===================================
 
 [![Build Status](https://secure.travis-ci.org/jasny/dbquery-mysql.png?branch=master)](http://travis-ci.org/jasny/dbquery-mysql)
 
-This library is designed to be the ultimate tool for building, splitting and modifying SQL queries.
+This library is designed to be the ultimate tool for building, splitting and modifying MySQL queries.
 
 Automatic smart quoting helps against SQL injection and problems with reserved keywords.
 
 The query builder can be used standalone, in conjunction with [Jasny's DB layer](http://jasny.github.com/db) or in almost any
 framework.
 
-_The current version only support MySQL SQL queries_
-
 ## Installation ##
 
-Jasny's Query builder is registred at packagist as [jasny/dbquery-mysql](https://packagist.org/packages/jasny/dbquery-mysql)
-and can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the .zip
-and copy the file from the 'src' folder.
+Jasny's MySQL query builder is registred at packagist as [jasny/dbquery-mysql](https://packagist.org/packages/jasny/dbquery-mysql)
+and can be easily installed using [composer](http://getcomposer.org/).
+
+    composer install jasny/dbquery-mysql
+
+Alternatively you can simply download the .zip and copy the file from the 'src' folder.
 
 ## Examples ##
 
