@@ -109,12 +109,12 @@ class QuerySplitter
 
         // Words
         if ($flags & Query::BACKQUOTE_WORDS) {
-            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"()]*[a-z_][^\s,\.`\'"()]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
+            $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|(?<=^|[\s,])(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|NOT|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)(?=$|[\s,])|(?<=^|[\s,])COLLATE\s+\w++|(?<=^|[\s,])USING\s+\w++|`[^`]*+`|([^\s,\.`\'"()]*[a-z_][^\s,\.`\'"()]*)/i', array(__CLASS__, 'backquote_ab'), $identifier);
             return $quoted;
         }
 
         // Smart
-        $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|(?:NOT\s+)?IN|IS(?:\s+NOT)?|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array(__CLASS__, 'backquote_ab'), $identifier);
+        $quoted = preg_replace_callback('/"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\b(?:NULL|TRUE|FALSE|DEFAULT|DIV|AND|OR|XOR|NOT|IN|IS|BETWEEN|R?LIKE|REGEXP|SOUNDS\s+LIKE|MATCH|AS|CASE|WHEN|THEN|END|ASC|DESC|BINARY)\b|\bCOLLATE\s+\w++|\bUSING\s+\w++|TRIM\s*\((?:BOTH|LEADING|TRAILING)|`[^`]*+`|(\d*[a-z_]\w*\b)(?!\s*\()/i', array(__CLASS__, 'backquote_ab'), $identifier);
         if (preg_match('/\bCAST\s*\(/i', $quoted)) $quoted = self::backquote_castCleanup($quoted);
         return $quoted;
     }
