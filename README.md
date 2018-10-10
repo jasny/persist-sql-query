@@ -26,7 +26,7 @@ An example to simple to be using a query builder
 ```php
 use Jasny\DB\MySQL\Query;
 
-$query = Query::select()->columns('id, name')->from('foo')->where('active = 1');
+$query = Query::select()->columns('id', 'name')->from('foo')->where('active = 1');
 $result = $mysqli->query($query); // SELECT `id`, `name` FROM `foo` WHERE `active` = 1
 ```
 
