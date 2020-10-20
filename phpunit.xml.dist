@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="tests/bootstrap.php">
+<phpunit
+        colors="true"
+        bootstrap="vendor/autoload.php"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+>
     <testsuites>
-        <testsuite name="Jasny DB Query Test Suite">
-            <directory>tests/</directory>
+        <testsuite name="common">
+            <directory>tests/Common</directory>
+        </testsuite>
+        <testsuite name="mysql">
+            <directory>tests/MySQL</directory>
         </testsuite>
     </testsuites>
     <filter>
-        <blacklist>
-            <directory suffix=".php">vendor</directory>
-        </blacklist>
-    </filter>    
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true" />
+    </logging>
 </phpunit>
