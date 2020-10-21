@@ -146,7 +146,7 @@ final class QuerySplitter
             return preg_match('/^[-+]?\d+$/', $quoted) ? (int)$quoted : (float)$quoted;
         }
 
-        if (preg_match('/' . $this->dialect::REGEX_QUOTED_STRING . '/', $quoted)) {
+        if (preg_match('/^' . $this->dialect::REGEX_QUOTED_STRING . '$/', $quoted)) {
             return $this->dialect->unquoteString($quoted);
         }
 
@@ -572,7 +572,7 @@ final class QuerySplitter
         $target = &$sets[0];
 
         $fn = function ($match) use (&$sets, &$done) {
-            if (!empty($match[1])) {
+            if (isset($match[1]) && $match[1] !== '') {
                 $done = false;
             }
             return empty($match[1])
@@ -902,10 +902,11 @@ final class QuerySplitter
     /**
      * Return the columns of a (partial) query statement.
      *
-     * @param string|array $sql    SQL query or 'column, column, ...'
+     * @param string|array $sql    SQL query or parts
+     * @param int          $flags  Optional Query::UNQUOTE
      * @return array<string>
      */
-    public function splitSet($sql): array
+    public function splitSet($sql, int $flags = 0): array
     {
         $parts = is_array($sql) ? $sql : $this->split($sql);
 
@@ -927,7 +928,10 @@ final class QuerySplitter
 
         $set = [];
         foreach ($matches as &$match) {
-            $set[trim($match[1])] = trim($match[2]);
+            $field = trim(trim($match[1]), $this->dialect::QUOTE_IDENTIFIER);
+            $set[$field] = ($flags & Query::UNQUOTE) === 0
+                ? trim($match[2])
+                : $this->unquoteValue(trim($match[2]));
         }
 
         return $set;
@@ -987,7 +991,7 @@ final class QuerySplitter
     /**
      * Return the columns of a (partial) query statement.
      *
-     * @param string|array $sql    SQL query or '(column, column), (column, column), ...'
+     * @param string|array $sql    SQL query or parts
      * @param int          $flags  Optional Query::UNQUOTE
      * @return array
      */
@@ -1000,31 +1004,43 @@ final class QuerySplitter
             throw new QueryBuildException("It's not possible to extract values of a $type query.");
         }
 
-        $statement = preg_replace('/^\(|\)$/', '', $parts['values']);
+        $statement = $parts['values'];
 
-        if (!preg_match_all(
-            '/(?:' . $this->dialect::REGEX_QUOTED . '|\((?:[^()]++|(?R))*\)|'
-                . '[^' . $this->dialect::REGEX_CHARS_QUOTES . '(),]++)++/',
-            $statement,
-            $match,
-            PREG_PATTERN_ORDER
-        )) {
+        $regex = '/(?:' . $this->dialect::REGEX_QUOTED . '|\((?:[^()]++|(?R))*\)|'
+            . '[^' . $this->dialect::REGEX_CHARS_QUOTES . '(),]++)++/';
+
+        if (!preg_match_all($regex, $statement, $match, PREG_PATTERN_ORDER)) {
             return [];
         }
 
-        $values = $match[0];
+        $sets = $match[0];
+        $values = [];
 
-        if ($flags & Query::UNQUOTE) {
-            foreach ($values as &$value) {
-                $value = $this->unquoteValue($value);
+        foreach ($sets as $set) {
+            $expressions = preg_replace('/^\s*\(|\)\s*$/', '', $set);
+
+            if (!preg_match_all($regex, $expressions, $match, PREG_PATTERN_ORDER)) {
+                continue;
+            }
+
+            $values[] = $match[0];
+        }
+
+        if (($flags & Query::UNQUOTE) === 0) {
+            foreach ($values as &$row) {
+                foreach ($row as &$value) {
+                    $value = trim($value);
+                }
             }
         } else {
-            foreach ($values as &$value) {
-                $value = trim($value);
+            foreach ($values as &$row) {
+                foreach ($row as &$value) {
+                    $value = $this->unquoteValue($value);
+                }
             }
         }
 
-        return array_values($values);
+        return $values;
     }
 
     /**
@@ -1090,7 +1106,7 @@ final class QuerySplitter
             unset($parts['limit']);
         }
 
-        if ($type === 'SELECT' && !empty($parts['having'])) {
+        if ($type === 'SELECT' && ($parts['having'] ?? '') !== '') {
             return "SELECT COUNT(*) FROM (" . $this->join($parts) . ") AS q";
         }
 
@@ -1098,7 +1114,7 @@ final class QuerySplitter
             $distinct = null;
             $column = preg_match('/\bDISTINCT\b/si', $parts['select'])
                 ? "COUNT(DISTINCT " . trim($parts['columns']) . ")"
-                : (!empty($parts['group by']) ? "COUNT(DISTINCT " . trim($parts['group by']) . ")" : "COUNT(*)");
+                : (($parts['group by'] ?? '') !== '' ? "COUNT(DISTINCT " . trim($parts['group by']) . ")" : "COUNT(*)");
         } else {
             $column = "COUNT(*)";
         }

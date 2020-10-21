@@ -265,6 +265,7 @@ class Query
         if (isset($parts['on duplicate key update']) && trim($parts['on duplicate key update']) === '1') {
             $columns = $this->splitter->splitColumns($parts);
             foreach ($columns as &$column) {
+                $column = $this->splitter->quoteIdentifier($column, self::QUOTE_STRICT);
                 $column = "$column = VALUES($column)";
             }
             $parts['on duplicate key update'] = join(', ', $columns);
@@ -308,11 +309,12 @@ class Query
      * Get the `set` expressions used in the query statement.
      * For `SET ...` and `UPDATE ... SET ...` queries.
      *
-     * @return array<string,string>
+     * @param int $flags  Optional Query::UNQUOTE
+     * @return array<string,mixed>
      */
-    public function getSet(): array
+    public function getSet(int $flags = 0): array
     {
-        return $this->splitter->splitSet($this->getParts());
+        return $this->splitter->splitSet($this->getParts(), $flags);
     }
 
     /**
@@ -619,6 +621,11 @@ class Query
     {
         $type = $this->getType();
 
+        // $value is omitted and $flags is specified as second argument
+        if (is_array($column) && func_num_args() === 2 && is_int($value)) {
+            $flags = $value;
+        }
+
         // INSERT INTO ... SELECT ..
         if (($type == 'INSERT' || $type == 'REPLACE') && (
             ($column instanceof self && $column->getType() == 'SELECT') ||
@@ -631,7 +638,7 @@ class Query
         $columns = is_array($column) ? $column : [$column => $value];
         $empty = ($this->getType() == 'INSERT' || $this->getType() == 'REPLACE') ? 'DEFAULT' : 'NULL';
 
-        if ($flags & self::SET_EXPRESSION) {
+        if (($flags & self::SET_EXPRESSION) !== 0) {
             foreach ($columns as $key => &$val) {
                 $isKeyValue = strpos($key, '=') !== false;
                 $keyFlags = $isKeyValue ? $flags : $flags & ~self::QUOTE_OPTIONS | self::QUOTE_STRICT;
@@ -782,6 +789,10 @@ class Query
      */
     public function onConflictUpdate($column = true, $expression = null, int $flags = 0): self
     {
+        if ($column === true) {
+            return $this->setPart('on duplicate key update', '1', $flags);
+        }
+
         $columns = is_array($column)
             ? $column
             : ($expression === null ? [$column] : [$column => $expression]);
@@ -869,7 +880,7 @@ class Query
     
 
     /**
-     * Get a query to count the number of rows that the resultset would contain.
+     * Get a query to count the number of rows that the result would contain.
      *
      * @param int $flags  Query::ALL_ROWS
      * @return static

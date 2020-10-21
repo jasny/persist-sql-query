@@ -14,7 +14,7 @@ class MySQL extends Dialect
     public const REGEX_VALUE = '(?:\w++|`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\'|\s++|'
         . '[^`"\'\w\s])*?';
     public const REGEX_QUOTED = '(?:`[^`]*+`|"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\')';
-    public const REGEX_QUOTED_STRING = '(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\)';
+    public const REGEX_QUOTED_STRING = '(?:"(?:[^"\\\\]++|\\\\.)*+"|\'(?:[^\'\\\\]++|\\\\.)*+\')';
     public const REGEX_QUOTED_IDENTIFIER = '(?:`[^`]*+`)';
     public const REGEX_IDENTIFIER = '(?:`[^`]*+`|\d*[a-z_]\w*+)';
     public const REGEX_FULL_IDENTIFIER = '(?:(?:\d*[a-z_]\w*+|`[^`]*+`)(?:\.(?:\d*[a-z_]\w*+|`[^`]*+`)){0,2})';

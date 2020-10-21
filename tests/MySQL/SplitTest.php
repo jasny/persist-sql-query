@@ -621,7 +621,7 @@ class SplitTest extends TestCase
         $query = new Query("INSERT INTO `test` SET id=1, description='test', `values`=22", 'mysql');
 
         $this->assertEquals(
-            ['id' => '1', "description" => "'test'", '`values`' => '22'],
+            ['id' => '1', "description" => "'test'", 'values' => '22'],
             $query->getSet()
         );
     }
@@ -629,7 +629,37 @@ class SplitTest extends TestCase
     public function testGetSetUpdate()
     {
         $query = new Query("UPDATE `test` INNER JOIN `xyz` ON test.id=xyz.test_id SET description='test', `values`=22 WHERE test.id=1", 'mysql');
-        $this->assertEquals(["description" => "'test'", '`values`' => '22'], $query->getSet());
+        $this->assertEquals(["description" => "'test'", 'values' => '22'], $query->getSet());
+    }
+
+    public function testGetSetUnquote()
+    {
+        $query = new Query("INSERT INTO `test` SET id=1, description='test', `values`=22", 'mysql');
+
+        $this->assertEquals(
+            ['id' => 1, "description" => 'test', 'values' => 22],
+            $query->getSet(Query::UNQUOTE)
+        );
+    }
+
+    public function testGetValues()
+    {
+        $query = new Query("INSERT INTO `test` VALUES (1, 'test', 22), (2, 'red', DEFAULT)", 'mysql');
+
+        $this->assertEquals(
+            [['1', "'test'", '22'], ['2', "'red'", 'DEFAULT']],
+            $query->getValues()
+        );
+    }
+
+    public function testGetValuesUnquote()
+    {
+        $query = new Query("INSERT INTO `test` VALUES (1, 'test', 22), (2, 'red', DEFAULT)", 'mysql');
+
+        $this->assertEquals(
+            [[1, 'test', 22], [2, 'red', null]],
+            $query->getValues(Query::UNQUOTE)
+        );
     }
 
     // -------

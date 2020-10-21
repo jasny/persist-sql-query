@@ -679,6 +679,13 @@ class QueryTest extends TestCase
         $this->assertEquals("INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE `a` = 15, `c` = 14", (string)$query);
     }
 
+    public function testInsertStatementOnDuplicateKeyUpdateAutomatic()
+    {
+        $query = new Query("INSERT INTO table (a,b,c) VALUES (1,2,3)", 'mysql');
+        $query->onDuplicateKeyUpdate();
+        $this->assertEquals("INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE `a` = VALUES(`a`), `b` = VALUES(`b`), `c` = VALUES(`c`)", (string)$query);
+    }
+
     //-------- UPDATE
 
     public function testUpdateStatementAddSet()
@@ -695,11 +702,25 @@ class QueryTest extends TestCase
         $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc`=12", (string)$query);
     }
 
+    public function testUpdateStatementAddSetExpression()
+    {
+        $query = new Query("UPDATE `test` SET description='abc', type_id=10", 'mysql');
+        $query->set("abc", 'abc + 1', Query::SET_EXPRESSION);
+        $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = `abc` + 1", (string)$query);
+    }
+
     public function testUpdateStatementAddSetArray()
     {
         $query = new Query("UPDATE `test` SET description='abc', type_id=10 WHERE xyz=10", 'mysql');
         $query->set(['abc' => 12, 'def' => "a"]);
         $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = 12, `def` = 'a' WHERE xyz=10", (string)$query);
+    }
+
+    public function testUpdateStatementAddSetArrayExpression()
+    {
+        $query = new Query("UPDATE `test` SET description='abc', type_id=10", 'mysql');
+        $query->set(["abc" => 'abc + 1', 'def' => 'NULL'], Query::SET_EXPRESSION);
+        $this->assertEquals("UPDATE `test` SET description='abc', type_id=10, `abc` = `abc` + 1, `def` = NULL", (string)$query);
     }
 
     public function testUpdateStatementAddSetReplace()
