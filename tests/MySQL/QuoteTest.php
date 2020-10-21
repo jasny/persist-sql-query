@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Persist\Tests\SQL\Query\MySQL;
+namespace Jasny\Persist\Tests\SQL\Query\MySQL;
 
-use Persist\SQL\Query\Query;
-use Persist\SQL\Query\QueryBuildException;
-use Persist\SQL\Query\QuerySplitter;
+use Jasny\Persist\SQL\Query;
+use Jasny\Persist\SQL\Query\QueryBuildException;
+use Jasny\Persist\SQL\Query\QuerySplitter;
 use PHPUnit\Framework\TestCase;
 
 /**

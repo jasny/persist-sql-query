@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query\Dialect;
+namespace Jasny\Persist\SQL\Query\Dialect;
 
 /**
  * Base class for dialects.
  * Defines constants for the ANSI standard SQL.
  * @internal
  */
-class Dialect
+class Generic
 {
     public const NAME = 'ANSI';
 

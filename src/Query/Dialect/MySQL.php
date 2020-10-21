@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query\Dialect;
+namespace Jasny\Persist\SQL\Query\Dialect;
 
 /**
  * Constants for the MySQL dialect of SQL.
  */
-class MySQL extends Dialect
+class MySQL extends Generic
 {
     public const NAME = 'MySQL';
 

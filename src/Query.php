@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query;
+namespace Jasny\Persist\SQL;
 
-use Persist\SQL\Query\Dialect\Dialect;
+use Jasny\Persist\SQL\Query\Builder;
+use Jasny\Persist\SQL\Query\Dialect\Generic;
+use Jasny\Persist\SQL\Query\QueryBuildException;
+use Jasny\Persist\SQL\Query\QuerySplitter;
 
 /**
  * Query builder for MySQL query statements.
@@ -105,7 +108,7 @@ class Query
      * Class constructor.
      *
      * @param string                       $statement  SQL statement
-     * @param string|Dialect|QuerySplitter $dialect
+     * @param string|Generic|QuerySplitter $dialect
      */
     public function __construct(string $statement, $dialect = 'generic')
     {

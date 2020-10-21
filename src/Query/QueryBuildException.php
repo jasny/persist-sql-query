@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query;
+namespace Jasny\Persist\SQL\Query;
 
 /**
  * Exception for issues with splitting, building, or modifying a query.

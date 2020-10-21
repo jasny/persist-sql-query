@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query;
+namespace Jasny\Persist\SQL\Query;
 
-use Persist\SQL\Query\Dialect\Dialect;
+use Jasny\Persist\SQL\Query\Dialect\Generic as Dialect;
+use Jasny\Persist\SQL\Query;
 
 /**
  * Factory methods for Query objects.

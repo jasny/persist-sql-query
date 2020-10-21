@@ -2,19 +2,19 @@
 
 /*
  * BEWARE!!!
- * 
+ *
  * This class highly depends on complicated PCRE regular expressions. So if your not really really really good at
  * reading/writing these, don't touch this class. To prevent a regex getting in some crazy (or catastrophic)
  * backtracking loop, use regexbuddy (http://www.regexbuddy.com) or some other step-by-step regex debugger.
- * 
+ *
  * The performance of each function is really important, since these functions will be called a lot in 1 page and
  * should be considered abstraction overhead. The focus is on performance not readability of the code.
- * 
+ *
  * Expression REGEX_VALUE matches all quoted strings, all quoted identifiers and all words and all non-word chars
  * upto the next keyword. It uses atomic groups to look for the next keyword after each quoted string and complete word,
  * not after each char. Atomic groups are also necessary to prevent catastrophic backtracking when the regex should
  * fail.
- * 
+ *
  * Expressions like '/\w+\s*(abc)?\s*\w+z/' should be prevented. If this regex would try to match "ef    ghi", the regex
  * will first take all 3 spaces for the first \s*. When the regex fails it retries taking the first 2 spaces for the
  * first \s* and the 3rd space for the second \s*, etc, etc. This causes the matching to take more than 3 times as long
@@ -24,10 +24,11 @@
 
 declare(strict_types=1);
 
-namespace Persist\SQL\Query;
+namespace Jasny\Persist\SQL\Query;
 
-use Persist\SQL\Query\Dialect\Dialect;
-use Persist\SQL\Query\Dialect as Dialects;
+use Jasny\Persist\SQL\Query;
+use Jasny\Persist\SQL\Query\Dialect\Generic as Dialect;
+use Jasny\Persist\SQL\Query\Dialect as Dialects;
 
 /**
  * Break down a mysql query statement to different parts, which can be altered and joined again.
@@ -66,7 +67,7 @@ final class QuerySplitter
     {
         switch (strtolower($dialect)) {
             case 'generic':
-                return new Dialect();
+                return new Dialects\Generic();
             case 'mysql':
                 return new Dialects\MySQL();
             default:
@@ -645,13 +646,11 @@ final class QuerySplitter
                     $part = '(' . $part . ')';
                 }
 
-                $sqlParts[] .= (
-                    in_array($key, ['columns', 'query', 'table', 'options'], true)
-                        ? ''
-                        : strtoupper($key) . ($part !== '' ? " " : "")
-                    ) . trim($part, " \t\n,");
-            } else {
-                unset($sqlParts[$key]);
+                $keyword = in_array($key, ['columns', 'query', 'table', 'options'], true)
+                    ? ''
+                    : strtoupper($key) . ($part !== '' ? " " : "");
+
+                $sqlParts[] = $keyword. trim($part, " \t\n,");
             }
         }
 

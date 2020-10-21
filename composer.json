@@ -1,12 +1,12 @@
 {
-    "name": "persist/sql-query",
+    "name": "jasny/persist-sql-query",
     "type": "library",
     "description": "SQL Query builder and parser",
     "keywords": ["database", "db", "sql", "query", "query builder"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/jasny/persist/issues",
-        "source": "https://github.com/jasny/persist"
+        "issues": "https://github.com/jasny/persist-sql-query/issues",
+        "source": "https://github.com/jasny/persist-sql-query"
     },
     "require": {
         "php": ">=7.4.0"
@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Persist\\SQL\\Query\\": "src/"
+            "Jasny\\Persist\\SQL\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Persist\\Tests\\SQL\\Query\\": "tests/"
+            "Jasny\\Persist\\Tests\\SQL\\Query\\": "tests/"
         }
     },
     "scripts": {

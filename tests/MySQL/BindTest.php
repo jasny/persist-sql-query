@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Persist\Tests\SQL\Query\MySQL;
+namespace Jasny\Persist\Tests\SQL\Query\MySQL;
 
-use Persist\SQL\Query\Query;
+use Jasny\Persist\SQL\Query;
 use PHPUnit\Framework\TestCase;
 
 class BindTest extends TestCase
