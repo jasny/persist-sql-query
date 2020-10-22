@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Jasny\\Persist\\Tests\\SQL\\Query\\": "tests/"
+            "Jasny\\Tests\\Persist\\SQL\\Query\\": "tests/"
         }
     },
     "scripts": {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Persist\Tests\SQL\Query\MySQL;
+namespace Jasny\Tests\Persist\SQL\Query\MySQL;
 
 use Jasny\Persist\SQL\Query;
 use PHPUnit\Framework\TestCase;
